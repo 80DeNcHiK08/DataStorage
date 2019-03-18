@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStorage", "DataStorage\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStorage.Tests", "DataStorage.Tests\DataStorage.Tests.csproj", "{2D2AE1A5-CA77-4E64-803B-ECB0B7708D41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStorage.BLL", "DataStorage.BLL\DataStorage.BLL.csproj", "{56762402-8960-4E21-AFDA-C5AB3843FB17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStorage.BLL", "DataStorage.BLL\DataStorage.BLL.csproj", "{56762402-8960-4E21-AFDA-C5AB3843FB17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStorage.DAL", "DataStorage.DAL\DataStorage.DAL.csproj", "{792C6448-D486-40F2-B1AF-C1EEA1BAE71C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStorage.DAL", "DataStorage.DAL\DataStorage.DAL.csproj", "{792C6448-D486-40F2-B1AF-C1EEA1BAE71C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStorage.App", "DataStorage.App\DataStorage.App.csproj", "{B7208551-0D7D-46BA-AA6B-8BB670D98C26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{792C6448-D486-40F2-B1AF-C1EEA1BAE71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{792C6448-D486-40F2-B1AF-C1EEA1BAE71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{792C6448-D486-40F2-B1AF-C1EEA1BAE71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7208551-0D7D-46BA-AA6B-8BB670D98C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7208551-0D7D-46BA-AA6B-8BB670D98C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7208551-0D7D-46BA-AA6B-8BB670D98C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7208551-0D7D-46BA-AA6B-8BB670D98C26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
