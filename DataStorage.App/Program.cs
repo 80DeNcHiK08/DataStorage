@@ -21,11 +21,6 @@ namespace DataStorage.App
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                /* .ConfigureLogging(log =>
-                {
-                    log.ClearProviders();
-                    log.SetMinimumLevel(LogLevel.Trace);
-                }) */
                 .UseNLog();
     }
 }
