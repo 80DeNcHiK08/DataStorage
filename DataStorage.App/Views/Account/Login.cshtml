@@ -1,6 +1,6 @@
-﻿@model DataStorage.BLL.ViewModels.RegisterViewModel
+﻿@model DataStorage.BLL.ViewModels.LoginViewModel
 
-<h2>Register new user</h2>
+<h2>Login</h2>
 <form method="post" asp-controller="Account" asp-action="Register">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
@@ -16,13 +16,13 @@
     </div>
 
     <div>
-        <label asp-for="ConfirmPassword"></label><br />
-        <input asp-for="ConfirmPassword" />
-        <span asp-validation-for="Password"></span>
+        <label asp-for="RememberMe"></label><br />
+        <input asp-for="RememberMe" />
+        <span asp-validation-for="RememberMe"></span>
     </div>
 
     <div>
-        <input type="submit" value="Register" />
+        <input type="submit" value="Login" />
     </div>
 </form>
 

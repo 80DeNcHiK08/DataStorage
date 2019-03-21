@@ -16,14 +16,15 @@ namespace DataStorage.App.Controllers
     {
         public IActionResult Index()
         {
-            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            /*if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 return RedirectToAction("Register", "Account");
-            }
+            }*/
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult About()

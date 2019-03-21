@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.DAL.Entities
 {
-    public class UserEntity
+    public class UserEntity : IdentityUser
     {
         [Key]
         public int UserId { get; set; }
         public string Username { get; set; }
-        public string Email { get; set; }
+        public override string Email { get; set; }
         public string Password { get; set; }
         //public byte[] PasswordHash { get; set; }
         //public byte[] PasswordSalt { get; set; }
