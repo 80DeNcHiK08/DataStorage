@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-
-using DataStorage.DAL.Models;
-using DataStorage.BLL.ViewModels;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+
+using DataStorage.DAL.Entities;
+using DataStorage.BLL.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace DataStorage.App.Controllers
 {
@@ -20,6 +22,36 @@ namespace DataStorage.App.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login or password");
+                    return View(model);
+                }
+            } else
+            {
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -52,5 +84,13 @@ namespace DataStorage.App.Controllers
             }
             return View(model);
         }
-    }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
+    }    
 }

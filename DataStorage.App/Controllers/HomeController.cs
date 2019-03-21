@@ -16,7 +16,14 @@ namespace DataStorage.App.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return RedirectToAction("Register", "Account");
+            }
         }
 
         public IActionResult About()
@@ -28,6 +35,7 @@ namespace DataStorage.App.Controllers
 
         public IActionResult Contact()
         {
+            
             ViewData["Message"] = "Your contact page.";
 
             return View();

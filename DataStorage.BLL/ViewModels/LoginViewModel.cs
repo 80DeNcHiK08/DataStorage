@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataStorage.BLL.ViewModels
 {
-    public class RegisterViewModel
+    public class LoginViewModel
     {
         [Required(ErrorMessage = "This field is required!")]
         [Display(Name = "Email")]
@@ -18,11 +18,7 @@ namespace DataStorage.BLL.ViewModels
         [Required(ErrorMessage = "This field is required!")]
         public string Password { get; set; }
 
-        /*[Required]
-        [StringLength(100, ErrorMessage = "")]
-        [DataType(DataType.Password)]
-        [Display(Name = "ConfirmPassword")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password does not match.")]
-        public string ConfirmPassword { get; set; }*/
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
     }
 }

@@ -11,10 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using DataStorage.App.Mappings;
+using Microsoft.AspNetCore.Identity;
 
 using DataStorage.DAL;
-using DataStorage.DAL.Models;
-using DataStorage.App.Mappings;
+using DataStorage.DAL.Entities;
 
 namespace DataStorage.App
 {
@@ -38,9 +39,15 @@ namespace DataStorage.App
             });
 
             var connection = @"Data Source=(localdb)\mssqllocaldb;Database=DataStorage;Integrated Security=True;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<DSContext>
-                (options => options.UseSqlServer(connection, b => b.MigrationsAssembly("DataStorage.DAL")));
-            //services.AddDefaultIdentity<IdentityRole>
+            services.AddDbContext<DSContext>(options => 
+                options.UseSqlServer(connection, b => b.MigrationsAssembly("DataStorage.DAL")));
+
+            services.AddIdentity<UserEntity, IdentityRole>()
+                .AddEntityFrameworkStores<DSContext>()
+                .AddDefaultTokenProviders();
+
+                //.AddUserManager<UserManager<UserEntity>>;
+            services.AddAuthentication();    
 
             Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
             services.AddAutoMapper();

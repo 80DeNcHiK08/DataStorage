@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using DataStorage.DAL.Models;
+using DataStorage.DAL.Entities;
 
 namespace DataStorage.DAL
 {
