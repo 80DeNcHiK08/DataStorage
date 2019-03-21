@@ -4,7 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using DataStorage.App.Models;
+using Microsoft.AspNetCore.Identity;
+
+using DataStorage.DAL;
+using DataStorage.DAL.Models;
+using DataStorage.BLL.ViewModels;
 
 namespace DataStorage.App.Controllers
 {

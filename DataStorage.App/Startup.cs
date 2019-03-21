@@ -10,6 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+
+using DataStorage.DAL;
+using DataStorage.DAL.Models;
+using DataStorage.App.Mappings;
 
 namespace DataStorage.App
 {
@@ -32,8 +37,16 @@ namespace DataStorage.App
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var connection = @"Data Source=(localdb)\mssqllocaldb;Database=DataStorage;Integrated Security=True;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<DSContext>
+                (options => options.UseSqlServer(connection, b => b.MigrationsAssembly("DataStorage.DAL")));
+            //services.AddDefaultIdentity<IdentityRole>
+
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
+            services.AddAutoMapper();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //"Data Source=(localdb)\v11.0;Integrated Security=True"
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +65,7 @@ namespace DataStorage.App
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
