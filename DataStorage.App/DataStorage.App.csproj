@@ -16,4 +16,10 @@
     <ProjectReference Include="..\DataStorage.DAL\DataStorage.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Account\Layout.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

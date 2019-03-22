@@ -23,7 +23,7 @@ namespace DataStorage.DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<UserEntity>().HasKey(u => new { u.Email, u.Username });
+            builder.Entity<UserEntity>().HasKey(u => new { u.Email, u.Uname });
         }
     }
 }

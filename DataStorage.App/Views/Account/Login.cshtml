@@ -1,28 +1,47 @@
 ﻿@model DataStorage.BLL.ViewModels.LoginViewModel
 
-<h2>Login</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Account/Layout.cshtml";
+}
 
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
+<h1>Login</h1>
+<form method="post" asp-controller="Account" asp-action="Login">
+    <!--<div asp-validation-summary="ModelOnly"></div>-->
+    <h2>
+        <div class="row">
+            <div class="col-25">
+                <label asp-for="Email"></label><br />
+            </div>
+            <div class="col-75">
+                <input asp-for="Email" />
+            </div>
+            <h6><span asp-validation-for="Email" class="err"></span></h6>
+        </div>
 
-    <div>
-        <label asp-for="RememberMe"></label><br />
-        <input asp-for="RememberMe" />
-        <span asp-validation-for="RememberMe"></span>
-    </div>
+        <div class="row">
+            <div class="col-25">
+                <label asp-for="Password"></label><br />
+            </div>
+            <div class="col-75">
+                <input asp-for="Password" />
+            </div>
+            <h6> <span asp-validation-for="Password" class="err"></span></h6>
+        </div>
 
-    <div>
-        <input type="submit" value="Login" />
-    </div>
+        <div class="row">
+            <div class="col-25">
+                <label asp-for="RememberMe"></label><br />
+            </div>
+            <div class="col-75">
+                <input asp-for="RememberMe" />
+            </div>
+            <h6> <span asp-validation-for="RememberMe"></span></h6>
+        </div>
+
+        <div class="row">
+            <input type="submit" value="Login" />
+        </div>
+    </h2>
 </form>
 

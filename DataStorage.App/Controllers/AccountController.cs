@@ -67,7 +67,7 @@ namespace DataStorage.App.Controllers
         {
             if(ModelState.IsValid)
             {
-                UserEntity user = new UserEntity { Email = model.Email, Username = model.Email };
+                UserEntity user = new UserEntity { Email = model.Email, Uname = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if(result.Succeeded)
                 {

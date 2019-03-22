@@ -9,6 +9,7 @@ namespace DataStorage.BLL.ViewModels
     {
         [Required(ErrorMessage = "This field is required!")]
         [Display(Name = "Email")]
+        [EmailAddress]
         //[RegularExpression("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$", ErrorMessage = "E - mail should look like: example@gmail.com")]
         public string Email { get; set; }
 
