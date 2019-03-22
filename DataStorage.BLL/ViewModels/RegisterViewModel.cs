@@ -23,6 +23,6 @@ namespace DataStorage.BLL.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "ConfirmPassword")]
         [Compare("Password", ErrorMessage = "The password and confirmation password does not match.")]
-        public string ConfirmPassword { get; set; }*/
+        public string ConfirmPassword { get; set; }
     }
 }
