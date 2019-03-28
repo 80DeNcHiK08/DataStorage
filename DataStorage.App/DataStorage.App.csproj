@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataStorage.BLL\DataStorage.BLL.csproj" />
-    <ProjectReference Include="..\DataStorage.DAL\DataStorage.DAL.csproj" />
   </ItemGroup>
 
 </Project>
