@@ -1,6 +1,6 @@
 using System;
 
-namespace DataStorage.DAL.Models
+namespace DataStorage.App.Models
 {
     public class ErrorViewModel
     {
