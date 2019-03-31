@@ -1,0 +1,113 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #d5632a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html input, body input {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+.formhandler {
+  background-color: #fff;
+  min-width: 400px;
+  width: 400px;
+  height: 300px;
+  margin: calc(50vh - 150px) auto 0 auto;
+  border: 2px solid #056839;
+  border-radius: 8px;
+}
+
+.formhandler .formlabel h3 {
+  text-align: center;
+  font-weight: normal;
+}
+
+.form-group {
+  position: relative;
+  height: 40px;
+  width: 275px;
+  margin: 15px auto;
+}
+
+.form-group label {
+  font-size: 1.2em;
+  position: absolute;
+  padding: 0 5px;
+  z-index: 2;
+  left: 8px;
+  top: 7px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  background-color: #fff;
+}
+
+.form-group span {
+  position: absolute;
+}
+
+.form-group input[type="text"], .form-group input[type="password"] {
+  font-size: 1.3em;
+  padding: 5px 13px;
+  position: absolute;
+  z-index: 1;
+  border: 2px solid #056839;
+  border-radius: 5px;
+}
+
+.form-group input[type=text]:invalid:not(:focus):not(:placeholder-shown),
+.form-group input[type=password]:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: red;
+}
+
+    .form-group input[type=text]:invalid:not(:focus):not(:placeholder-shown) + label,
+    .form-group input[type=password]:invalid:not(:focus):not(:placeholder-shown) + label {
+        font-size: 0.8em;
+        top: -8px;
+    }
+
+.form-group input[type=text]:valid,
+.form-group input[type=password]:valid {
+  border-color: #056839;
+}
+
+    .form-group input[type=text]:valid + label,
+    .form-group input[type=password]:valid + label {
+        font-size: 0.8em;
+        top: -8px;
+    }
+
+.form-group input:focus + label {
+  font-size: 0.8em;
+  top: -8px;
+}
+
+.form-group input[type="submit"] {
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  background-color: #056839;
+  color: #fff;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.form-group input[type="submit"]:hover {
+  border-color: #056839;
+  background-color: #fff;
+  color: #056839;
+  font-weight: bold;
+}
+
+.form-group:last-of-type {
+  margin-top: 20px;
+  width: 96px;
+}
+/*# sourceMappingURL=main.css.map */
