@@ -5,19 +5,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using DataStorage.DAL;
+using AutoMapper;
+using DataStorage.BLL.Contracts;
 using DataStorage.App.ViewModels;
-using DataStorage.DAL.Entities;
+using System;
 
 namespace DataStorage.App.Controllers
 {
     public class AccountController : Controller
     {
-        private ApplicationContext db;
-        public AccountController(ApplicationContext context)
+        private readonly IUsersService _userService;
+
+        public AccountController(IUsersService userService)
         {
-            db = context;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpGet]
@@ -32,14 +33,14 @@ namespace DataStorage.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserEntity user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                var user = await _userService.GetUserAsync(model.Email, model.Password);
                 if (user != null)
                 {
                     await Authenticate(model.Email); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                ModelState.AddModelError("", "Incorrect username and/or password");
             }
             return View(model);
         }
@@ -56,19 +57,15 @@ namespace DataStorage.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserEntity user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                var user = await _userService.CreateUserAsync(model.Email, model.Password);
                 if (user == null)
                 {
-                    // добавляем пользователя в бд
-                    db.Users.Add(new UserEntity { Email = model.Email, Password = model.Password });
-                    await db.SaveChangesAsync();
-
                     await Authenticate(model.Email); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
                 else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Incorrect username and/or password");
             }
             return View(model);
         }

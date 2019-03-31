@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using AutoMapper;
 
 namespace DataStorage.App
 {
@@ -34,6 +35,7 @@ namespace DataStorage.App
             //options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;"));
 
             services.AddWebServices();
+            services.AddAutoMapper();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                     {
