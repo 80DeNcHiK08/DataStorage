@@ -19,7 +19,7 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
-            UserEntity user = new UserEntity { Email = userEmail };
+            UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail};
             var result = await _userManager.CreateAsync(user, userPassword);
 
             return result;
