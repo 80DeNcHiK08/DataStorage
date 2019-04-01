@@ -4,6 +4,7 @@ using DataStorage.DAL.Interfaces;
 using DataStorage.BLL.DTOs;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.BLL
 {
@@ -18,25 +19,21 @@ namespace DataStorage.BLL
             _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<UserDTO> GetUserAsync(string userEmail, string userPassword)
+        public async Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe)
         {
-            var user = await _usersRepo.GetUserAsync(userEmail, userPassword);
-
-            return _mapper.Map<UserDTO>(user);
+            var user = await _usersRepo.GetUserAsync(userEmail, userPassword, rememberMe);
+            _mapper.Map<UserDTO>(user);
+            return user;
         }
 
-        public async Task<UserDTO> CreateUserAsync(string userEmail, string userPassword)
+        public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
-            var user = await GetUserAsync(userEmail, userPassword);
-            if (user == null)
-            {
-                await _usersRepo.CreateUserAsync(userEmail, userPassword);
-                return user;
-            }
-            else
-            {
-                return null;
-            }
+            return await _usersRepo.CreateUserAsync(userEmail, userPassword);
         }
+
+        /*public void LogOut()
+        {
+            _usersRepo.LogOut();
+        }*/
     }
 }

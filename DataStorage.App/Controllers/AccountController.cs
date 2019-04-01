@@ -32,11 +32,9 @@ namespace DataStorage.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userService.GetUserAsync(model.Email, model.Password);
-                if (user != null)
+                var login = await _userService.GetUserAsync(model.Email, model.Password, model.rememberMe);
+                if (login.Succeeded)
                 {
-                    await Authenticate(model.Email); // аутентификация
-
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Incorrect username and/or password");
@@ -56,10 +54,10 @@ namespace DataStorage.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userService.CreateUserAsync(model.Email, model.Password);
-                if (user == null)
+                var register = await _userService.CreateUserAsync(model.Email, model.Password);
+                if (register.Succeeded)
                 {
-                    await Authenticate(model.Email); // аутентификация
+                    await _userService.GetUserAsync(model.Email, model.Password, true);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -69,20 +67,11 @@ namespace DataStorage.App.Controllers
             return View(model);
         }
 
-        /*private async Task Authenticate(string userName)
+        /*public async Task<IActionResult> Logout()
         {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-            };
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }*/
-
-        public async Task<IActionResult> Logout()
-        {
-            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            _userService.LogOut();
             return RedirectToAction("Login", "Account");
-        }
+        }*/
     }    
 }

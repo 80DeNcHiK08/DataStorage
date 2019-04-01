@@ -1,11 +1,13 @@
 ﻿using DataStorage.DAL;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using DataStorage.BLL.Contracts;
+using DataStorage.BLL.Interfaces;
 using DataStorage.BLL;
-using DataStorage.DAL.Contracts;
+using DataStorage.DAL.Interfaces;
+using DataStorage.DAL.Repositories;
+using DataStorage.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Configuration
 {
@@ -15,6 +17,13 @@ namespace Configuration
         {
             services.AddDbContext<ApplicationContext>(options =>
                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;"));
+
+            services.AddIdentity<UserEntity, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddEntityFrameworkStores<ApplicationContext>()
+            .AddDefaultTokenProviders();
 
             services.TryAddScoped<IUsersRepository, UsersRepository>();
             services.TryAddScoped<IUsersService, UserService>();

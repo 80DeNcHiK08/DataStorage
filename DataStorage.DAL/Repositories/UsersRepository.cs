@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+
 using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.DAL.Repositories
 {
@@ -17,20 +17,22 @@ namespace DataStorage.DAL.Repositories
             _signInManager = signInManager;
         }
 
-        public async void CreateUserAsync(string userEmail, string userPassword)
+        public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
             UserEntity user = new UserEntity { Email = userEmail };
-            await _userManager.CreateAsync(user, userPassword);
+            var result = await _userManager.CreateAsync(user, userPassword);
+
+            return result;
         }
 
-        public async void GetUserAsync(string userEmail, string userPassword, bool rememberMe)
+        public async Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe)
         {
-            var result = await _signInManager.PasswordSignInAsync(userEmail, userPassword, rememberMe, false);
+            return await _signInManager.PasswordSignInAsync(userEmail, userPassword, rememberMe, false);
         }
 
-        public async void LogOut()
+        /*public async void LogOut()
         {
             await _signInManager.SignOutAsync();
-        }
+        }*/
     }
 }

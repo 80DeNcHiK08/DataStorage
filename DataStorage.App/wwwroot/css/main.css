@@ -27,7 +27,7 @@ html, body {
     }
 
     .formhandler form {
-        padding: 0 20px;
+        padding: 0 35px;
     }
 
 .links {
@@ -152,34 +152,31 @@ html, body {
         margin-top: 20px;
         min-width: 160px;
         width: inherit;
-    }
-
-.subm {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
-
-    .subm p {
-        word-wrap: nowrap;
-    }
-
-    .subm .remme {
-        margin-right: 15px;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        position: relative;
-        width: 40px;
-        height: 40px;
     }
+
+.subm p {
+    word-wrap: nowrap;
+}
+
+.subm .remme {
+    margin-right: 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
 /*# sourceMappingURL=main.css.map */
