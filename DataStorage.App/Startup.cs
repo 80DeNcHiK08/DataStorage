@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-
 using Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using AutoMapper;
 
 namespace DataStorage.App
@@ -24,12 +21,6 @@ namespace DataStorage.App
         {
             services.AddWebServices();
             services.AddAutoMapper();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                    {
-                        options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                    });
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -51,8 +42,6 @@ namespace DataStorage.App
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
-            
 
             app.UseMvc(routes =>
             {

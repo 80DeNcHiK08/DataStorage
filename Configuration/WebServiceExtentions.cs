@@ -20,7 +20,7 @@ namespace Configuration
 
             services.AddIdentity<UserEntity, IdentityRole>(options =>
             {
-                options.User.RequireUniqueEmail = false;
+                options.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<ApplicationContext>()
             .AddDefaultTokenProviders();

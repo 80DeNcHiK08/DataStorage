@@ -1,7 +1,5 @@
-using AutoMapper;
 using DataStorage.BLL.Interfaces;
 using DataStorage.DAL.Interfaces;
-using DataStorage.BLL.DTOs;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Identity;
@@ -10,13 +8,11 @@ namespace DataStorage.BLL
 {
     public class UserService : IUsersService
     {
-        private readonly IMapper _mapper;
         public IUsersRepository _usersRepo { get; }
 
-        public UserService(IMapper mapper, IUsersRepository usersRepo)
+        public UserService(IUsersRepository usersRepo)
         {
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(mapper));
+            _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(usersRepo));
         }
 
         public async Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe)
