@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.DAL.Entities
 {
-    public class UserEntity
+    public class UserEntity : IdentityUser
     {
-        [Key]
-        public int UserId { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public virtual ClientProfile ClientProfile { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace DataStorage.App.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public bool RememberMe { get; set; }
+        public bool rememberMe { get; set; }
     }
 }
 

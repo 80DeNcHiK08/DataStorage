@@ -1,7 +1,7 @@
 using AutoMapper;
-using DataStorage.BLL.Contracts;
-using DataStorage.DAL.Contracts;
-using DataStorage.BLL.Models;
+using DataStorage.BLL.Interfaces;
+using DataStorage.DAL.Interfaces;
+using DataStorage.BLL.DTOs;
 using System.Threading.Tasks;
 using System;
 
@@ -18,14 +18,14 @@ namespace DataStorage.BLL
             _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<User> GetUserAsync(string userEmail, string userPassword)
+        public async Task<UserDTO> GetUserAsync(string userEmail, string userPassword)
         {
             var user = await _usersRepo.GetUserAsync(userEmail, userPassword);
 
-            return _mapper.Map<User>(user);
+            return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<User> CreateUserAsync(string userEmail, string userPassword)
+        public async Task<UserDTO> CreateUserAsync(string userEmail, string userPassword)
         {
             var user = await GetUserAsync(userEmail, userPassword);
             if (user == null)

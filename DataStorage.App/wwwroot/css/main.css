@@ -26,14 +26,19 @@ html, body {
         font-weight: normal;
     }
 
-p {
+    .formhandler form {
+        padding: 0 20px;
+    }
+
+.links {
     text-align: center;
 }
 
 .form-group {
     position: relative;
     height: 40px;
-    width: 275px;
+    min-width: 275px;
+    width: inherit;
     margin: 15px auto;
 }
 
@@ -56,8 +61,7 @@ p {
     .form-group input[type="text"], .form-group input[type="password"] {
         font-size: 1.3em;
         padding: 5px 13px;
-        position: absolute;
-        width: inherit;
+        width: calc(100% - 30px);
         z-index: 1;
         border: 2px solid #056839;
         border-radius: 5px;
@@ -98,7 +102,7 @@ p {
 
     .form-group input[type="submit"] {
         margin: 0 auto;
-        width: 100%;
+        min-width: 160px;
         height: 100%;
         background-color: #056839;
         color: #fff;
@@ -117,8 +121,65 @@ p {
             font-weight: bold;
         }
 
+    .form-group input[type="checkbox"] {
+        display: inline-block;
+        opacity: 0;
+    }
+
+        .form-group input[type="checkbox"] + label::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 3px;
+            left: 0px;
+            cursor: pointer;
+            border: 2px solid #000;
+            -webkit-transition: 0.2s;
+            transition: 0.2s;
+        }
+
+        .form-group input[type="checkbox"]:checked + label::before {
+            border-color: #056839;
+            -webkit-transform: translate(10px, 0) rotate(45deg);
+            transform: translate(10px, 0) rotate(45deg);
+            width: 10px;
+            border-top-style: none;
+            border-left-style: none;
+        }
+
     .form-group:last-of-type {
         margin-top: 20px;
-        width: 96px;
+        min-width: 160px;
+        width: inherit;
+    }
+
+.subm {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+    .subm p {
+        word-wrap: nowrap;
+    }
+
+    .subm .remme {
+        margin-right: 15px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        position: relative;
+        width: 40px;
+        height: 40px;
     }
 /*# sourceMappingURL=main.css.map */

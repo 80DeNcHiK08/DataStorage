@@ -13,10 +13,4 @@
     <ProjectReference Include="..\DataStorage.DAL\DataStorage.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrasructure\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
