@@ -22,7 +22,6 @@ namespace DataStorage.BLL
         public async Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe)
         {
             var user = await _usersRepo.GetUserAsync(userEmail, userPassword, rememberMe);
-            _mapper.Map<UserDTO>(user);
             return user;
         }
 
