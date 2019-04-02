@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.DAL.Interfaces
