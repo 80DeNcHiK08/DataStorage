@@ -1,13 +1,10 @@
-﻿using System.Security.Claims;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.AspNetCore.Authorization;
+
 using DataStorage.BLL.Interfaces;
 using DataStorage.App.ViewModels;
-using System;
 
 namespace DataStorage.App.Controllers
 {
@@ -28,6 +25,7 @@ namespace DataStorage.App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -43,6 +41,7 @@ namespace DataStorage.App.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -67,7 +66,9 @@ namespace DataStorage.App.Controllers
             return View(model);
         }
 
-        /*public async Task<IActionResult> Logout()
+        /*[HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             _userService.LogOut();

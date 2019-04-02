@@ -28,10 +28,18 @@ namespace DataStorage.App
                 .AddCookie(options =>
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    })
+                .AddGoogle(googleoptions => 
+                    {
+                        
                     });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AddPageRoute("/Home/Welcome", "");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +66,7 @@ namespace DataStorage.App
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Welcome}/{id?}");
             });
         }
     }

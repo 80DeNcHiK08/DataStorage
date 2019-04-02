@@ -1,0 +1,142 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body ul, html ul {
+  list-style-type: none;
+}
+
+body a, html a {
+  text-decoration: none;
+  color: #000;
+}
+
+body h3, body h4, html h3, html h4 {
+  font-weight: normal;
+}
+
+.header {
+  padding: 5px 30px;
+  height: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: fixed;
+  width: calc(100vw - 60px);
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: #fff;
+  background-color: rgba(5, 104, 57, 0.5);
+}
+
+.header a {
+  color: #fff;
+}
+
+.header .logo {
+  font-size: 1.8em;
+}
+
+.header .m-menu ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.header .m-menu ul li {
+  margin: 0 15px;
+}
+
+.main .slider {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.main .block {
+  padding: 40px 0;
+}
+
+.main .block .caption {
+  text-align: center;
+}
+
+.main .block .text {
+  text-align: center;
+  width: 60%;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.main .block .f-handler {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 80%;
+  max-width: 900px;
+  margin: 30px auto;
+}
+
+.main .block .f-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 15px;
+}
+
+.main .block .f-block .bcap {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.main .block .f-block .bhr {
+  position: relative;
+  width: 70%;
+  height: 2px;
+  background-color: #d5632a;
+  margin: 10px 0;
+}
+
+.main .block .f-block .bimg {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #056839;
+}
+
+.main .block .f-block .btext {
+  text-align: center;
+  width: 60%;
+  min-width: 100px;
+  margin: 0 auto;
+}
+
+.main .d-block {
+  background-color: #d5632a;
+  color: #fff;
+}
+
+.footer {
+  padding: 5px 30px;
+  height: 100px;
+  background-color: #056839;
+}
+/*# sourceMappingURL=welcome.css.map */
