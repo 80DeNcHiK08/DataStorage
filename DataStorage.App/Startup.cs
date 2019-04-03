@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Configuration;
 using AutoMapper;
+using DataStorage.BLL.DTOs;
+//using Microsoft.AspNetCore.Owin;
 
 namespace DataStorage.App
 {
@@ -21,7 +24,8 @@ namespace DataStorage.App
         {
             services.AddWebServices();
             services.AddAutoMapper();
-
+            services.AddIdentityCore<UserDTO>()
+                .AddDefaultTokenProviders();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -37,6 +41,12 @@ namespace DataStorage.App
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            /*app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "464838682967-f80oguc6s4nkrbfp84nvuikq8slokj1o.apps.googleusercontent.com",
+                ClientSecret = "6ZX-iqViNY165pYBvTCKW-HQ"
+            });*/
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

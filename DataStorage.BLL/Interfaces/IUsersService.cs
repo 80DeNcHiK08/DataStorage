@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DataStorage.BLL.DTOs;
 using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.BLL.Interfaces
