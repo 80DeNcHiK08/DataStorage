@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataStorage.DAL.Entities
 {
     public class DocumentEntity
     {
+        [Key]
         public Guid DocumentId { get; set; }
         public string Name { get; set; }
         public string PublicName { get; set; }

@@ -11,7 +11,7 @@ namespace DataStorage.App.Controllers
         [Authorize]
         public IActionResult UserStorage()
         {
-            return Content(User.Identity.Name);
+            return View();
         }
 
         [AllowAnonymous]
