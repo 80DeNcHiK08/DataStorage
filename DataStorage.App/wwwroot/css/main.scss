@@ -1,0 +1,402 @@
+$apr_oragne: rgb(213,99,42);
+$apr_green: rgb(5,104,57);
+$apr_blue: rgb(37,147,196);
+$txt_d: #000;
+$txt_l: #fff;
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica';
+    scroll-behavior: smooth;
+
+    ul, li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    h3, h4 {
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+    }
+
+    input {
+        border: none;
+        outline: none;
+        background-color: transparent;
+    }
+}
+
+//logreg styles
+
+.formhandler {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .formlabel h3 {
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    form {
+        padding: 0 35px;
+        border: 2px solid $apr_green;
+        border-radius: 8px;
+        width: 60vw;
+        min-width: 315px;
+        max-width: 540px;
+    }
+
+    .form-group-handler {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: calc(40vh - 63px);
+        min-height: 248px;
+    }
+    
+    .form-group {
+        position: relative;
+        margin: 5px 0;
+
+        label {
+            font-size: 1.2em;
+            position: absolute;
+            padding: 0 5px;
+            z-index: 2;
+            left: 8px;
+            top: 8px;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            background-color: #fff;
+        }
+
+        .validation-message {
+            color: red;
+            font-size: 0.8em;
+        }
+
+        input[type="text"], input[type="password"] {
+            font-size: 1.3em;
+            padding: 5px 13px;
+            border: 2px solid $apr_green;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        input[type="text"]:invalid:not(:focus):not(:placeholder-shown), 
+        input[type="password"]:invalid:not(:focus):not(:placeholder-shown) {
+            border-color: red;
+        }
+
+        
+
+        input[type="text"]:valid, 
+        input[type="password"]:valid {
+            border-color: $apr_green;
+        }
+
+        input[type="text"]:focus, 
+        input[type="password"]:focus {
+            border-color: $apr_blue;
+        }
+
+        input[type="text"] + .error, 
+        input[type="password"] + .error {
+            font-size: 0.8em;
+            color: red;
+            top: 50px;
+        }
+
+        input[type="text"]:invalid:not(:focus):not(:placeholder-shown) + .elemental, 
+        input[type="password"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
+        input[type="text"]:valid + .elemental, 
+        input[type="password"]:valid + .elemental,
+        input[type="text"]:focus + .elemental, 
+        input[type="password"]:focus + .elemental {
+            font-size: 0.8em;
+            top: -9px;
+        }
+
+        input[type="submit"] {
+            min-width: 70px;
+            min-height: 35px;
+            background-color: $apr_green;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 2px solid transparent;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            
+        }
+
+        input[type="submit"]:hover {
+            border-color: $apr_green;
+            background-color: #fff;
+            color: $apr_green;
+            font-weight: bold;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        input[type="checkbox"] + label {
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        input[type="checkbox"] + label::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0px;
+            left: 0px;
+            cursor: pointer;
+            border: 2px solid #000;
+            transition: 0.2s;
+        }
+
+        input[type="checkbox"]:checked + label::before {
+            border-color: $apr_green;
+            transform: translate(10px, 0) rotate(45deg);
+            width: 10px;
+            border-top-style: none;
+            border-left-style: none;
+        }
+    }
+
+    .form-group:last-of-type {
+        margin-bottom: 20px;
+        min-width: 160px;
+        width: inherit;
+        display: grid;
+        grid-template-columns: 50% auto;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .subm {
+        display: flex;
+        align-items: center;
+    }
+    
+    .subm .remme {
+        position: relative;
+        height: 20px;
+        width: 20px;
+    }
+
+    #txtlabel {
+        position: relative;
+        font-size: 1.1em;
+        padding: 0;
+        margin: 0 10px 0 0;
+        left: 0; top: 0;
+    }
+
+    label[for=rem] {
+        top: 3px; left: 15px;
+    }
+
+    .links {
+        text-align: center;
+        a {
+            color: $apr_blue;
+            cursor: pointer;
+        }
+        a:hover {
+            color: $apr_blue;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}
+
+//welcome page styles
+.wrapper {
+    min-width: 405px;
+}
+
+.header {
+    padding: 5px 30px;
+    height: 60px;
+    display: flex;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    min-width: 405px;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    background-color: rgba(5, 104, 57, 0.7);
+
+    a {
+        color: #fff;
+    }
+
+    .logo {
+        font-size: 1.8em;
+        letter-spacing: 5px;
+    }
+
+    .m-menu ul {
+        display: flex;
+        justify-content: center;
+
+        li {
+            margin: 0 15px;
+            a {
+                transition: 0.1s;
+                letter-spacing: 2px;
+                font-size: 1.1em;
+            }
+            a:hover {
+                color: rgb(219, 219, 219);
+            }
+        }
+    }
+}
+
+.main {    
+    font-family: Calibri;
+    .carousel {
+        max-height: 100vh;
+        overflow: hidden;
+    }
+
+    .block {
+        padding: 40px 0;
+
+        .caption {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .text {
+            text-align: center;
+            width: 60%;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .f-handler {
+            margin: 30px auto;
+        }
+
+        .blockhan {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+
+        .block-f {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+
+            .bcap {
+                margin: 10px 0;
+                font-size: 1.2em;
+            }
+
+            .bhr {
+                position: relative;
+                width: 70%;
+                height: 2px;
+                background-color: $apr_oragne;
+                margin: 10px 0;
+            }
+
+            .bimg {
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                background-color: $apr_green;
+            }
+
+            .btext {
+                text-align: center;
+                width: 60%;
+                min-width: 100px;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    .block-d {
+        background-color: $apr_oragne;
+        color: #fff;
+    }
+}
+
+.footer {
+    padding: 5px 30px;
+    height: 100px;
+    background-color: $apr_green;
+    color: #fff;
+
+    i {
+        color: #fff;
+    }
+
+    .scrolltop {
+        text-align: center;
+        margin: 15px auto;
+        display: block;
+    }
+
+    .copyright {
+        text-align: center;
+        margin: 15px 0;
+    }
+}
+
+//userstorage styles
+
+.ustorage {
+    .header {
+        position: absolute;
+    }
+
+    .main {
+        padding-top: 60px;
+        display: grid;
+        grid-template-columns: 300px auto;
+
+        min-height: 10000px;
+
+        .leftbar {
+            background-color: red;
+            
+        }
+
+        .workspace {
+            background-color: green;
+        }
+    }
+}

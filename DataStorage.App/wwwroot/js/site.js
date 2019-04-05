@@ -1,4 +1,18 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function() {
+    /*$("input[type='text']").on('focus', function(e) {
+        if($("input[type='text']").valid() == false || $("input[type='password']").valid() == false) {
+            $(this).css({
+                'border-color':'red'
+            });
+            $(this).parent().find(".elemental").css({
+                'font-size': '0.8em',
+                'top': '-9px'
+            });
+        }
+    });*/
 
-// Write your JavaScript code.
+    if($("input[type='text']").val() != "" || $("input[type='password']").val() != "") {
+        alert();
+        $(this).parent().focus();
+    } 
+})

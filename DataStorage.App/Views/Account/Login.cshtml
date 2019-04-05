@@ -1,21 +1,22 @@
 ﻿@model DataStorage.App.ViewModels.LoginViewModel
 
     <div class="formhandler">
-        <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+        <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" class="validate">
             <div class="formlabel">
                 <h3>Login</h3>
             </div>
+            <span class="signerrormessage">@ViewData["UserDoesNotExistErrorMessage"]</span>
             <div class="validation" asp-validation-summary="ModelOnly" />
             <div class="form-group-handler">
                 <div class="form-group">
-                    <input placeholder=" " required pattern="[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,3}$" type="text" asp-for="Email" />
-                    <label asp-for="Email">Email</label>
-                    <span asp-validation-for="Email" />
+                    <input placeholder=" " required pattern="[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,3}$" type="text" asp-for="Email"/>
+                    <label asp-for="Email" class="elemental">Email</label>
+                    <span class="validation-message collapse">* Email should look like this: example@@gmail.com</span>
                 </div>
                 <div class="form-group">
-                    <input placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" asp-for="Password" />
-                    <label asp-for="Password">Password</label>
-                    <span asp-validation-for="Password" />
+                    <input placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" asp-for="Password"/>
+                    <label asp-for="Password" class="elemental">Password</label>
+                    <span class="validation-message collapse">* Password field is required<br>* Password shoul contain one: uppercase, lowercase and non literic symbol<br>* Password must be at least 8 characters long</span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Sign in" class="btn" />

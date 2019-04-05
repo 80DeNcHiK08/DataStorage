@@ -1,4 +1,3 @@
-@import url(c:\Users\Denis\Desktop\UserStorage\sources\fonts.css);
 html, body {
   margin: 0;
   padding: 0;
@@ -92,6 +91,11 @@ html input, body input {
   background-color: #fff;
 }
 
+.formhandler .form-group .validation-message {
+  color: red;
+  font-size: 0.8em;
+}
+
 .formhandler .form-group input[type="text"], .formhandler .form-group input[type="password"] {
   font-size: 1.3em;
   padding: 5px 13px;
@@ -115,12 +119,19 @@ html input, body input {
   border-color: #2593c4;
 }
 
-.formhandler .form-group input[type="text"]:invalid:not(:focus):not(:placeholder-shown) + label,
-.formhandler .form-group input[type="password"]:invalid:not(:focus):not(:placeholder-shown) + label,
-.formhandler .form-group input[type="text"]:valid + label,
-.formhandler .form-group input[type="password"]:valid + label,
-.formhandler .form-group input[type="text"]:focus + label,
-.formhandler .form-group input[type="password"]:focus + label {
+.formhandler .form-group input[type="text"] + .error,
+.formhandler .form-group input[type="password"] + .error {
+  font-size: 0.8em;
+  color: red;
+  top: 50px;
+}
+
+.formhandler .form-group input[type="text"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
+.formhandler .form-group input[type="password"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
+.formhandler .form-group input[type="text"]:valid + .elemental,
+.formhandler .form-group input[type="password"]:valid + .elemental,
+.formhandler .form-group input[type="text"]:focus + .elemental,
+.formhandler .form-group input[type="password"]:focus + .elemental {
   font-size: 0.8em;
   top: -9px;
 }

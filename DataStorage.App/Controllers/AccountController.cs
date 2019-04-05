@@ -37,7 +37,11 @@ namespace DataStorage.App.Controllers
                 {
                     return RedirectToAction("UserStorage", "Home");
                 }
-                ModelState.AddModelError("", "Incorrect username and/or password");
+                else
+                {
+                    ViewData["UserDoesNotExistErrorMessage"] = "Incorrect username and/or password";
+                    ModelState.AddModelError("", "Incorrect username and/or password");
+                }
             }
             return View(model);
         }
@@ -63,7 +67,10 @@ namespace DataStorage.App.Controllers
                     return RedirectToAction("UserStorage", "Home");
                 }
                 else
+                {
+                    ViewData["UserExistErrorMessage"] = "Incorrect username and/or password";
                     ModelState.AddModelError("", "Incorrect username and/or password");
+                }
             }
             return View(model);
         }
