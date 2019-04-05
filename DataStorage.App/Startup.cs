@@ -28,10 +28,6 @@ namespace DataStorage.App
                 .AddCookie(options =>
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                    })
-                .AddGoogle(googleoptions => 
-                    {
-                        
                     });
 
 

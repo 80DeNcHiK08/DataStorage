@@ -7,8 +7,6 @@ namespace DataStorage.DAL
 {
     public class ApplicationContext : IdentityDbContext<UserEntity>
     {
-        //public DbSet<UserEntity> Users { get; set; }
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             :base(options)
         {
