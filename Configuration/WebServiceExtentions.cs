@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using DataStorage.BLL.Interfaces;
-using DataStorage.BLL;
+using DataStorage.BLL.Services;
 using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Repositories;
 using DataStorage.DAL.Entities;

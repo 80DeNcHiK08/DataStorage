@@ -1,0 +1,5 @@
+@media (max-width: 670px) {
+    .form-group-handler .form-group:last-of-type {
+        grid-template-columns: 35% auto;
+    }
+}

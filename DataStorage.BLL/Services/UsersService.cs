@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace DataStorage.BLL
+namespace DataStorage.BLL.Services
 {
     public class UserService : IUsersService
     {

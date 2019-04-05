@@ -16,4 +16,8 @@
     <ProjectReference Include="..\DataStorage.BLL\DataStorage.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
 </Project>
