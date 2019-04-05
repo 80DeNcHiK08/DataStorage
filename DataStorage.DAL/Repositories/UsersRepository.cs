@@ -29,9 +29,9 @@ namespace DataStorage.DAL.Repositories
             return await _signInManager.PasswordSignInAsync(userEmail, userPassword, rememberMe, false);
         }
 
-        /*public async void LogOut()
+        public async Task LogOut()
         {
             await _signInManager.SignOutAsync();
-        }*/
+        }
     }
 }

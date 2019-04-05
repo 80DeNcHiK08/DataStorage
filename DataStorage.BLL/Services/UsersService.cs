@@ -3,6 +3,7 @@ using DataStorage.DAL.Interfaces;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DataStorage.BLL.Services
 {
@@ -26,9 +27,9 @@ namespace DataStorage.BLL.Services
             return await _usersRepo.CreateUserAsync(userEmail, userPassword);
         }
 
-        /*public void LogOut()
+        public async Task LogOut()
         {
-            _usersRepo.LogOut();
-        }*/
+            await _usersRepo.LogOut();
+        }
     }
 }

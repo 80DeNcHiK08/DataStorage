@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 
 using DataStorage.BLL.Interfaces;
 using DataStorage.App.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace DataStorage.App.Controllers
 {
@@ -33,7 +35,7 @@ namespace DataStorage.App.Controllers
                 var login = await _userService.GetUserAsync(model.Email, model.Password, model.rememberMe);
                 if (login.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserStorage", "Home");
                 }
                 ModelState.AddModelError("", "Incorrect username and/or password");
             }
@@ -58,7 +60,7 @@ namespace DataStorage.App.Controllers
                 {
                     await _userService.GetUserAsync(model.Email, model.Password, true);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserStorage", "Home");
                 }
                 else
                     ModelState.AddModelError("", "Incorrect username and/or password");
@@ -66,13 +68,11 @@ namespace DataStorage.App.Controllers
             return View(model);
         }
 
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            _userService.LogOut();
-            return RedirectToAction("Login", "Account");
-        }*/
+            await _userService.LogOut();
+            return RedirectToAction("Welcome", "Home");
+        }
     }    
 }

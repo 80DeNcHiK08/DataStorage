@@ -4,9 +4,9 @@ using DataStorage.BLL.DTOs;
 
 namespace DataStorage.BLL.Mappings
 {
-    public class UsersMapping : Profile
+    public class UsersMappingProfile : Profile
     {
-        public UsersMapping()
+        public UsersMappingProfile()
         {
             CreateMap<UserDTO, UserEntity>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(src => src.Id))

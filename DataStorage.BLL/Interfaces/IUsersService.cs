@@ -7,6 +7,6 @@ namespace DataStorage.BLL.Interfaces
     {
         Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe);
         Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword);
-        //void LogOut();
+        Task LogOut();
     }
 }
