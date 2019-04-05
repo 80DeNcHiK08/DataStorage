@@ -2,25 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using DataStorage.BLL.Interfaces;
 using DataStorage.App.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using DataStorage.BLL.DTOs;
-using EmailApp;
 
 namespace DataStorage.App.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IEmailService _emailService;
         private readonly IUsersService _userService;
-        private readonly UserManager<UserDTO> _userManager;
-        private readonly SignInManager<UserDTO> _signInManager;
 
-        public AccountController(IUsersService userService, UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager)
+        public AccountController(IUsersService userService, IEmailService emailService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         [HttpGet]
@@ -35,23 +30,25 @@ namespace DataStorage.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
+                var user = await _userService.GetUserByNameAsync(model.Email);
                 if (user != null)
                 {
-                    // проверяем, подтвержден ли email
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    if (!await _userService.IsEmailConfirmedAsync(user))
                     {
-                        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                        ModelState.AddModelError(string.Empty, "You have not confirmed your mail yet");
                         return View(model);
                     }
+
+                    var login = await _userService.SignInUserAsync(model.Email, model.Password, model.rememberMe);
+                    if (login.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
-                var login = await _userService.GetUserAsync(model.Email, model.Password, model.rememberMe);
-                if (login.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+
                 ModelState.AddModelError("", "Incorrect username and/or password");
             }
+
             return View(model);
         }
 
@@ -67,52 +64,51 @@ namespace DataStorage.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserDTO user = new UserDTO { Email = model.Email, UserName = model.Email };
-                //var register = await _userService.CreateUserAsync(model.Email, model.Password);
                 var register = await _userService.CreateUserAsync(model.Email, model.Password);
                 if (register.Succeeded)
                 {
-                    //await _userService.GetUserAsync(model.Email, model.Password, true);
-                    
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var user = await _userService.GetUserByNameAsync(model.Email);
+
+                    var token = await _userService.GetEmailTokenAsync(user);
+
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
                         "Account",
-                        new { userId = user.Id, code = code },
+                        new { userId = user.Id, token = token },
                         protocol: HttpContext.Request.Scheme);
-                    EmailService emailService = new EmailService();
-                    await emailService.SendEmailAsync(model.Email, "Confirm your account",
-                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
- 
-                    return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
-                    
-                    //return RedirectToAction("Index", "Home");
+
+                    await _emailService.SendEmailAsync(user.Email, "Confirm your account",
+                        $"Confirm the registration by clicking on the link: <a href='{callbackUrl}'>link</a>");
+
+                    return Content("Check the email and click on the link in the letter to complete the registration");
                 }
-                else
-                    ModelState.AddModelError("", "Incorrect username and/or password");
+
+                ModelState.AddModelError("", "Incorrect username and/or password");
             }
+
             return View(model);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            if (userId == null || code == null)
+            if (userId == null || token == null)
             {
                 return View("Error");
             }
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userService.GetUserByIdAsync(userId);
             if (user == null)
             {
                 return View("Error");
             }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var result = await _userService.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
             else
                 return View("Error");
         }
+
         /*public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

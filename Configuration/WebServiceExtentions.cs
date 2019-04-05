@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using DataStorage.BLL.Interfaces;
-using DataStorage.BLL;
+using DataStorage.BLL.Services;
 using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Repositories;
 using DataStorage.DAL.Entities;
@@ -19,14 +19,15 @@ namespace Configuration
                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;"));
 
             services.AddIdentity<UserEntity, IdentityRole>(options =>
-            {
-                options.Password.RequireNonAlphanumeric = false;
-            })
-            .AddEntityFrameworkStores<ApplicationContext>()
-            .AddDefaultTokenProviders();
+                {
+                    options.Password.RequireNonAlphanumeric = false;
+                })
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
 
             services.TryAddScoped<IUsersRepository, UsersRepository>();
             services.TryAddScoped<IUsersService, UserService>();
+            services.TryAddScoped<IEmailService, EmailService>();
 
             return services;
         }

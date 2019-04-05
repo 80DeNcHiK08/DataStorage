@@ -24,8 +24,7 @@ namespace DataStorage.App
         {
             services.AddWebServices();
             services.AddAutoMapper();
-            services.AddIdentityCore<UserDTO>()
-                .AddDefaultTokenProviders();
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

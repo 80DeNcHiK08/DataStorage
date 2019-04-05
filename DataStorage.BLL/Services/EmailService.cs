@@ -1,16 +1,19 @@
 ﻿using MimeKit;
 using MailKit.Net.Smtp;
 using System.Threading.Tasks;
-namespace EmailApp
+using DataStorage.BLL.Interfaces;
+
+namespace DataStorage.BLL.Services
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            var emailMessage = new MimeMessage();
+            var bodyBuilder = new BodyBuilder();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "dyac.igor@bk.ru"));
-            emailMessage.To.Add(new MailboxAddress("", email));
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress("Administration", "aprioritdatastorage@gmail.com"));
+            emailMessage.To.Add(new MailboxAddress("New user", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -19,8 +22,8 @@ namespace EmailApp
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.mail.ru", 25, false);
-                await client.AuthenticateAsync("dyac.igor@bk.ru", "260899IgorIgoIgI");
+                await client.ConnectAsync("smtp.gmail.com", 587, false);
+                await client.AuthenticateAsync("aprioritdatastorage@gmail.com", "dataStorage112233");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);
