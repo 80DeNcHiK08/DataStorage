@@ -27,7 +27,11 @@ namespace Configuration
 
             services.TryAddScoped<IUsersRepository, UsersRepository>();
             services.TryAddScoped<IUsersService, UserService>();
+            services.TryAddScoped<IDocumentRepository, DocumentRepository>();
+            services.TryAddScoped<IDocumentService, DocumentService>();
+            //services.TryAddScoped<IPathProvider, PathProvider>();
 
+            services.AddTransient<PathProvider>();
             return services;
         }
     }

@@ -12,7 +12,7 @@
     });*/
 
     if($("input[type='text']").val() != "" || $("input[type='password']").val() != "") {
-        alert();
+        //alert();
         $(this).parent().focus();
     } 
 })

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Entities;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DataStorage.DAL.Repositories
 {
@@ -9,18 +10,19 @@ namespace DataStorage.DAL.Repositories
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
-
-        public UsersRepository(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
+        private readonly PathProvider _pProvider;
+        public UsersRepository(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, PathProvider pProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _pProvider = pProvider;
         }
 
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
             UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail};
             var result = await _userManager.CreateAsync(user, userPassword);
-
+            _pProvider.CreateFolder(user.Id.ToString());
             return result;
         }
 
