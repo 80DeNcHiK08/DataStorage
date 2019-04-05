@@ -9,7 +9,7 @@ namespace DataStorage.App.Controllers
     public class HomeController : Controller
     {
         [Authorize]
-        public IActionResult Index()
+        public IActionResult UserStorage()
         {
             return Content(User.Identity.Name);
         }
