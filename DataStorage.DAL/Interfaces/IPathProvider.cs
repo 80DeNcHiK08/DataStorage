@@ -1,8 +1,10 @@
+using DataStorage.DAL.Entities;
+
 namespace DataStorage.DAL.Interfaces
 {
     public interface IPathProvider
     {
         string GetRootPath();
-         void CreateFolder(string path);
+         void CreateFolderOnRegister(string path, UserEntity owner);
     }
 }

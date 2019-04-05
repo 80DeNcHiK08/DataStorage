@@ -22,21 +22,21 @@ namespace DataStorage.DAL.Repositories
             return result;
         }
 
-        public async Task<bool> Create(DocumentEntity document)
+        public async Task<Guid> Create(DocumentEntity document)
         {
-            var ifdocex = await _context.Documents.FindAsync(document);
-            if(ifdocex == null)
+            var doc = _context.Documents.Where(d => d.Name == document.Name && d.ParentId == document.ParentId);
+            if(doc.Count() == 0)
             {
                 var newdoc = await _context.Documents.AddAsync(document);
-                //await _context.SaveChangesAsync(document);
-                return true;
+                await _context.SaveChangesAsync();
+                return newdoc.Entity.DocumentId;
             }
-            return false;
+            return doc.FirstOrDefaultAsync().Result.DocumentId;
         }
 
         /*public async Task<bool> Delete(Guid? id)
         {
-            await _context.Documents.//RemoveAsync(Get(id));
+            await _context.Documents.Re
             _context.SaveChanges();
             return true;
         }*/

@@ -9,7 +9,7 @@ namespace DataStorage.BLL.Interfaces
     public interface IDocumentService
     {
         Task<DocumentDTO> Get(Guid? id);
-        //bool Create(DocumentEntity document);
+        //Task<Guid> Create(DocumentEntity document);
         //bool Delete(Guid? id);
     }
 }

@@ -22,7 +22,7 @@ namespace DataStorage.DAL.Repositories
         {
             UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail};
             var result = await _userManager.CreateAsync(user, userPassword);
-            _pProvider.CreateFolder(user.Id.ToString());
+            _pProvider.CreateFolderOnRegister(user.Id.ToString(), user);
             return result;
         }
 

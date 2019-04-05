@@ -8,7 +8,6 @@ namespace DataStorage.DAL.Entities
     {
         public virtual ICollection<UserDocument> UserDocuments { get; set; }
         //[DefaultValue(5)]
-        //public int StorageSize { get; set; }
-        public virtual ClientProfile ClientProfile { get; set; }
+        public int StorageSize { get; set; }
     }
 }
