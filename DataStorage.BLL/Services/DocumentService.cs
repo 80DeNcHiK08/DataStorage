@@ -25,5 +25,10 @@ namespace DataStorage.BLL.Services
 
             return _mapper.Map<DocumentEntity, DocumentDTO>(doc);
         }
+
+        public async Task<DocumentDTO> Add(IFormFile uploadedFile)
+        {
+            
+        }
     }
 }

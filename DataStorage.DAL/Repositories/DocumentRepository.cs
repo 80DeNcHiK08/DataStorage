@@ -15,7 +15,7 @@ namespace DataStorage.DAL.Repositories
         {
             _context = context;
         }
-        
+
         public async Task<DocumentEntity> Get(Guid? id)
         {
             var result = await _context.Documents.FirstOrDefaultAsync(f => f.DocumentId == id);
