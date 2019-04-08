@@ -26,7 +26,7 @@ namespace DataStorage.App.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
-            var result = await _docService.Add(uploadedFile);
+            //var result = await _docService.Add(uploadedFile);
             return RedirectToAction("UserStorage");
         }
     }

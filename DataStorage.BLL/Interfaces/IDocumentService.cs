@@ -9,9 +9,10 @@ namespace DataStorage.BLL.Interfaces
 {
     public interface IDocumentService
     {
+        //Task<IEnumerable<DocumentDTO>> GetAll();
         Task<DocumentDTO> Get(Guid? id);
-        Task<DocumentDTO> Add(IFormFile uploadedFile);
-        //Task<Guid> Create(DocumentEntity document);
-        //bool Delete(Guid? id);
+        //Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id);
+        Task<DocumentDTO> Create(IFormFile uploadedFile);
+        Task Delete(Guid? id);
     }
 }
