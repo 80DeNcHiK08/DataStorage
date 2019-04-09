@@ -38,5 +38,10 @@ namespace DataStorage.DAL.Repositories
 
             Directory.CreateDirectory(endpath);
         }
+
+        public void Create(DocumentEntity document)
+        {
+            
+        }
     }
 }

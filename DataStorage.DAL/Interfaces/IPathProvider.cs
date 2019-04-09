@@ -6,5 +6,6 @@ namespace DataStorage.DAL.Interfaces
     {
         string GetRootPath();
          void CreateFolderOnRegister(string path, UserEntity owner);
+         void Create(DocumentEntity document);
     }
 }

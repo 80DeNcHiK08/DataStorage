@@ -13,6 +13,7 @@ namespace DataStorage.DAL.Entities
         public Guid ParentId { get; set; }
         public bool IsFile { get; set; }
         public UserEntity Owner { get; set; }
+        public long Length { get; set; }
         /*public string DocumentLink { get; set; }
         public bool IsPublic { get; set; }
         public DateTime ChangeDate { get; set; }

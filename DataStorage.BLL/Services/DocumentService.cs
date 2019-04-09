@@ -42,7 +42,11 @@ namespace DataStorage.BLL.Services
         }*/
         public async Task<DocumentDTO> Create(IFormFile uploadedFile)
         {
-            
+            Guid docId = new Guid();
+            DocumentDTO docDto = new DocumentDTO {Name = uploadedFile.Name, Length = uploadedFile.Length, IsFile = true, DocumentId = docId};
+            DocumentEntity newDoc = _mapper.Map<DocumentDTO, DocumentEntity>(docDto);
+            var result =await _docRepo.Create(newDoc);
+            return docDto;
         }
         public async Task Delete(Guid? id)
         {
