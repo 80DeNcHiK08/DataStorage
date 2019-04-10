@@ -11,9 +11,9 @@ namespace DataStorage.BLL.Services
     public class UserService : IUsersService
     {
         public IUsersRepository _usersRepo { get; }
-        private readonly PathProvider _pProvider;
+        private readonly IPathProvider _pProvider;
 
-        public UserService(IUsersRepository usersRepo, PathProvider pProvider)
+        public UserService(IUsersRepository usersRepo, IPathProvider pProvider)
         {
             _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(usersRepo));
             _pProvider = pProvider;
