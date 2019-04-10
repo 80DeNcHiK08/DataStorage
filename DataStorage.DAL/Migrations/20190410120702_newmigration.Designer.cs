@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataStorage.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190401042121_newmigration")]
+    [Migration("20190410120702_newmigration")]
     partial class newmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,15 +21,50 @@ namespace DataStorage.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DataStorage.DAL.Entities.ClientProfile", b =>
+            modelBuilder.Entity("DataStorage.DAL.Entities.DocumentEntity", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<Guid>("DocumentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsFile");
+
+                    b.Property<long>("Length");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("Id");
+                    b.Property<string>("OwnerId");
 
-                    b.ToTable("ClientProfile");
+                    b.Property<Guid>("ParentId");
+
+                    b.Property<string>("Path");
+
+                    b.HasKey("DocumentId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("DataStorage.DAL.Entities.UserDocument", b =>
+                {
+                    b.Property<Guid>("DocumentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("DocumentId1");
+
+                    b.Property<bool>("EditAccess");
+
+                    b.Property<string>("UserEntityId");
+
+                    b.Property<bool>("WatchAccess");
+
+                    b.HasKey("DocumentId");
+
+                    b.HasIndex("DocumentId1");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("UserDocuments");
                 });
 
             modelBuilder.Entity("DataStorage.DAL.Entities.UserEntity", b =>
@@ -64,6 +99,8 @@ namespace DataStorage.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<int>("StorageSize");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -193,12 +230,22 @@ namespace DataStorage.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DataStorage.DAL.Entities.ClientProfile", b =>
+            modelBuilder.Entity("DataStorage.DAL.Entities.DocumentEntity", b =>
                 {
-                    b.HasOne("DataStorage.DAL.Entities.UserEntity", "UserEntity")
-                        .WithOne("ClientProfile")
-                        .HasForeignKey("DataStorage.DAL.Entities.ClientProfile", "Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("DataStorage.DAL.Entities.UserEntity", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("DataStorage.DAL.Entities.UserDocument", b =>
+                {
+                    b.HasOne("DataStorage.DAL.Entities.DocumentEntity", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId1");
+
+                    b.HasOne("DataStorage.DAL.Entities.UserEntity")
+                        .WithMany("UserDocuments")
+                        .HasForeignKey("UserEntityId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -11,7 +11,7 @@ namespace DataStorage.DAL.Interfaces
         Task<IEnumerable<DocumentEntity>> GetAll();
         Task<DocumentEntity> Get(Guid? id);
         Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id);
-        Task<DocumentEntity> Create(DocumentEntity uploadedFile);
+        Task Create(DocumentEntity uploadedFile);
         Task Delete(Guid? id);
     }
 }

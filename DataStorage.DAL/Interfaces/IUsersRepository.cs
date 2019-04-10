@@ -5,6 +5,7 @@ namespace DataStorage.DAL.Interfaces
 {
     public interface IUsersRepository
     {
+        
         Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe);
         Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword);
         Task LogOut();

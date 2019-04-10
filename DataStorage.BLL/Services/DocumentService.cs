@@ -4,6 +4,7 @@ using DataStorage.BLL.Interfaces;
 using DataStorage.DAL.Entities;
 using DataStorage.DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,39 +15,42 @@ namespace DataStorage.BLL.Services
     {
         public IDocumentRepository _docRepo { get; }
         private readonly IMapper _mapper;
+        private readonly PathProvider _pProvider;
+        private readonly UserManager<UserDTO> _userManager;
 
-        public DocumentService(IDocumentRepository docRepo, IMapper mapper)
+        public DocumentService(IDocumentRepository docRepo, IMapper mapper, PathProvider pProvider, UserManager<UserDTO> userManager)
         {
             _docRepo = docRepo ?? throw new ArgumentNullException(nameof(docRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
-
-        /*public async Task<IEnumerable<DocumentDTO>> GetAll()
+        public async Task<IEnumerable<DocumentDTO>> GetAll()
         {
             var documents = await _docRepo.GetAll();
-            foreach(var document in documents)
-            {
-                var result = _mapper.Map<DocumentEntity, DocumentDTO>(document);
-            }
-            return ;
-        }*/
+            var result = _mapper.Map<IEnumerable<DocumentDTO>>(documents);
+            return result;
+        }
         public async Task<DocumentDTO> Get(Guid? id)
         {
             var document = await _docRepo.Get(id);
-            var result = _mapper.Map<DocumentEntity, DocumentDTO>(document);
+            var result = _mapper.Map<DocumentDTO>(document);
             return result;
         }
-        /*public async List<DocumentDTO> GetChildren(Guid? id)
+        public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
         {
-
-        }*/
-        public async Task<DocumentDTO> Create(IFormFile uploadedFile)
+            var documents = await _docRepo.GetChildren(id);
+            var result = _mapper.Map<IEnumerable<DocumentDTO>>(documents);
+            return result;
+        }
+        public async Task Create(IFormFile uploadedFile, string id)
         {
             Guid docId = new Guid();
             DocumentDTO docDto = new DocumentDTO {Name = uploadedFile.Name, Length = uploadedFile.Length, IsFile = true, DocumentId = docId};
-            DocumentEntity newDoc = _mapper.Map<DocumentDTO, DocumentEntity>(docDto);
-            var result =await _docRepo.Create(newDoc);
-            return docDto;
+            await _pProvider.CreateFileOrFolder(uploadedFile, id);
+            
+            DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
+            await _docRepo.Create(newDoc);
         }
         public async Task Delete(Guid? id)
         {

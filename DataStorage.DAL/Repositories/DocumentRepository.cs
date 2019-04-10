@@ -12,7 +12,6 @@ namespace DataStorage.DAL.Repositories
     public class DocumentRepository : IDocumentRepository
     {
         private readonly ApplicationContext _context;
-
         public DocumentRepository(ApplicationContext context)
         {
             _context = context;
@@ -30,21 +29,18 @@ namespace DataStorage.DAL.Repositories
         }
         public async Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id)
         {
-            var result = await _context.Documents.Where(docid => docid.DocumentId == id).ToListAsync();
+            var result = await _context.Documents.Where(docid => docid.ParentId == id).ToListAsync();
             return result;
         }
-        public async Task<DocumentEntity> Create(DocumentEntity document)
+        public async Task Create(DocumentEntity document)
         {
-            var doc = _context.Documents.Where(d => d.Name == document.Name && d.ParentId == document.ParentId);
+            var doc = _context.Documents.Where(d => d.DocumentId == document.DocumentId);
             if(doc.Count() == 0)
             {
                 var newdoc = await _context.Documents.AddAsync(document);
                 await _context.SaveChangesAsync();
-                return newdoc.Entity;
             }
-            return doc.FirstOrDefaultAsync().Result;
         }
-
         public async Task Delete(Guid? id)
         {
             var founddoc = await _context.Documents.FirstOrDefaultAsync(docId => docId.DocumentId == id);

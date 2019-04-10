@@ -26,6 +26,8 @@ namespace DataStorage.DAL.Migrations
 
                     b.Property<bool>("IsFile");
 
+                    b.Property<long>("Length");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("OwnerId");

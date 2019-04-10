@@ -35,7 +35,7 @@ namespace DataStorage.App.Controllers
                 var login = await _userService.GetUserAsync(model.Email, model.Password, model.rememberMe);
                 if (login.Succeeded)
                 {
-                    return RedirectToAction("UserStorage", "Home");
+                    return RedirectToAction("UserStorage", "Document");
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace DataStorage.App.Controllers
                 {
                     await _userService.GetUserAsync(model.Email, model.Password, true);
 
-                    return RedirectToAction("UserStorage", "Home");
+                    return RedirectToAction("UserStorage", "Document");
                 }
                 else
                 {

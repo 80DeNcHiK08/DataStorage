@@ -8,6 +8,7 @@ using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Repositories;
 using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using DataStorage.BLL.DTOs;
 
 namespace Configuration
 {
@@ -29,9 +30,10 @@ namespace Configuration
             services.TryAddScoped<IUsersService, UserService>();
             services.TryAddScoped<IDocumentRepository, DocumentRepository>();
             services.TryAddScoped<IDocumentService, DocumentService>();
-            //services.TryAddScoped<IPathProvider, PathProvider>();
+            services.TryAddScoped<IPathProvider, PathProvider>();
 
-            services.AddTransient<PathProvider>();
+            services.AddTransient<IPathProvider, PathProvider>();
+
             return services;
         }
     }
