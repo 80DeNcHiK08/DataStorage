@@ -9,7 +9,7 @@ namespace DataStorage.DAL
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             :base(options)
         {
-            Database.EnsureDeleted(); // temporary solution
+            // Database.EnsureDeleted(); // temporary solution of DropCreateDatabaseAlways
             Database.EnsureCreated();
         }
     }

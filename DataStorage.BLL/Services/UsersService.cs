@@ -26,6 +26,12 @@ namespace DataStorage.BLL.Services
             return user;
         }
 
+        public async Task SignInUserAsync(UserDTO user, bool isPersistent)
+        {
+            var userEntity = _mapper.Map<UserEntity>(user);
+            await _usersRepo.SignInUserAsync(userEntity, isPersistent);
+        }
+
         public async Task<string> GetEmailTokenAsync(UserDTO user)
         {
             var userEntity = _mapper.Map<UserEntity>(user);
@@ -55,15 +61,21 @@ namespace DataStorage.BLL.Services
             return await _usersRepo.ConfirmEmailAsync(userEntity, token);
         }
 
+        // public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
+        // {
+        //     return await _usersRepo.ConfirmEmailAsync(userId, token);
+        // }
+
         public async Task<UserDTO> GetUserByIdAsync(string userId)
         {
             var userEntity = await _usersRepo.GetUserByIdAsync(userId);
             return _mapper.Map<UserDTO>(userEntity);
         }
 
-        /*public void LogOut()
+        public void LogOut()
         {
             _usersRepo.LogOut();
-        }*/
+        }
+
     }
 }

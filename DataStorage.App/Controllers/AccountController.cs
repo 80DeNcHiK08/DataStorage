@@ -4,6 +4,8 @@ using DataStorage.BLL.Interfaces;
 using DataStorage.App.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace DataStorage.App.Controllers
 {
@@ -19,12 +21,14 @@ namespace DataStorage.App.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -53,12 +57,14 @@ namespace DataStorage.App.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -78,7 +84,9 @@ namespace DataStorage.App.Controllers
                         protocol: HttpContext.Request.Scheme);
 
                     await _emailService.SendEmailAsync(user.Email, "Confirm your account",
-                        $"Confirm the registration by clicking on the link: <a href='{callbackUrl}'>link</a>");
+                        $"Confirm the registration by clicking on the <a href='{callbackUrl}'>link</a>");
+                    
+                    await _userService.SignInUserAsync(user, false);
 
                     return Content("Check the email and click on the link in the letter to complete the registration");
                 }
@@ -109,21 +117,11 @@ namespace DataStorage.App.Controllers
                 return View("Error");
         }
 
-        /*public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             _userService.LogOut();
             return RedirectToAction("Login", "Account");
-        }*/
-
-        /*//maybe it works
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
-        {
-            // удаляем аутентификационные куки
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }*/
+        }
     }
 }
