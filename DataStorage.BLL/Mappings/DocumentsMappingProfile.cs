@@ -14,7 +14,7 @@ namespace DataStorage.BLL.Mappings
                 .ForMember(d => d.Path, opt => opt.MapFrom(src => src.Path))
                 .ForMember(d => d.ParentId, opt => opt.MapFrom(src => src.ParentId))
                 .ForMember(d => d.IsFile, opt => opt.MapFrom(src => src.IsFile))
-                .ForMember(d => d.Owner, opt => opt.MapFrom(src => src.Owner))
+                .ForMember(d => d.OwnerId, opt => opt.MapFrom(src => src.OwnerId))
                 .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Length));
 
 
@@ -24,7 +24,7 @@ namespace DataStorage.BLL.Mappings
                 .ForMember(d => d.Path, opt => opt.MapFrom(src => src.Path))
                 .ForMember(d => d.ParentId, opt => opt.MapFrom(src => src.ParentId))
                 .ForMember(d => d.IsFile, opt => opt.MapFrom(src => src.IsFile))
-                .ForMember(d => d.Owner, opt => opt.MapFrom(src => src.Owner))               
+                .ForMember(d => d.OwnerId, opt => opt.MapFrom(src => src.OwnerId))               
                 .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Length));
         }
     }

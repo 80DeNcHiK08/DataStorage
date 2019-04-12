@@ -15,15 +15,13 @@ namespace DataStorage.BLL.Services
     {
         public IDocumentRepository _docRepo { get; }
         private readonly IMapper _mapper;
-        private readonly PathProvider _pProvider;
-        private readonly UserManager<UserDTO> _userManager;
+        private readonly IPathProvider _pProvider;
 
-        public DocumentService(IDocumentRepository docRepo, IMapper mapper, PathProvider pProvider, UserManager<UserDTO> userManager)
+        public DocumentService(IDocumentRepository docRepo, IMapper mapper, IPathProvider pProvider)
         {
             _docRepo = docRepo ?? throw new ArgumentNullException(nameof(docRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
         public async Task<IEnumerable<DocumentDTO>> GetAll()
         {
@@ -46,7 +44,7 @@ namespace DataStorage.BLL.Services
         public async Task Create(IFormFile uploadedFile, string id)
         {
             Guid docId = new Guid();
-            DocumentDTO docDto = new DocumentDTO {Name = uploadedFile.Name, Length = uploadedFile.Length, IsFile = true, DocumentId = docId};
+            DocumentDTO docDto = new DocumentDTO {Name = uploadedFile., Length = uploadedFile.Length, IsFile = true, DocumentId = docId};
             await _pProvider.CreateFileOrFolder(uploadedFile, id);
             
             DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);

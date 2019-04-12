@@ -14,7 +14,7 @@ namespace DataStorage.App.Controllers
     {
         private readonly IDocumentService _docService;
         IHostingEnvironment _hostingEnvironment;
-        private readonly UserManager<UserDTO> _userManager;
+        private UserManager<UserDTO> _userManager {get;}
 
         public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService, UserManager<UserDTO> userManager)
         {
