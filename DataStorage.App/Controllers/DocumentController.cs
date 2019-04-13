@@ -14,13 +14,11 @@ namespace DataStorage.App.Controllers
     {
         private readonly IDocumentService _docService;
         IHostingEnvironment _hostingEnvironment;
-        private UserManager<UserDTO> _userManager {get;}
 
-        public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService, UserManager<UserDTO> userManager)
+        public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService)
         {
             _docService = docService ?? throw new ArgumentNullException(nameof(docService));
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public IActionResult UserStorage()
@@ -29,17 +27,16 @@ namespace DataStorage.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile uploadedFile)
+        public async Task<IActionResult> CreateFile(IFormFile uploadedFile)
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            await _docService.Create(uploadedFile, user.Id);
+            await _docService.Create(uploadedFile);
             return RedirectToAction("UserStorage");
         }
 
-        public async Task<IActionResult> DeleteFile()
+        /*public async Task<IActionResult> DeleteFile()
         {
             //await _docService.Delete();
             return RedirectToAction("UserStorage");
-        }
+        }*/
     }
 }

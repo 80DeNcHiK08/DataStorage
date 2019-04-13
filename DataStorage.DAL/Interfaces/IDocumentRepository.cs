@@ -8,10 +8,10 @@ namespace DataStorage.DAL.Interfaces
 {
     public interface IDocumentRepository
     {
-        Task<IEnumerable<DocumentEntity>> GetAll();
-        Task<DocumentEntity> Get(Guid? id);
-        Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id);
+        Task<IEnumerable<DocumentEntity>> GetAll(string OwnerId);
+        //Task<DocumentEntity> Get(Guid? id);
+        //Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id);
         Task Create(DocumentEntity uploadedFile);
-        Task Delete(Guid? id);
+        //Task Delete(Guid? id);
     }
 }

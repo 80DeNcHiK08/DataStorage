@@ -27,35 +27,30 @@ namespace DataStorage.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task CreateFolderOnRegister(string path, UserDTO owner)
+        public async Task CreateFolderOnRegister(string ownerId)
         {
-            var endpath = Path.Combine(_path, path);
+            var endpath = Path.Combine(_path, ownerId);
+            
             DocumentEntity document = new DocumentEntity();
-            document.DocumentId = Guid.Parse(owner.Id);
-            document.Name = owner.Id;
+            document.DocumentId = Guid.Parse(ownerId);
+            document.Name = ownerId;
             document.IsFile = false;
             document.Path = endpath;
             document.Length = 0;
             document.ParentId = Guid.Empty;
-            document.Owner = _mapper.Map<UserEntity>(owner);
+            document.OwnerId = Guid.Parse(ownerId);
 
             await _context.Documents.AddAsync(document);
-            await _context.SaveChangesAsync();
-
             Directory.CreateDirectory(endpath);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task CreateFileOrFolder(IFormFile file = null, string id = "")
+        public async Task CreateFile(IFormFile file, string UserId)
         {
-            if(file != null){
-                string docpath = _path + "/" + id;
-                using(var fileStream = new FileStream(_path, FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-            }
-            else {
-
+            string docpath = _path + "/" + UserId;
+            using(var fileStream = new FileStream(docpath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
             }
         }
     }

@@ -7,13 +7,13 @@ namespace DataStorage.DAL
 {
     public class ApplicationContext : IdentityDbContext<UserEntity>
     {
-        public DbSet<DocumentEntity> Documents { get; set; }
-        public DbSet<UserDocument> UserDocuments { get; set; }
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             :base(options)
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<DocumentEntity> Documents { get; set; }
+        public DbSet<DocumentEntity> UserDocuments { get; set; }
     }
 }

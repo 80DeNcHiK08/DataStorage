@@ -24,11 +24,11 @@ namespace DataStorage.App
         {
             services.AddWebServices();
             services.AddAutoMapper();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                    });
+                    });*/
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)

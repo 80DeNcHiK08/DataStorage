@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace DataStorage.DAL.Repositories
 {
@@ -19,8 +20,8 @@ namespace DataStorage.DAL.Repositories
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
             UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail};
-            var result = await _userManager.CreateAsync(user, userPassword);
-            return result;
+            return await _userManager.CreateAsync(user, userPassword);
+            
         }
 
         public async Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe)

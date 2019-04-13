@@ -17,21 +17,11 @@ namespace DataStorage.DAL.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<DocumentEntity>> GetAll()
+        public async Task<IEnumerable<DocumentEntity>> GetAll(string OwnerId)
         {
-            var result = await _context.Documents.ToListAsync();
-            return result;
+            return await _context.Documents.Where(d => d.OwnerId == Guid.Parse(OwnerId)).ToListAsync();
         }
-        public async Task<DocumentEntity> Get(Guid? id)
-        {
-            var result = await _context.Documents.FirstOrDefaultAsync(f => f.DocumentId == id);
-            return result;
-        }
-        public async Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id)
-        {
-            var result = await _context.Documents.Where(docid => docid.ParentId == id).ToListAsync();
-            return result;
-        }
+
         public async Task Create(DocumentEntity document)
         {
             var doc = _context.Documents.Where(d => d.DocumentId == document.DocumentId);
@@ -41,11 +31,22 @@ namespace DataStorage.DAL.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        /*public async Task<DocumentEntity> Get(Guid? id)
+        {
+            var result = await _context.Documents.FirstOrDefaultAsync(f => f.DocumentId == id);
+            return result;
+        }
+        public async Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id)
+        {
+            var result = await _context.Documents.Where(docid => docid.ParentId == id).ToListAsync();
+            return result;
+        }
+        
         public async Task Delete(Guid? id)
         {
             var founddoc = await _context.Documents.FirstOrDefaultAsync(docId => docId.DocumentId == id);
             _context.Remove(founddoc);
             await _context.SaveChangesAsync();
-        }
+        }*/
     }
 }
