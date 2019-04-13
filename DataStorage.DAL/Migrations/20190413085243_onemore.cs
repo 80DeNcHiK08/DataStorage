@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataStorage.DAL.Migrations
 {
-    public partial class newmigration : Migration
+    public partial class onemore : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,23 @@ namespace DataStorage.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocumentEntity",
+                columns: table => new
+                {
+                    DocumentId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Path = table.Column<string>(nullable: true),
+                    ParentId = table.Column<Guid>(nullable: false),
+                    IsFile = table.Column<bool>(nullable: false),
+                    OwnerId = table.Column<Guid>(nullable: false),
+                    Length = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentEntity", x => x.DocumentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,30 +172,7 @@ namespace DataStorage.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Documents",
-                columns: table => new
-                {
-                    DocumentId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Path = table.Column<string>(nullable: true),
-                    ParentId = table.Column<Guid>(nullable: false),
-                    IsFile = table.Column<bool>(nullable: false),
-                    OwnerId = table.Column<string>(nullable: true),
-                    Length = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Documents", x => x.DocumentId);
-                    table.ForeignKey(
-                        name: "FK_Documents_AspNetUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserDocuments",
+                name: "UserDocument",
                 columns: table => new
                 {
                     DocumentId = table.Column<Guid>(nullable: false),
@@ -189,15 +183,15 @@ namespace DataStorage.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDocuments", x => x.DocumentId);
+                    table.PrimaryKey("PK_UserDocument", x => x.DocumentId);
                     table.ForeignKey(
-                        name: "FK_UserDocuments_Documents_DocumentId1",
+                        name: "FK_UserDocument_DocumentEntity_DocumentId1",
                         column: x => x.DocumentId1,
-                        principalTable: "Documents",
+                        principalTable: "DocumentEntity",
                         principalColumn: "DocumentId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserDocuments_AspNetUsers_UserEntityId",
+                        name: "FK_UserDocument_AspNetUsers_UserEntityId",
                         column: x => x.UserEntityId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -244,18 +238,13 @@ namespace DataStorage.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_OwnerId",
-                table: "Documents",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserDocuments_DocumentId1",
-                table: "UserDocuments",
+                name: "IX_UserDocument_DocumentId1",
+                table: "UserDocument",
                 column: "DocumentId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDocuments_UserEntityId",
-                table: "UserDocuments",
+                name: "IX_UserDocument_UserEntityId",
+                table: "UserDocument",
                 column: "UserEntityId");
         }
 
@@ -277,13 +266,13 @@ namespace DataStorage.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "UserDocuments");
+                name: "UserDocument");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Documents");
+                name: "DocumentEntity");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

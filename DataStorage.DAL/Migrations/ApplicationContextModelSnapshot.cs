@@ -30,7 +30,7 @@ namespace DataStorage.DAL.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("OwnerId");
+                    b.Property<Guid>("OwnerId");
 
                     b.Property<Guid>("ParentId");
 
@@ -38,9 +38,7 @@ namespace DataStorage.DAL.Migrations
 
                     b.HasKey("DocumentId");
 
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Documents");
+                    b.ToTable("DocumentEntity");
                 });
 
             modelBuilder.Entity("DataStorage.DAL.Entities.UserDocument", b =>
@@ -62,7 +60,7 @@ namespace DataStorage.DAL.Migrations
 
                     b.HasIndex("UserEntityId");
 
-                    b.ToTable("UserDocuments");
+                    b.ToTable("UserDocument");
                 });
 
             modelBuilder.Entity("DataStorage.DAL.Entities.UserEntity", b =>
@@ -226,13 +224,6 @@ namespace DataStorage.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("DataStorage.DAL.Entities.DocumentEntity", b =>
-                {
-                    b.HasOne("DataStorage.DAL.Entities.UserEntity", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
                 });
 
             modelBuilder.Entity("DataStorage.DAL.Entities.UserDocument", b =>
