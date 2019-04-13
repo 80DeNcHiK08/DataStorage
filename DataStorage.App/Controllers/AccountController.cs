@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace DataStorage.App.Controllers
 {
@@ -81,7 +82,7 @@ namespace DataStorage.App.Controllers
 
                     await _emailService.SendEmailAsync(user.Email, "Confirm your account",
                         $"Confirm the registration by clicking on the <a href='{callbackUrl}'>link</a>");
-                    
+
                     await _userService.SignInUserAsync(user, false);
 
                     return Content("Check the email and click on the link in the letter to complete the registration");
@@ -111,6 +112,67 @@ namespace DataStorage.App.Controllers
                 return RedirectToAction("Index", "Home");
             else
                 return View("Error");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin()
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account");
+            var properties = _userService.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            return Challenge(properties, "Google");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback()
+        {
+            var loginInfo = await _userService.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userService.GetUserByNameAsync(email);
+
+            if (user != null)
+            {
+                if (!await _userService.IsEmailConfirmedAsync(user))
+                {
+                    return Content("You have not confirmed your mail yet");
+                }
+
+                var result = await _userService.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, false, true);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            var register = await _userService.CreateUserAsync(email);
+            if (register.Succeeded)
+            {
+                register = await _userService.AddLoginAsync(email, loginInfo);
+                if (register.Succeeded)
+                {
+                    var createdUser = await _userService.GetUserByNameAsync(email);
+
+                    var token = await _userService.GetEmailTokenAsync(createdUser);
+
+                    var callbackUrl = Url.EmailConfirmationLink(createdUser.Id, token, Request.Scheme);
+
+                    await _emailService.SendEmailAsync(createdUser.Email, "Confirm your account",
+                        $"Confirm the registration by clicking on the <a href='{callbackUrl}'>link</a>");
+
+                    await _userService.SignInUserAsync(createdUser, false);
+
+                    return Content("Check the email and click on the link in the letter to complete the registration");
+                }
+            }
+
+            return RedirectToAction("Login", "Account");
         }
 
         public async Task<IActionResult> Logout()

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using DataStorage.BLL.DTOs;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.BLL.Interfaces
@@ -9,11 +10,16 @@ namespace DataStorage.BLL.Interfaces
         Task<SignInResult> SignInUserAsync(string userEmail, string userPassword, bool rememberMe);
         Task SignInUserAsync(UserDTO user, bool isPersistent);
         Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword);
+        Task<IdentityResult> CreateUserAsync(string userEmail);
         Task<IdentityResult> ConfirmEmailAsync(string userId, string token);
         Task<UserDTO> GetUserByNameAsync(string userEmail);
         Task<UserDTO> GetUserByIdAsync(string userId);
         Task<string> GetEmailTokenAsync(UserDTO user);
         Task<bool> IsEmailConfirmedAsync(UserDTO user);
+        Task<ExternalLoginInfo> GetExternalLoginInfoAsync();
+        Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent, bool bypassTwoFactor);
+        Task<IdentityResult> AddLoginAsync(string userEmail, ExternalLoginInfo loginInfo);
+        AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl);
         void LogOut();
     }
 }

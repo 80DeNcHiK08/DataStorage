@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using DataStorage.BLL.DTOs;
 using AutoMapper;
 using DataStorage.DAL.Entities;
+using Microsoft.AspNetCore.Authentication;
 
 namespace DataStorage.BLL.Services
 {
@@ -22,8 +23,7 @@ namespace DataStorage.BLL.Services
 
         public async Task<SignInResult> SignInUserAsync(string userEmail, string userPassword, bool rememberMe)
         {
-            var user = await _usersRepo.SignInUserAsync(userEmail, userPassword, rememberMe);
-            return user;
+            return await _usersRepo.SignInUserAsync(userEmail, userPassword, rememberMe);;
         }
 
         public async Task SignInUserAsync(UserDTO user, bool isPersistent)
@@ -42,6 +42,11 @@ namespace DataStorage.BLL.Services
         {
             return await _usersRepo.CreateUserAsync(userEmail, userPassword);
         }
+        
+        public async Task<IdentityResult> CreateUserAsync(string userEmail)
+        {
+            return await _usersRepo.CreateUserAsync(userEmail);
+        }
 
         public async Task<UserDTO> GetUserByNameAsync(string userEmail)
         {
@@ -57,8 +62,8 @@ namespace DataStorage.BLL.Services
 
         public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
         {
-            var user = await _usersRepo.GetUserByIdAsync(userId);
-            return await _usersRepo.ConfirmEmailAsync(user, token);
+            var userEntity = await _usersRepo.GetUserByIdAsync(userId);
+            return await _usersRepo.ConfirmEmailAsync(userEntity, token);
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string userId)
@@ -67,9 +72,31 @@ namespace DataStorage.BLL.Services
             return _mapper.Map<UserDTO>(userEntity);
         }
 
+        public async Task<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        {
+            return await _usersRepo.GetExternalLoginInfoAsync();
+        }
+
+        public async Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent, bool bypassTwoFactor)
+        {
+            return await _usersRepo.ExternalLoginSignInAsync(loginProvider, providerKey, isPersistent, bypassTwoFactor);
+        }
+
+        public async Task<IdentityResult> AddLoginAsync(string userEmail, ExternalLoginInfo loginInfo)
+        {
+            var user = await _usersRepo.GetUserByNameAsync(userEmail);
+            return await _usersRepo.AddLoginAsync(user, loginInfo);
+        }
+
+        public AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
+        {
+            return _usersRepo.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        }
+
         public void LogOut()
         {
             _usersRepo.LogOut();
         }
+
     }
 }

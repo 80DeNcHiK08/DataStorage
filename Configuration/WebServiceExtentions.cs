@@ -25,6 +25,13 @@ namespace Configuration
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication()
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = "683865802300-uqhcsp84nqbqjmmsr1r8v98dh8c9mmme.apps.googleusercontent.com";
+                    googleOptions.ClientSecret = "XOxXjisXAkPFOoIDPUs1T_KJ";
+                });
+
             services.TryAddScoped<IUsersRepository, UsersRepository>();
             services.TryAddScoped<IUsersService, UserService>();
             services.TryAddScoped<IEmailService, EmailService>();

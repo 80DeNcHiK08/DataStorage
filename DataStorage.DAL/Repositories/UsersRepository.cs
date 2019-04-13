@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Entities;
 using System;
+using Microsoft.AspNetCore.Authentication;
 
 namespace DataStorage.DAL.Repositories
 {
@@ -19,18 +20,25 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<IdentityResult> ConfirmEmailAsync(UserEntity user, string token)
         {
-            return await _userManager.ConfirmEmailAsync(user, token);
+            return await _userManager.ConfirmEmailAsync(user, token);;
         }
 
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
             UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail };
-            
-            return await _userManager.CreateAsync(user, userPassword);
+
+            return await _userManager.CreateAsync(user, userPassword);;
+        }
+
+        public async Task<IdentityResult> CreateUserAsync(string userEmail)
+        {
+            UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail };
+
+            return await _userManager.CreateAsync(user);;
         }
 
         public async Task<string> GetEmailTokenAsync(UserEntity user)
-        {
+        {      
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);;
         }
 
@@ -57,6 +65,26 @@ namespace DataStorage.DAL.Repositories
         public async Task SignInUserAsync(UserEntity user, bool isPersistent)
         {
             await _signInManager.SignInAsync(user, isPersistent);
+        }
+
+        public async Task<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        {
+           return await _signInManager.GetExternalLoginInfoAsync();
+        }
+
+        public async Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent, bool bypassTwoFactor)
+        {
+            return await _signInManager.ExternalLoginSignInAsync(loginProvider, providerKey, isPersistent, bypassTwoFactor);
+        }
+
+        public Task<IdentityResult> AddLoginAsync(UserEntity user, ExternalLoginInfo loginInfo)
+        {
+            return _userManager.AddLoginAsync(user, loginInfo);
+        }
+
+        public AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
+        {
+            return _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         }
 
         public async void LogOut()
