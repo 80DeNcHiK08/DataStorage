@@ -55,16 +55,11 @@ namespace DataStorage.BLL.Services
             return await _usersRepo.IsEmailConfirmedAsync(userEntity);
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(UserDTO user, string token)
+        public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
         {
-            var userEntity = _mapper.Map<UserEntity>(user);
-            return await _usersRepo.ConfirmEmailAsync(userEntity, token);
+            var user = await _usersRepo.GetUserByIdAsync(userId);
+            return await _usersRepo.ConfirmEmailAsync(user, token);
         }
-
-        // public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
-        // {
-        //     return await _usersRepo.ConfirmEmailAsync(userId, token);
-        // }
 
         public async Task<UserDTO> GetUserByIdAsync(string userId)
         {
@@ -76,6 +71,5 @@ namespace DataStorage.BLL.Services
         {
             _usersRepo.LogOut();
         }
-
     }
 }

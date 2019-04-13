@@ -77,11 +77,7 @@ namespace DataStorage.App.Controllers
 
                     var token = await _userService.GetEmailTokenAsync(user);
 
-                    var callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "Account",
-                        new { userId = user.Id, token = token },
-                        protocol: HttpContext.Request.Scheme);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, token, Request.Scheme);
 
                     await _emailService.SendEmailAsync(user.Email, "Confirm your account",
                         $"Confirm the registration by clicking on the <a href='{callbackUrl}'>link</a>");
@@ -110,7 +106,7 @@ namespace DataStorage.App.Controllers
             {
                 return View("Error");
             }
-            var result = await _userService.ConfirmEmailAsync(user, token);
+            var result = await _userService.ConfirmEmailAsync(userId, token);
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
             else

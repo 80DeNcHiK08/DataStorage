@@ -10,7 +10,6 @@ namespace DataStorage.DAL.Interfaces
         Task SignInUserAsync(UserEntity user, bool isPersistent);
         Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword);
         Task<IdentityResult> ConfirmEmailAsync(UserEntity user, string token);
-        // Task<IdentityResult> ConfirmEmailAsync(string userId, string token);
         Task<UserEntity> GetUserByNameAsync(string userEmail);
         Task<UserEntity> GetUserByIdAsync(string userId);
         Task<string> GetEmailTokenAsync(UserEntity user);
