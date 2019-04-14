@@ -7,6 +7,7 @@ using DataStorage.BLL.Interfaces;
 using DataStorage.App.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace DataStorage.App.Controllers
 {
@@ -63,6 +64,7 @@ namespace DataStorage.App.Controllers
                 if (register.Succeeded)
                 {
                     await _userService.GetUserAsync(model.Email, model.Password, true);
+                    await _userService.CreateFolderOnRegister();
 
                     return RedirectToAction("UserStorage", "Document");
                 }

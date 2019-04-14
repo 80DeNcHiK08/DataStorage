@@ -31,18 +31,25 @@ namespace DataStorage.BLL.Services
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
             var result = await _usersRepo.CreateUserAsync(userEmail, userPassword);
-            await _pProvider.CreateFolderOnRegister(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            
             return result;
+        }
+
+        public async Task CreateFolderOnRegister()
+        {
+            await _pProvider.CreateFolderOnRegister(GetCurrentUserId());
         }
 
         public async Task LogOut()
         {
             await _usersRepo.LogOut();
         }
-
+        
         public string GetCurrentUserId()
         {
-            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
+            var helloworld = "";
+            return result;
         }
 
     }

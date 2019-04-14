@@ -9,6 +9,7 @@ using DataStorage.DAL.Repositories;
 using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using DataStorage.BLL.DTOs;
+using Microsoft.AspNetCore.Http;
 
 namespace Configuration
 {
@@ -32,6 +33,8 @@ namespace Configuration
             services.TryAddScoped<IDocumentRepository, DocumentRepository>();
             services.TryAddScoped<IDocumentService, DocumentService>();
             services.TryAddScoped<IPathProvider, PathProvider>();
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<IPathProvider, PathProvider>();
 

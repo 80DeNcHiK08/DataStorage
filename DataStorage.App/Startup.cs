@@ -23,12 +23,14 @@ namespace DataStorage.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebServices();
+
             services.AddAutoMapper();
-            /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            services.AddHttpContextAccessor();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                    });*/
+                    });
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -55,8 +57,6 @@ namespace DataStorage.App
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
-            
 
             app.UseMvc(routes =>
             {
