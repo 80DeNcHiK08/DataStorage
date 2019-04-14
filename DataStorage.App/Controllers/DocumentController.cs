@@ -13,12 +13,10 @@ namespace DataStorage.App.Controllers
     public class DocumentController : Controller
     {
         private readonly IDocumentService _docService;
-        IHostingEnvironment _hostingEnvironment;
 
         public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService)
         {
             _docService = docService ?? throw new ArgumentNullException(nameof(docService));
-            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
         }
 
         public IActionResult UserStorage()

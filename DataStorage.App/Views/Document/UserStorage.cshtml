@@ -1,9 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<a id="top"></a>
-    <div class="wrapper ustorage">
+﻿@model IEnumerable<DataStorage.BLL.DTOs.DocumentDTO>
+    
+<div class="wrapper ustorage">
         <div class="header">
             <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
             <nav class="m-menu">
@@ -18,8 +15,8 @@
 
             </div>
             <div class="workspace">
-                <form asp-action="CreateFile" asp-controller="Document">
-                    <input name="uploadedFile" type="file" value="123">
+                <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
+                    <input name="uploadedFile" type="file">
                     <input type="submit" value="Upload">
                 </form>
             </div>

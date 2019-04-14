@@ -33,12 +33,15 @@ namespace DataStorage.BLL.Services
         }
         public async Task Create(IFormFile uploadedFile)
         {
-            Guid docId = new Guid();
-            DocumentDTO docDto = new DocumentDTO {Name = uploadedFile.Name, Length = uploadedFile.Length, IsFile = true, DocumentId = docId};
-            await _pProvider.CreateFile(uploadedFile, _userService.GetCurrentUserId());
-            
-            DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-            await _docRepo.Create(newDoc);
+            if (uploadedFile != null)
+            {
+                Guid docId = Guid.NewGuid();
+                DocumentDTO docDto = new DocumentDTO { Name = uploadedFile.FileName, Length = uploadedFile.Length, IsFile = true, DocumentId = docId, OwnerId = Guid.Parse(_userService.GetCurrentUserId()), ParentId = Guid.Parse(_userService.GetCurrentUserId()) };
+                await _pProvider.CreateFile(uploadedFile, _userService.GetCurrentUserId());
+
+                DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
+                await _docRepo.Create(newDoc);
+            }
         }
         /*public async Task<DocumentDTO> Get(Guid? id)
         {
