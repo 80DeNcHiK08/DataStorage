@@ -17,14 +17,14 @@ namespace DataStorage.BLL.Services
         public IDocumentRepository _docRepo { get; }
         private readonly IMapper _mapper;
         private readonly IPathProvider _pProvider;
-        private readonly UserService _userService;
+        private readonly IUsersService _userService;
 
-        public DocumentService(IDocumentRepository docRepo, IMapper mapper, IPathProvider pProvider, UserService userService)
+        public DocumentService(IDocumentRepository docRepo, IMapper mapper, IPathProvider pProvider, IUsersService userService)
         {
             _docRepo = docRepo ?? throw new ArgumentNullException(nameof(docRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
-            _userService = userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
         public async Task<IEnumerable<DocumentDTO>> GetAll(string OwnerId)
         {

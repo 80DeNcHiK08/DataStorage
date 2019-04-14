@@ -14,13 +14,13 @@ namespace DataStorage.BLL.Services
     {
         public IUsersRepository _usersRepo { get; }
         private readonly IPathProvider _pProvider;
+        public IHttpContextAccessor _httpContextAccessor;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
         public UserService(IUsersRepository usersRepo, IPathProvider pProvider, IHttpContextAccessor httpContextAccessor)
         {
             _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(usersRepo));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
-            _httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public async Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe)
@@ -47,9 +47,7 @@ namespace DataStorage.BLL.Services
         
         public string GetCurrentUserId()
         {
-            var result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
-            var helloworld = "";
-            return result;
+           return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
         }
 
     }

@@ -74,7 +74,7 @@ namespace DataStorage.App.Controllers
                     ModelState.AddModelError("", "Incorrect username and/or password");
                 }
             }
-            return View(model);
+            return View(_userService.GetCurrentUserId());
         }
 
         public async Task<IActionResult> Logout()

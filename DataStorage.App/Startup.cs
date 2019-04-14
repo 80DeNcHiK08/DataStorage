@@ -25,14 +25,13 @@ namespace DataStorage.App
             services.AddWebServices();
 
             services.AddAutoMapper();
-            services.AddHttpContextAccessor();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     });
 
-
+            services.AddHttpContextAccessor();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorPagesOptions(options =>
                 {
