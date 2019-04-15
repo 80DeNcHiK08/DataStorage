@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
-using DataStorage.BLL.DTOs;
 using DataStorage.BLL.Interfaces;
 using DataStorage.DAL;
 using DataStorage.DAL.Entities;
@@ -20,7 +19,7 @@ namespace DataStorage.BLL.Services
 
         public PathProvider(IHostingEnvironment hostingEnvironment, ApplicationContext context, IMapper mapper)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
             _context = context;
             _path = Path.Combine(_hostingEnvironment.ContentRootPath, "../localStorage");
             Directory.CreateDirectory(_path);
@@ -45,9 +44,9 @@ namespace DataStorage.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateFile(IFormFile file, string UserId)
+        public async Task CreateFile(IFormFile file, string ownerId)
         {
-            string docpath = _path + "/" + UserId;
+            string docpath = Path.Combine(_path, ownerId);
             using(var fileStream = new FileStream(docpath, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);

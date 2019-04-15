@@ -3,20 +3,18 @@ using DataStorage.DAL.Interfaces;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting;
-using DataStorage.BLL.DTOs;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace DataStorage.BLL.Services
 {
-    public class UserService : IUsersService
+    public class UsersService : IUsersService
     {
         public IUsersRepository _usersRepo { get; }
         private readonly IPathProvider _pProvider;
-        public IHttpContextAccessor _httpContextAccessor;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(IUsersRepository usersRepo, IPathProvider pProvider, IHttpContextAccessor httpContextAccessor)
+        public UsersService(IUsersRepository usersRepo, IPathProvider pProvider, IHttpContextAccessor httpContextAccessor)
         {
             _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(usersRepo));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));

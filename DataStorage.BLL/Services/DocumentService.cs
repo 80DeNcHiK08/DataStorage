@@ -4,10 +4,8 @@ using DataStorage.BLL.Interfaces;
 using DataStorage.DAL.Entities;
 using DataStorage.DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DataStorage.BLL.Services

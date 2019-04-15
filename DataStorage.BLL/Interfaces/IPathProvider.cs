@@ -7,6 +7,6 @@ namespace DataStorage.BLL.Interfaces
     public interface IPathProvider
     {
          Task CreateFolderOnRegister(string ownerId);
-         Task CreateFile(IFormFile file, string UserId);
+         Task CreateFile(IFormFile file, string ownerId);
     }
 }

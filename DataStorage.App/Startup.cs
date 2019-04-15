@@ -25,18 +25,19 @@ namespace DataStorage.App
             services.AddWebServices();
 
             services.AddAutoMapper();
+            services.AddHttpContextAccessor();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     });
 
-            services.AddHttpContextAccessor();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AddPageRoute("/Home/Welcome", "");
                 });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
