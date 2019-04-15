@@ -163,7 +163,7 @@ namespace DataStorage.App.Controllers
 
                     var callbackUrl = Url.EmailConfirmationLink(createdUser.Id, token, Request.Scheme);
 
-                    await _emailService.SendEmailAsync(createdUser.Email, "Confirm your account",
+                    await _emailService.SendEmailAsync(createdUser.Email, "Data Storage: confirm your account",
                         $"Confirm the registration by clicking on the <a href='{callbackUrl}'>link</a>");
 
                     await _userService.SignInUserAsync(createdUser, false);
@@ -173,6 +173,82 @@ namespace DataStorage.App.Controllers
             }
 
             return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userService.GetUserByNameAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "We could not find user with such email. Please check the entered email");
+                    return View(model);
+                }
+
+                var isConfirmed = await _userService.IsEmailConfirmedAsync(user);
+                if (!isConfirmed)
+                {
+                    ModelState.AddModelError("", "The email is still not confirmed. Confirm it first");
+                    return View(model);
+                }
+
+                var token = await _userService.GetResetPasswordTokenAsync(user);
+                var callbackUrl = Url.ResetPasswordLink(user.Id, token, Request.Scheme);
+                await _emailService.SendEmailAsync(user.Email, "Data Storage: reset password",
+                    $"To reset password click on the <a href='{callbackUrl}'>link</a>");
+
+                return Content("Check the email and click on the link in the letter to reset password");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return View("Error");
+            }
+
+            return View( new ResetPasswordViewModel { UserId = userId, Token = token } );
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userService.GetUserByIdAsync(model.UserId);
+                if (user == null)
+                {
+                    return View("Error");
+                }
+
+                var result = await _userService.ResetPasswordAsync(user.Email, model.Token, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                return View("Error");
+            }
+
+            return View(model);
         }
 
         public async Task<IActionResult> Logout()

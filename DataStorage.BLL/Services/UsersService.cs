@@ -98,5 +98,16 @@ namespace DataStorage.BLL.Services
             _usersRepo.LogOut();
         }
 
+        public async Task<string> GetResetPasswordTokenAsync(UserDTO user)
+        {
+            var userEntity = _mapper.Map<UserEntity>(user);
+            return await _usersRepo.GetResetPasswordTokenAsync(userEntity);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(string userEmail, string token, string newPassword)
+        {
+            var user = await _usersRepo.GetUserByNameAsync(userEmail);
+            return await _usersRepo.ResetPasswordAsync(user, token, newPassword);
+        }
     }
 }

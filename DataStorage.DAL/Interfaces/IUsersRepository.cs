@@ -20,6 +20,8 @@ namespace DataStorage.DAL.Interfaces
         Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent, bool bypassTwoFactor);
         Task<IdentityResult> AddLoginAsync(UserEntity user, ExternalLoginInfo loginInfo);
         AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl);
+        Task<string> GetResetPasswordTokenAsync(UserEntity user);
+        Task<IdentityResult> ResetPasswordAsync(UserEntity user, string token, string newPassword);
         void LogOut();
     }
 }

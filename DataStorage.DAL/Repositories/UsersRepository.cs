@@ -91,5 +91,15 @@ namespace DataStorage.DAL.Repositories
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<string> GetResetPasswordTokenAsync(UserEntity user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(UserEntity user, string token, string newPassword)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
     }
 }

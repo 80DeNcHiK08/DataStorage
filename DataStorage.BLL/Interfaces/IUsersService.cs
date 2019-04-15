@@ -20,6 +20,8 @@ namespace DataStorage.BLL.Interfaces
         Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent, bool bypassTwoFactor);
         Task<IdentityResult> AddLoginAsync(string userEmail, ExternalLoginInfo loginInfo);
         AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl);
+        Task<string> GetResetPasswordTokenAsync(UserDTO user);
+        Task<IdentityResult> ResetPasswordAsync(string userEmail, string token, string newPassword);
         void LogOut();
     }
 }
