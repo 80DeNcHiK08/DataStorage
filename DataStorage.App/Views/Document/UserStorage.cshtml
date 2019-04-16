@@ -19,6 +19,10 @@
                     <input name="uploadedFile" type="file">
                     <input type="submit" value="Upload">
                 </form>
+                <form asp-action="CreateFolder" asp-controller="Document" method="post">
+                    <input name="FolderName" type="text">
+                    <input type="submit" value="Create">
+                </form>
             </div>
         </div>
     </div>

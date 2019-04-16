@@ -21,9 +21,10 @@ namespace DataStorage.App.Controllers
         }
 
         [Authorize]
-        public IActionResult UserStorage()
+        public IActionResult UserStorage(string id = null)
         {
             _docService.CreateFolderOnRegister(User);
+            ViewBag.ParentId = id;
             return View();
         }
 
@@ -31,6 +32,13 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> CreateFile(IFormFile uploadedFile)
         {
             await _docService.Create(uploadedFile, User);
+            return RedirectToAction("UserStorage");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFolder(string FolderName)
+        {
+            await _docService.Create(null, User, FolderName);
             return RedirectToAction("UserStorage");
         }
 

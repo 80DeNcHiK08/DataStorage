@@ -6,6 +6,7 @@ using DataStorage.DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -30,13 +31,39 @@ namespace DataStorage.BLL.Services
             var documents = await _docRepo.GetAll(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
-        public async Task Create(IFormFile uploadedFile, ClaimsPrincipal user)
+        public async Task Create(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null)
         {
+            Guid docId = Guid.NewGuid();
             if (uploadedFile != null)
             {
-                Guid docId = Guid.NewGuid();
-                DocumentDTO docDto = new DocumentDTO { Name = uploadedFile.FileName, Length = uploadedFile.Length, IsFile = true, DocumentId = docId, OwnerId = Guid.Parse(_userService.GetUserId(user)), ParentId = Guid.Parse(_userService.GetUserId(user)) };
-                await _pProvider.CreateFile(uploadedFile, _userService.GetUserId(user));
+                string endPath = Path.Combine(_pProvider.ContentPath(), _userService.GetUserId(user), docId.ToString());
+                DocumentDTO docDto = new DocumentDTO
+                {
+                    Name = uploadedFile.FileName,
+                    Length = uploadedFile.Length,
+                    IsFile = true,
+                    DocumentId = docId,
+                    OwnerId = Guid.Parse(_userService.GetUserId(user)),
+                    ParentId = Guid.Parse(parentId),
+                    Path = endPath
+                };
+                await _pProvider.CreateFile(uploadedFile, endPath);
+
+                DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
+                await _docRepo.Create(newDoc);
+            } else
+            {
+                string endPath = Path.Combine(_pProvider.ContentPath(), _userService.GetUserId(user), docId.ToString());
+                DocumentDTO docDto = new DocumentDTO
+                {
+                    Name = fdName,
+                    Length = 0,
+                    IsFile = false,
+                    DocumentId = docId,
+                    OwnerId = Guid.Parse(_userService.GetUserId(user)),
+                    ParentId = Guid.Parse(parentId),
+                    Path = endPath
+                };
 
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                 await _docRepo.Create(newDoc);

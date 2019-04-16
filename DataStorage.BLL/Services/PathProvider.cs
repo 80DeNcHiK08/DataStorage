@@ -14,8 +14,8 @@ namespace DataStorage.BLL.Services
     {
         private IHostingEnvironment _hostingEnvironment;
         private ApplicationContext _context;
-        private string _path;
         private readonly IMapper _mapper;
+        private string _path;
 
         public PathProvider(IHostingEnvironment hostingEnvironment, ApplicationContext context, IMapper mapper)
         {
@@ -24,6 +24,11 @@ namespace DataStorage.BLL.Services
             _path = Path.Combine(_hostingEnvironment.ContentRootPath, "../localStorage");
             Directory.CreateDirectory(_path);
             _mapper = mapper;
+        }
+
+        public string ContentPath()
+        {
+            return _path;
         }
 
         public async Task CreateFolderOnRegister(string ownerId)
@@ -46,10 +51,9 @@ namespace DataStorage.BLL.Services
             }
         }
 
-        public async Task CreateFile(IFormFile file, string ownerId)
+        public async Task CreateFile(IFormFile file, string endPath)
         {
-            string docpath = Path.Combine(_path, ownerId, file.FileName);
-            using(var fileStream = new FileStream(docpath, FileMode.Create))
+            using(var fileStream = new FileStream(endPath, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);
             }

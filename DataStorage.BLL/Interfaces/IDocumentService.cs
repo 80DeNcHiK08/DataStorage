@@ -13,7 +13,7 @@ namespace DataStorage.BLL.Interfaces
         Task<IEnumerable<DocumentDTO>> GetAll(string OwnerId);
         //Task<DocumentDTO> Get(Guid? id);
         //Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id);
-        Task Create(IFormFile uploadedFile, ClaimsPrincipal user);
+        Task Create(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null);
         Task CreateFolderOnRegister(ClaimsPrincipal user);
         //Task Delete(Guid? id);
     }
