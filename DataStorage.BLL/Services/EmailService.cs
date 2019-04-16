@@ -12,7 +12,7 @@ namespace DataStorage.BLL.Services
             var bodyBuilder = new BodyBuilder();
 
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("Administration", "aprioritdatastorage@gmail.com"));
+            emailMessage.From.Add(new MailboxAddress("Data Storage", "aprioritdatastorage@gmail.com"));
             emailMessage.To.Add(new MailboxAddress("New user", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)

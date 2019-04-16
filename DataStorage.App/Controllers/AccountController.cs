@@ -7,6 +7,7 @@ using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataStorage.App.Controllers
 {
@@ -151,6 +152,21 @@ namespace DataStorage.App.Controllers
                 }
             }
 
+            return RedirectToAction("FirstExternalLogin", "Account");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> FirstExternalLogin()
+        {
+            var loginInfo = await _userService.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+
             var register = await _userService.CreateUserAsync(email);
             if (register.Succeeded)
             {
@@ -163,7 +179,7 @@ namespace DataStorage.App.Controllers
 
                     var callbackUrl = Url.EmailConfirmationLink(createdUser.Id, token, Request.Scheme);
 
-                    await _emailService.SendEmailAsync(createdUser.Email, "Data Storage: confirm your account",
+                    await _emailService.SendEmailAsync(createdUser.Email, "Confirm your account",
                         $"Confirm the registration by clicking on the <a href='{callbackUrl}'>link</a>");
 
                     await _userService.SignInUserAsync(createdUser, false);
@@ -205,7 +221,7 @@ namespace DataStorage.App.Controllers
 
                 var token = await _userService.GetResetPasswordTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordLink(user.Id, token, Request.Scheme);
-                await _emailService.SendEmailAsync(user.Email, "Data Storage: reset password",
+                await _emailService.SendEmailAsync(user.Email, "Reset password",
                     $"To reset password click on the <a href='{callbackUrl}'>link</a>");
 
                 return Content("Check the email and click on the link in the letter to reset password");
@@ -223,7 +239,7 @@ namespace DataStorage.App.Controllers
                 return View("Error");
             }
 
-            return View( new ResetPasswordViewModel { UserId = userId, Token = token } );
+            return View(new ResetPasswordViewModel { UserId = userId, Token = token });
         }
 
         [HttpPost]
