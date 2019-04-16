@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using DataStorage.BLL.DTOs;
 using DataStorage.BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,8 +20,10 @@ namespace DataStorage.App.Controllers
             _docService = docService ?? throw new ArgumentNullException(nameof(docService));
         }
 
+        [Authorize]
         public IActionResult UserStorage()
         {
+            _docService.CreateFolderOnRegister(User);
             return View();
         }
 

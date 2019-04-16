@@ -29,19 +29,21 @@ namespace DataStorage.BLL.Services
         public async Task CreateFolderOnRegister(string ownerId)
         {
             var endpath = Path.Combine(_path, ownerId);
-            
-            DocumentEntity document = new DocumentEntity();
-            document.DocumentId = Guid.Parse(ownerId);
-            document.Name = ownerId;
-            document.IsFile = false;
-            document.Path = endpath;
-            document.Length = 0;
-            document.ParentId = Guid.Empty;
-            document.OwnerId = Guid.Parse(ownerId);
+            if (!File.Exists(endpath))
+            {
+                DocumentEntity document = new DocumentEntity();
+                document.DocumentId = Guid.Parse(ownerId);
+                document.Name = ownerId;
+                document.IsFile = false;
+                document.Path = endpath;
+                document.Length = 0;
+                document.ParentId = Guid.Empty;
+                document.OwnerId = Guid.Parse(ownerId);
 
-            await _context.Documents.AddAsync(document);
-            Directory.CreateDirectory(endpath);
-            await _context.SaveChangesAsync();
+                await _context.Documents.AddAsync(document);
+                Directory.CreateDirectory(endpath);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task CreateFile(IFormFile file, string ownerId)

@@ -38,11 +38,6 @@ namespace DataStorage.BLL.Services
             await _usersRepo.LogOut();
         }
 
-        public async Task CreateFolderOnRegister(ClaimsPrincipal user)
-        {
-            await _pProvider.CreateFolderOnRegister(_usersRepo.GetUserId(user));
-        }
-
         public string GetUserId(ClaimsPrincipal user)
         {
             return _usersRepo.GetUserId(user);

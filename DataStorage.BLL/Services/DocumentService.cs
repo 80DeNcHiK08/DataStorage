@@ -42,6 +42,11 @@ namespace DataStorage.BLL.Services
                 await _docRepo.Create(newDoc);
             }
         }
+
+        public async Task CreateFolderOnRegister(ClaimsPrincipal user)
+        {
+            await _pProvider.CreateFolderOnRegister(_userService.GetUserId(user));
+        }
         /*public async Task<DocumentDTO> Get(Guid? id)
         {
             var document = await _docRepo.Get(id);

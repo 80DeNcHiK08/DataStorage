@@ -63,12 +63,11 @@ namespace DataStorage.App.Controllers
                 var register = await _userService.CreateUserAsync(model.Email, model.Password);
                 if (register.Succeeded)
                 {
-                    var authenticated = await _userService.GetUserAsync(model.Email, model.Password, true);
-                    if (authenticated.Succeeded)
+                    var authenticate = await _userService.GetUserAsync(model.Email, model.Password, true);
+                    if (authenticate.Succeeded)
                     {
-                        await _userService.CreateFolderOnRegister(User);
+                        return RedirectToAction("UserStorage", "Document");
                     }
-                    return RedirectToAction("UserStorage", "Document");
                 }
                 else
                 {
