@@ -46,7 +46,7 @@ namespace DataStorage.BLL.Services
 
         public async Task CreateFile(IFormFile file, string ownerId)
         {
-            string docpath = Path.Combine(_path, ownerId);
+            string docpath = Path.Combine(_path, ownerId, file.FileName);
             using(var fileStream = new FileStream(docpath, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);

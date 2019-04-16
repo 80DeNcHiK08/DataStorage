@@ -63,9 +63,11 @@ namespace DataStorage.App.Controllers
                 var register = await _userService.CreateUserAsync(model.Email, model.Password);
                 if (register.Succeeded)
                 {
-                    await _userService.GetUserAsync(model.Email, model.Password, true);
-                    await _userService.CreateFolderOnRegister();
-
+                    var authenticated = await _userService.GetUserAsync(model.Email, model.Password, true);
+                    if (authenticated.Succeeded)
+                    {
+                        await _userService.CreateFolderOnRegister(User);
+                    }
                     return RedirectToAction("UserStorage", "Document");
                 }
                 else
@@ -74,7 +76,7 @@ namespace DataStorage.App.Controllers
                     ModelState.AddModelError("", "Incorrect username and/or password");
                 }
             }
-            return View(_userService.GetCurrentUserId());
+            return View();
         }
 
         public async Task<IActionResult> Logout()

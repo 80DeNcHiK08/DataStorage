@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DataStorage.BLL.DTOs;
@@ -12,7 +13,7 @@ namespace DataStorage.BLL.Interfaces
         Task<IEnumerable<DocumentDTO>> GetAll(string OwnerId);
         //Task<DocumentDTO> Get(Guid? id);
         //Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id);
-        Task Create(IFormFile uploadedFile);
+        Task Create(IFormFile uploadedFile, ClaimsPrincipal user);
         //Task Delete(Guid? id);
     }
 }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
@@ -7,8 +8,8 @@ namespace DataStorage.BLL.Interfaces
     {
         Task<SignInResult> GetUserAsync(string userEmail, string userPassword, bool rememberMe);
         Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword);
-        Task CreateFolderOnRegister();
-        string GetCurrentUserId();
         Task LogOut();
+        Task CreateFolderOnRegister(ClaimsPrincipal user);
+        string GetUserId(ClaimsPrincipal user);
     }
 }

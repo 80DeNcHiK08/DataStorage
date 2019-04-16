@@ -4,6 +4,7 @@ using DataStorage.DAL.Interfaces;
 using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace DataStorage.DAL.Repositories
 {
@@ -11,10 +12,12 @@ namespace DataStorage.DAL.Repositories
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
-        public UsersRepository(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
+        private readonly ApplicationContext _context;
+        public UsersRepository(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
@@ -32,6 +35,11 @@ namespace DataStorage.DAL.Repositories
         public async Task LogOut()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public string GetUserId(ClaimsPrincipal user)
+        {
+            return _userManager.GetUserId(user);
         }
     }
 }

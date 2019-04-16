@@ -6,6 +6,7 @@ using DataStorage.DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DataStorage.BLL.Services
@@ -29,13 +30,13 @@ namespace DataStorage.BLL.Services
             var documents = await _docRepo.GetAll(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
-        public async Task Create(IFormFile uploadedFile)
+        public async Task Create(IFormFile uploadedFile, ClaimsPrincipal user)
         {
             if (uploadedFile != null)
             {
                 Guid docId = Guid.NewGuid();
-                DocumentDTO docDto = new DocumentDTO { Name = uploadedFile.FileName, Length = uploadedFile.Length, IsFile = true, DocumentId = docId, OwnerId = Guid.Parse(_userService.GetCurrentUserId()), ParentId = Guid.Parse(_userService.GetCurrentUserId()) };
-                await _pProvider.CreateFile(uploadedFile, _userService.GetCurrentUserId());
+                DocumentDTO docDto = new DocumentDTO { Name = uploadedFile.FileName, Length = uploadedFile.Length, IsFile = true, DocumentId = docId, OwnerId = Guid.Parse(_userService.GetUserId(user)), ParentId = Guid.Parse(_userService.GetUserId(user)) };
+                await _pProvider.CreateFile(uploadedFile, _userService.GetUserId(user));
 
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                 await _docRepo.Create(newDoc);

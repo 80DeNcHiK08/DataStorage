@@ -27,7 +27,7 @@ namespace DataStorage.App.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFile(IFormFile uploadedFile)
         {
-            await _docService.Create(uploadedFile);
+            await _docService.Create(uploadedFile, User);
             return RedirectToAction("UserStorage");
         }
 
