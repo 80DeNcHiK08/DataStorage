@@ -21,17 +21,25 @@ namespace Configuration
                     x => x.MigrationsAssembly("DataStorage.DAL")));
 
             services.AddIdentity<UserEntity, IdentityRole>(options =>
-            {
-                options.Password.RequireNonAlphanumeric = false;
-            })
-            .AddEntityFrameworkStores<ApplicationContext>()
-            .AddDefaultTokenProviders();
+                {
+                    options.Password.RequireNonAlphanumeric = false;
+                })
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication()
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = "683865802300-uqhcsp84nqbqjmmsr1r8v98dh8c9mmme.apps.googleusercontent.com";
+                    googleOptions.ClientSecret = "XOxXjisXAkPFOoIDPUs1T_KJ";
+                });
 
             services.TryAddScoped<IUsersRepository, UsersRepository>();
             services.TryAddScoped<IUsersService, UsersService>();
             services.TryAddScoped<IDocumentRepository, DocumentRepository>();
             services.TryAddScoped<IDocumentService, DocumentService>();
             services.TryAddScoped<IPathProvider, PathProvider>();
+            services.TryAddScoped<IEmailService, EmailService>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

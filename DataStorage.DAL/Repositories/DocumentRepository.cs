@@ -17,12 +17,12 @@ namespace DataStorage.DAL.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<DocumentEntity>> GetAll(string OwnerId)
+        public async Task<IEnumerable<DocumentEntity>> GetAllUserDocumentsAsync(string OwnerId)
         {
-            return await _context.Documents.Where(d => d.OwnerId == Guid.Parse(OwnerId)).ToListAsync();
+            return await _context.Documents.Where(d => d.OwnerId == OwnerId).ToListAsync();
         }
 
-        public async Task Create(DocumentEntity document)
+        public async Task CreateDocumentAsync(DocumentEntity document)
         {
             var doc = _context.Documents.Where(d => d.DocumentId == document.DocumentId);
             if(doc.Count() == 0)
@@ -31,12 +31,11 @@ namespace DataStorage.DAL.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-        /*public async Task<DocumentEntity> Get(Guid? id)
+        public async Task<DocumentEntity> GetDocumentByIdAsync(string id)
         {
-            var result = await _context.Documents.FirstOrDefaultAsync(f => f.DocumentId == id);
-            return result;
+            return await _context.Documents.Where(f => f.DocumentId == id).FirstOrDefaultAsync();
         }
-        public async Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id)
+        /*public async Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id)
         {
             var result = await _context.Documents.Where(docid => docid.ParentId == id).ToListAsync();
             return result;

@@ -37,7 +37,6 @@ namespace DataStorage.App
                 {
                     options.Conventions.AddPageRoute("/Home/Welcome", "");
                 });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

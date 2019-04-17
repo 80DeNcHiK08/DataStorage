@@ -26,14 +26,14 @@ namespace DataStorage.BLL.Services
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
-        public async Task<IEnumerable<DocumentDTO>> GetAll(string OwnerId)
+        public async Task<IEnumerable<DocumentDTO>> GetAllUserDocumentsAsync(string OwnerId)
         {
-            var documents = await _docRepo.GetAll(OwnerId);
+            var documents = await _docRepo.GetAllUserDocumentsAsync(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
         public async Task Create(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null)
         {
-            Guid docId = Guid.NewGuid();
+            string docId = Guid.NewGuid().ToString();
             if (uploadedFile != null)
             {
                 string endPath = Path.Combine(_pProvider.ContentPath(), _userService.GetUserId(user), docId.ToString());
@@ -43,14 +43,14 @@ namespace DataStorage.BLL.Services
                     Length = uploadedFile.Length,
                     IsFile = true,
                     DocumentId = docId,
-                    OwnerId = Guid.Parse(_userService.GetUserId(user)),
-                    ParentId = Guid.Parse(parentId),
+                    OwnerId = _userService.GetUserId(user),
+                    ParentId = parentId,
                     Path = endPath
                 };
                 await _pProvider.CreateFile(uploadedFile, endPath);
 
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                await _docRepo.Create(newDoc);
+                await _docRepo.CreateDocumentAsync(newDoc);
             } else
             {
                 string endPath = Path.Combine(_pProvider.ContentPath(), _userService.GetUserId(user), docId.ToString());
@@ -60,13 +60,13 @@ namespace DataStorage.BLL.Services
                     Length = 0,
                     IsFile = false,
                     DocumentId = docId,
-                    OwnerId = Guid.Parse(_userService.GetUserId(user)),
-                    ParentId = Guid.Parse(parentId),
+                    OwnerId = _userService.GetUserId(user),
+                    ParentId = parentId,
                     Path = endPath
                 };
 
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                await _docRepo.Create(newDoc);
+                await _docRepo.CreateDocumentAsync(newDoc);
             }
         }
 
@@ -74,13 +74,13 @@ namespace DataStorage.BLL.Services
         {
             await _pProvider.CreateFolderOnRegister(_userService.GetUserId(user));
         }
-        /*public async Task<DocumentDTO> Get(Guid? id)
+        public async Task<DocumentDTO> GetDocumentByIdAsync(string id)
         {
-            var document = await _docRepo.Get(id);
+            var document = await _docRepo.GetDocumentByIdAsync(id);
             var result = _mapper.Map<DocumentDTO>(document);
             return result;
         }
-        public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
+        /*public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
         {
             var documents = await _docRepo.GetChildren(id);
             var result = _mapper.Map<IEnumerable<DocumentDTO>>(documents);

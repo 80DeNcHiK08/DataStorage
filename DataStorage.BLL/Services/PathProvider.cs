@@ -37,13 +37,13 @@ namespace DataStorage.BLL.Services
             if (!File.Exists(endpath))
             {
                 DocumentEntity document = new DocumentEntity();
-                document.DocumentId = Guid.Parse(ownerId);
+                document.DocumentId = ownerId;
                 document.Name = ownerId;
                 document.IsFile = false;
                 document.Path = endpath;
-                document.Length = 0;
-                document.ParentId = Guid.Empty;
-                document.OwnerId = Guid.Parse(ownerId);
+                document.Size = 0;
+                document.ParentId = string.Empty;
+                document.OwnerId = ownerId;
 
                 await _context.Documents.AddAsync(document);
                 Directory.CreateDirectory(endpath);

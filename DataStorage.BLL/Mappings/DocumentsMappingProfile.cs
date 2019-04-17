@@ -15,7 +15,7 @@ namespace DataStorage.BLL.Mappings
                 .ForMember(d => d.ParentId, opt => opt.MapFrom(src => src.ParentId))
                 .ForMember(d => d.IsFile, opt => opt.MapFrom(src => src.IsFile))
                 .ForMember(d => d.OwnerId, opt => opt.MapFrom(src => src.OwnerId))
-                .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Length));
+                .ForMember(d => d.Size, opt => opt.MapFrom(src => src.Length));
 
 
             CreateMap<DocumentEntity, DocumentDTO>()
@@ -25,7 +25,7 @@ namespace DataStorage.BLL.Mappings
                 .ForMember(d => d.ParentId, opt => opt.MapFrom(src => src.ParentId))
                 .ForMember(d => d.IsFile, opt => opt.MapFrom(src => src.IsFile))
                 .ForMember(d => d.OwnerId, opt => opt.MapFrom(src => src.OwnerId))               
-                .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Length));
+                .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Size));
         }
     }
 }

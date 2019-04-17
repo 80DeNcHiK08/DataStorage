@@ -10,8 +10,8 @@ namespace DataStorage.BLL.Interfaces
 {
     public interface IDocumentService
     {
-        Task<IEnumerable<DocumentDTO>> GetAll(string OwnerId);
-        //Task<DocumentDTO> Get(Guid? id);
+        Task<IEnumerable<DocumentDTO>> GetAllUserDocumentsAsync(string OwnerId);
+        Task<DocumentDTO> GetDocumentByIdAsync(string id);
         //Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id);
         Task Create(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null);
         Task CreateFolderOnRegister(ClaimsPrincipal user);
