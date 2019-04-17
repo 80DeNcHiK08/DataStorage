@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataStorage.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190413085243_onemore")]
-    partial class onemore
+    [Migration("20190417202434_Migration(ver. 1.1.3)")]
+    partial class Migrationver113
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,38 +23,43 @@ namespace DataStorage.DAL.Migrations
 
             modelBuilder.Entity("DataStorage.DAL.Entities.DocumentEntity", b =>
                 {
-                    b.Property<Guid>("DocumentId")
+                    b.Property<string>("DocumentId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ChangeDate");
+
+                    b.Property<string>("DocumentLink");
 
                     b.Property<bool>("IsFile");
 
-                    b.Property<long>("Length");
-
                     b.Property<string>("Name");
 
-                    b.Property<Guid>("OwnerId");
+                    b.Property<string>("OwnerId");
 
-                    b.Property<Guid>("ParentId");
+                    b.Property<string>("ParentId");
 
                     b.Property<string>("Path");
 
+                    b.Property<decimal>("Size")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
+
                     b.HasKey("DocumentId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("DocumentEntity");
                 });
 
             modelBuilder.Entity("DataStorage.DAL.Entities.UserDocument", b =>
                 {
-                    b.Property<Guid>("DocumentId")
+                    b.Property<string>("DocumentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("DocumentId1");
+                    b.Property<string>("DocumentId1");
 
                     b.Property<bool>("EditAccess");
 
                     b.Property<string>("UserEntityId");
-
-                    b.Property<bool>("WatchAccess");
 
                     b.HasKey("DocumentId");
 
@@ -226,6 +231,13 @@ namespace DataStorage.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DataStorage.DAL.Entities.DocumentEntity", b =>
+                {
+                    b.HasOne("DataStorage.DAL.Entities.UserEntity", "Owner")
+                        .WithMany("Documents")
+                        .HasForeignKey("OwnerId");
                 });
 
             modelBuilder.Entity("DataStorage.DAL.Entities.UserDocument", b =>

@@ -31,21 +31,32 @@ namespace DataStorage.DAL.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
         public async Task<DocumentEntity> GetDocumentByIdAsync(string id)
         {
             return await _context.Documents.Where(f => f.DocumentId == id).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateDocumentAsync(DocumentEntity document)
+        {
+            _context.Documents.Update(document);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDocumentAsync(string id)
+        {
+            _context.Documents.Remove(GetDocumentByIdAsync(id).Result);
+            await _context.SaveChangesAsync();
+        }
+
+        public string GetDocumentPathById(string id)
+        {
+            return GetDocumentByIdAsync(id).Result.Path;
         }
         /*public async Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id)
         {
             var result = await _context.Documents.Where(docid => docid.ParentId == id).ToListAsync();
             return result;
-        }
-        
-        public async Task Delete(Guid? id)
-        {
-            var founddoc = await _context.Documents.FirstOrDefaultAsync(docId => docId.DocumentId == id);
-            _context.Remove(founddoc);
-            await _context.SaveChangesAsync();
         }*/
     }
 }

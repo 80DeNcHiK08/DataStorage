@@ -31,7 +31,7 @@ namespace DataStorage.BLL.Services
             var documents = await _docRepo.GetAllUserDocumentsAsync(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
-        public async Task Create(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null)
+        public async Task CreateDocumentAsync(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null)
         {
             string docId = Guid.NewGuid().ToString();
             if (uploadedFile != null)
@@ -80,16 +80,23 @@ namespace DataStorage.BLL.Services
             var result = _mapper.Map<DocumentDTO>(document);
             return result;
         }
+
+        public async Task UpdateDocumentAsync(DocumentDTO document)
+        {
+            var newDoc = _mapper.Map<DocumentEntity>(document);
+            await _docRepo.UpdateDocumentAsync(newDoc);
+        }
+
+        public async Task DeleteDocumentAsync(string id)
+        {
+            _pProvider.DeleteFile(_docRepo.GetDocumentPathById(id));
+            await _docRepo.DeleteDocumentAsync(id);
+        }
         /*public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
         {
             var documents = await _docRepo.GetChildren(id);
             var result = _mapper.Map<IEnumerable<DocumentDTO>>(documents);
             return result;
-        }
-        
-        public async Task Delete(Guid? id)
-        {
-            await _docRepo.Delete(id);
         }*/
     }
 }

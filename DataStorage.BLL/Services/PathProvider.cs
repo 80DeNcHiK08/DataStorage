@@ -58,5 +58,13 @@ namespace DataStorage.BLL.Services
                 await file.CopyToAsync(fileStream);
             }
         }
+
+        public void DeleteFile(string filePath)
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Open))
+            {
+                File.Delete(filePath);
+            }
+        }
     }
 }

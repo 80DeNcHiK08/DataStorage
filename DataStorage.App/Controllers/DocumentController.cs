@@ -31,14 +31,20 @@ namespace DataStorage.App.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFile(IFormFile uploadedFile)
         {
-            await _docService.Create(uploadedFile, User);
+            await _docService.CreateDocumentAsync(uploadedFile, User);
             return RedirectToAction("UserStorage");
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFolder(string FolderName)
         {
-            await _docService.Create(null, User, FolderName);
+            await _docService.CreateDocumentAsync(null, User, FolderName);
+            return RedirectToAction("UserStorage");
+        }
+
+        public async Task<IActionResult> Delete(string fileId)
+        {
+            await _docService.DeleteDocumentAsync(fileId);
             return RedirectToAction("UserStorage");
         }
 

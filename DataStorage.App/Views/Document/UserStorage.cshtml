@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataStorage.BLL.DTOs.DocumentDTO>
+﻿@model IEnumerable<DataStorage.App.ViewModels.DocumentViewModel>
     
 <div class="wrapper ustorage">
         <div class="header">
@@ -15,14 +15,17 @@
 
             </div>
             <div class="workspace">
-                <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
-                    <input name="uploadedFile" type="file">
-                    <input type="submit" value="Upload">
-                </form>
-                <form asp-action="CreateFolder" asp-controller="Document" method="post">
-                    <input name="FolderName" type="text">
-                    <input type="submit" value="Create">
-                </form>
-            </div>
-        </div>
-    </div>
+                <h3>All files:</h3>
+                
+    <hr />
+    <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
+        <input name="uploadedFile" type="file">
+        <input type="submit" value="Upload">
+    </form>
+    <form asp-action="CreateFolder" asp-controller="Document" method="post">
+        <input name="FolderName" type="text">
+        <input type="submit" value="Create">
+    </form>
+</div>
+</div>
+</div>

@@ -10,8 +10,9 @@ namespace DataStorage.DAL.Interfaces
     {
         Task<IEnumerable<DocumentEntity>> GetAllUserDocumentsAsync(string OwnerId);
         Task<DocumentEntity> GetDocumentByIdAsync(string id);
-        //Task<IEnumerable<DocumentEntity>> GetChildren(Guid? id);
         Task CreateDocumentAsync(DocumentEntity uploadedFile);
-        //Task Delete(Guid? id);
+        Task UpdateDocumentAsync(DocumentEntity document);
+        Task DeleteDocumentAsync(string id);
+        string GetDocumentPathById(string id);
     }
 }
