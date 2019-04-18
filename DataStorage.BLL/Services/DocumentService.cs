@@ -19,7 +19,10 @@ namespace DataStorage.BLL.Services
         private readonly IPathProvider _pProvider;
         private readonly IUsersService _userService;
 
-        public DocumentService(IDocumentRepository docRepo, IMapper mapper, IPathProvider pProvider, IUsersService userService)
+        public DocumentService(IDocumentRepository docRepo, 
+            IMapper mapper, 
+            IPathProvider pProvider, 
+            IUsersService userService)
         {
             _docRepo = docRepo ?? throw new ArgumentNullException(nameof(docRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -72,7 +75,23 @@ namespace DataStorage.BLL.Services
 
         public async Task CreateFolderOnRegister(ClaimsPrincipal user)
         {
-            await _pProvider.CreateFolderOnRegister(_userService.GetUserId(user));
+            var ownerId = user.Identity.Name;
+            var endpath = Path.Combine(_pProvider.ContentPath(), ownerId);
+            if (GetDocumentByIdAsync(ownerId) == null)
+            {
+                DocumentEntity document = new DocumentEntity
+                {
+                    DocumentId = ownerId,
+                    Name = ownerId,
+                    IsFile = false,
+                    Path = endpath,
+                    Size = 0,
+                    ParentId = string.Empty,
+                    OwnerId = ownerId
+                };
+                await _docRepo.CreateDocumentAsync(document);
+            }
+            _pProvider.CreateFolderOnRegister(_userService.GetUserId(user));
         }
         public async Task<DocumentDTO> GetDocumentByIdAsync(string id)
         {
@@ -91,6 +110,16 @@ namespace DataStorage.BLL.Services
         {
             _pProvider.DeleteFile(_docRepo.GetDocumentPathById(id));
             await _docRepo.DeleteDocumentAsync(id);
+        }
+
+        public bool IfDocumentExists(string id)
+        {
+            var EntityResult = _docRepo.GetDocumentByIdAsync(id);
+            if (EntityResult != null)
+            {
+                return true;
+            } else
+                return false;
         }
         /*public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
         {

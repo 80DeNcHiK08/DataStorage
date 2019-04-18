@@ -16,5 +16,6 @@ namespace DataStorage.BLL.Interfaces
         Task CreateFolderOnRegister(ClaimsPrincipal user);
         Task UpdateDocumentAsync(DocumentDTO document);
         Task DeleteDocumentAsync(string id);
+        bool IfDocumentExists(string id);
     }
 }
