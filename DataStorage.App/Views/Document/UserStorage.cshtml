@@ -1,31 +1,42 @@
-﻿@model IEnumerable<DataStorage.App.ViewModels.DocumentViewModel>
+﻿@model IEnumerable<DataStorage.BLL.DTOs.DocumentDTO>
     
 <div class="wrapper ustorage">
-        <div class="header">
-            <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
-            <nav class="m-menu">
-                <ul>
-                    <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
-                </ul>
-            </nav>
+    <div class="header">
+        <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
+        <nav class="m-menu">
+            <ul>
+                <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main">
+        <div class="leftbar">
+            <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
+                <input name="uploadedFile" type="file">
+                <input type="submit" value="Upload">
+            </form>
+            <form asp-action="CreateFolder" asp-controller="Document" method="post">
+                <input name="FolderName" type="text">
+                <input type="submit" value="Create">
+            </form>
         </div>
 
-        <div class="main">
-            <div class="leftbar">
-
+        <div class="workspace">
+            <h3>All files:</h3>
+            <div class="fileblockhandler">
+                @foreach(var file in Model)
+                {
+                    <div class="block fileblock">
+                        <div class="img"></div>
+                        <h3 class="caption">@file.Name</h3>
+                        <div class="cntr-btns">
+                            <a asp-action="DeleteFile" asp-controller="Document">Del</a>
+                        </div>
+                    </div>
+                }
+            <hr />
             </div>
-            <div class="workspace">
-                <h3>All files:</h3>
-                
-    <hr />
-    <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
-        <input name="uploadedFile" type="file">
-        <input type="submit" value="Upload">
-    </form>
-    <form asp-action="CreateFolder" asp-controller="Document" method="post">
-        <input name="FolderName" type="text">
-        <input type="submit" value="Create">
-    </form>
-</div>
-</div>
+        </div>
+    </div>
 </div>

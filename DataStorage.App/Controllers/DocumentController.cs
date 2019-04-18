@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using AutoMapper;
 using DataStorage.BLL.DTOs;
 using DataStorage.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -14,18 +15,22 @@ namespace DataStorage.App.Controllers
     public class DocumentController : Controller
     {
         private readonly IDocumentService _docService;
+        private readonly IMapper _mapper;
+        private readonly IUsersService _userService;
 
-        public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService)
+        public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService, IMapper mapper, IUsersService userService)
         {
             _docService = docService ?? throw new ArgumentNullException(nameof(docService));
+            _mapper = mapper;
+            _userService = userService;
         }
 
         [Authorize]
         public IActionResult UserStorage(string id = null)
         {
-            _docService.CreateFolderOnRegister(User);
-            ViewBag.ParentId = id;
-            return View();
+            //_docService.CreateFolderOnRegister(User);
+            //ViewBag.ParentId = id;
+            return View(_docService.GetAllUserDocumentsAsync(_userService.GetUserId(User)).Result);
         }
 
         [HttpPost]
@@ -42,16 +47,10 @@ namespace DataStorage.App.Controllers
             return RedirectToAction("UserStorage");
         }
 
-        public async Task<IActionResult> Delete(string fileId)
+        public async Task<IActionResult> DeleteFile(string fileId)
         {
             await _docService.DeleteDocumentAsync(fileId);
             return RedirectToAction("UserStorage");
         }
-
-        /*public async Task<IActionResult> DeleteFile()
-        {
-            //await _docService.Delete();
-            return RedirectToAction("UserStorage");
-        }*/
     }
 }

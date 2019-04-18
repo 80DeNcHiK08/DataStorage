@@ -40,25 +40,33 @@ html, body {
 
 //logreg styles
 
-.formhandler {
+.windowwrap {
     width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    .formhandler {
+        padding: 20px 35px;
+        border: 2px solid $apr_green;
+        border-radius: 8px;
+    }
+
     .formlabel h3 {
         text-align: center;
-        margin: 15px 0;
+        margin-bottom: 25px;
     }
 
     form {
-        padding: 0 35px;
-        border: 2px solid $apr_green;
-        border-radius: 8px;
         width: 60vw;
         min-width: 315px;
         max-width: 540px;
+    }
+
+    .btn-google {
+        width: 100%;
+        margin-bottom: 25px;
     }
 
     .form-group-handler {
@@ -386,17 +394,51 @@ html, body {
     .main {
         padding-top: 60px;
         display: grid;
-        grid-template-columns: 300px auto;
+        grid-template-columns: 250px auto;
 
-        min-height: 10000px;
+        min-height: 100vh;
 
         .leftbar {
-            background-color: red;
-            
+            border-right: 2px solid #ccc;
+            padding: 10px;
         }
 
         .workspace {
-            background-color: green;
+            padding: 10px;
+
+            .fileblockhandler {
+                display: flex;
+                flex-wrap: wrap;
+                
+                .block {
+                    margin: 10px;
+                    background-color: red;
+                    min-width: 229px;
+                    max-width: 230px;
+                    min-height: 200px;
+                    padding: 0;
+                    overflow: hidden;
+
+                    .img {
+                        height: 80%;
+                        background-color: green;
+                    }
+
+                    .caption {
+                        margin: 0;
+                        font-size: 1.1em;
+                        padding: 5px 15px;
+                        width: 80%;
+                        background-color: yellow;
+                        height: 20%;
+                        overflow: hidden;
+                        float: left;
+                    }
+
+                    .cntr-btns {
+                    }
+                }
+            }
         }
     }
 }

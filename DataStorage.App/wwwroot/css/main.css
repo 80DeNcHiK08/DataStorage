@@ -32,7 +32,7 @@ html input, body input {
   background-color: transparent;
 }
 
-.formhandler {
+.windowwrap {
   width: 100vw;
   height: 100vh;
   display: -webkit-box;
@@ -46,21 +46,29 @@ html input, body input {
           align-items: center;
 }
 
-.formhandler .formlabel h3 {
-  text-align: center;
-  margin: 15px 0;
-}
-
-.formhandler form {
-  padding: 0 35px;
+.windowwrap .formhandler {
+  padding: 20px 35px;
   border: 2px solid #056839;
   border-radius: 8px;
+}
+
+.windowwrap .formlabel h3 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.windowwrap form {
   width: 60vw;
   min-width: 315px;
   max-width: 540px;
 }
 
-.formhandler .form-group-handler {
+.windowwrap .btn-google {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.windowwrap .form-group-handler {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -74,12 +82,12 @@ html input, body input {
   min-height: 248px;
 }
 
-.formhandler .form-group {
+.windowwrap .form-group {
   position: relative;
   margin: 5px 0;
 }
 
-.formhandler .form-group label {
+.windowwrap .form-group label {
   font-size: 1.2em;
   position: absolute;
   padding: 0 5px;
@@ -91,12 +99,12 @@ html input, body input {
   background-color: #fff;
 }
 
-.formhandler .form-group .validation-message {
+.windowwrap .form-group .validation-message {
   color: red;
   font-size: 0.8em;
 }
 
-.formhandler .form-group input[type="text"], .formhandler .form-group input[type="password"] {
+.windowwrap .form-group input[type="text"], .windowwrap .form-group input[type="password"] {
   font-size: 1.3em;
   padding: 5px 13px;
   border: 2px solid #056839;
@@ -104,39 +112,39 @@ html input, body input {
   width: 100%;
 }
 
-.formhandler .form-group input[type="text"]:invalid:not(:focus):not(:placeholder-shown),
-.formhandler .form-group input[type="password"]:invalid:not(:focus):not(:placeholder-shown) {
+.windowwrap .form-group input[type="text"]:invalid:not(:focus):not(:placeholder-shown),
+.windowwrap .form-group input[type="password"]:invalid:not(:focus):not(:placeholder-shown) {
   border-color: red;
 }
 
-.formhandler .form-group input[type="text"]:valid,
-.formhandler .form-group input[type="password"]:valid {
+.windowwrap .form-group input[type="text"]:valid,
+.windowwrap .form-group input[type="password"]:valid {
   border-color: #056839;
 }
 
-.formhandler .form-group input[type="text"]:focus,
-.formhandler .form-group input[type="password"]:focus {
+.windowwrap .form-group input[type="text"]:focus,
+.windowwrap .form-group input[type="password"]:focus {
   border-color: #2593c4;
 }
 
-.formhandler .form-group input[type="text"] + .error,
-.formhandler .form-group input[type="password"] + .error {
+.windowwrap .form-group input[type="text"] + .error,
+.windowwrap .form-group input[type="password"] + .error {
   font-size: 0.8em;
   color: red;
   top: 50px;
 }
 
-.formhandler .form-group input[type="text"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
-.formhandler .form-group input[type="password"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
-.formhandler .form-group input[type="text"]:valid + .elemental,
-.formhandler .form-group input[type="password"]:valid + .elemental,
-.formhandler .form-group input[type="text"]:focus + .elemental,
-.formhandler .form-group input[type="password"]:focus + .elemental {
+.windowwrap .form-group input[type="text"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
+.windowwrap .form-group input[type="password"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
+.windowwrap .form-group input[type="text"]:valid + .elemental,
+.windowwrap .form-group input[type="password"]:valid + .elemental,
+.windowwrap .form-group input[type="text"]:focus + .elemental,
+.windowwrap .form-group input[type="password"]:focus + .elemental {
   font-size: 0.8em;
   top: -9px;
 }
 
-.formhandler .form-group input[type="submit"] {
+.windowwrap .form-group input[type="submit"] {
   min-width: 70px;
   min-height: 35px;
   background-color: #056839;
@@ -149,18 +157,18 @@ html input, body input {
   transition: 0.3s;
 }
 
-.formhandler .form-group input[type="submit"]:hover {
+.windowwrap .form-group input[type="submit"]:hover {
   border-color: #056839;
   background-color: #fff;
   color: #056839;
   font-weight: bold;
 }
 
-.formhandler .form-group input[type="checkbox"] {
+.windowwrap .form-group input[type="checkbox"] {
   display: none;
 }
 
-.formhandler .form-group input[type="checkbox"] + label {
+.windowwrap .form-group input[type="checkbox"] + label {
   padding: 0;
   margin: 0;
   position: absolute;
@@ -168,7 +176,7 @@ html input, body input {
   left: 0;
 }
 
-.formhandler .form-group input[type="checkbox"] + label::before {
+.windowwrap .form-group input[type="checkbox"] + label::before {
   content: "";
   position: absolute;
   width: 20px;
@@ -181,7 +189,7 @@ html input, body input {
   transition: 0.2s;
 }
 
-.formhandler .form-group input[type="checkbox"]:checked + label::before {
+.windowwrap .form-group input[type="checkbox"]:checked + label::before {
   border-color: #056839;
   -webkit-transform: translate(10px, 0) rotate(45deg);
           transform: translate(10px, 0) rotate(45deg);
@@ -190,7 +198,7 @@ html input, body input {
   border-left-style: none;
 }
 
-.formhandler .form-group:last-of-type {
+.windowwrap .form-group:last-of-type {
   margin-bottom: 20px;
   min-width: 160px;
   width: inherit;
@@ -206,7 +214,7 @@ html input, body input {
           justify-content: space-between;
 }
 
-.formhandler .subm {
+.windowwrap .subm {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -215,13 +223,13 @@ html input, body input {
           align-items: center;
 }
 
-.formhandler .subm .remme {
+.windowwrap .subm .remme {
   position: relative;
   height: 20px;
   width: 20px;
 }
 
-.formhandler #txtlabel {
+.windowwrap #txtlabel {
   position: relative;
   font-size: 1.1em;
   padding: 0;
@@ -230,21 +238,21 @@ html input, body input {
   top: 0;
 }
 
-.formhandler label[for=rem] {
+.windowwrap label[for=rem] {
   top: 3px;
   left: 15px;
 }
 
-.formhandler .links {
+.windowwrap .links {
   text-align: center;
 }
 
-.formhandler .links a {
+.windowwrap .links a {
   color: #2593c4;
   cursor: pointer;
 }
 
-.formhandler .links a:hover {
+.windowwrap .links a:hover {
   color: #2593c4;
   cursor: pointer;
   text-decoration: underline;
@@ -431,16 +439,51 @@ html input, body input {
   padding-top: 60px;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 300px auto;
-      grid-template-columns: 300px auto;
-  min-height: 10000px;
+  -ms-grid-columns: 250px auto;
+      grid-template-columns: 250px auto;
+  min-height: 100vh;
 }
 
 .ustorage .main .leftbar {
-  background-color: red;
+  border-right: 2px solid #ccc;
+  padding: 10px;
 }
 
 .ustorage .main .workspace {
+  padding: 10px;
+}
+
+.ustorage .main .workspace .fileblockhandler {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.ustorage .main .workspace .fileblockhandler .block {
+  margin: 10px;
+  background-color: red;
+  min-width: 229px;
+  max-width: 230px;
+  min-height: 200px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .img {
+  height: 80%;
   background-color: green;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .caption {
+  margin: 0;
+  font-size: 1.1em;
+  padding: 5px 15px;
+  width: 80%;
+  background-color: yellow;
+  height: 20%;
+  overflow: hidden;
+  float: left;
 }
 /*# sourceMappingURL=main.css.map */
