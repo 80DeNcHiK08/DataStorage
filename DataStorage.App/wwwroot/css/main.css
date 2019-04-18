@@ -462,18 +462,51 @@ html input, body input {
 }
 
 .ustorage .main .workspace .fileblockhandler .block {
-  margin: 10px;
-  background-color: red;
-  min-width: 229px;
-  max-width: 230px;
+  margin: 7px 10px;
+  min-width: 159px;
+  max-width: 160px;
   min-height: 200px;
-  padding: 0;
   overflow: hidden;
+  cursor: pointer;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  padding: 15px 5px;
+  background-color: #ccc;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
-.ustorage .main .workspace .fileblockhandler .block .img {
-  height: 80%;
-  background-color: green;
+.ustorage .main .workspace .fileblockhandler .block .brow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .fimg, .ustorage .main .workspace .fileblockhandler .block .fdimg {
+  min-height: 140px;
+  min-width: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 5px;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .fimg {
+  background-image: url("../images/file.png");
+}
+
+.ustorage .main .workspace .fileblockhandler .block .fdimg {
+  background-image: url("../images/folder.png");
 }
 
 .ustorage .main .workspace .fileblockhandler .block .caption {
@@ -481,9 +514,26 @@ html input, body input {
   font-size: 1.1em;
   padding: 5px 15px;
   width: 80%;
-  background-color: yellow;
-  height: 20%;
+  height: 100%;
   overflow: hidden;
   float: left;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .cntr-btns {
+  width: 20%;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .cntr-btns #moreoptions {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding-top: 8px;
+}
+
+.ustorage .main .workspace .fileblockhandler .block:hover {
+  -webkit-transform: translate(-3px, -5px) scale(1.01);
+          transform: translate(-3px, -5px) scale(1.01);
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.4);
+          box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.4);
 }
 /*# sourceMappingURL=main.css.map */
