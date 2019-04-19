@@ -20,5 +20,14 @@ namespace Microsoft.AspNetCore.Mvc
                 values: new { userId, token },
                 protocol: scheme);
         }
+
+        public static string FileAccessLink(this IUrlHelper urlHelper, string link, string scheme)
+        {
+            return urlHelper.Action(
+                action: "GetAvailbleDocument",
+                controller: "Document",
+                values: new { link },
+                protocol: scheme);
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace DataStorage.BLL.Services
                 document.Name = ownerId;
                 document.IsFile = false;
                 document.Path = endpath;
-                document.Size = 0;
+                document.Length = 0;
                 document.ParentId = string.Empty;
                 document.OwnerId = ownerId;
 

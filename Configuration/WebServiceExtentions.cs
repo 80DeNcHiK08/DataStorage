@@ -17,7 +17,7 @@ namespace Configuration
         public static IServiceCollection AddWebServices(this IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options =>
-               options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;",
+               options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;MultipleActiveResultSets=true;",
                     x => x.MigrationsAssembly("DataStorage.DAL")));
 
             services.AddIdentity<UserEntity, IdentityRole>(options =>
@@ -40,6 +40,8 @@ namespace Configuration
             services.TryAddScoped<IDocumentService, DocumentService>();
             services.TryAddScoped<IPathProvider, PathProvider>();
             services.TryAddScoped<IEmailService, EmailService>();
+            services.TryAddScoped<IUserDocumentRepository, UserDocumentRepository>();
+            services.TryAddScoped<ISharingService, SharingService>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

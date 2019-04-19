@@ -7,7 +7,9 @@ namespace DataStorage.DAL.Entities
     {
         [Key]
         public string DocumentId { get; set; }
-        public virtual DocumentEntity Document { get; set; }
-        public bool EditAccess { get; set; }
+        public DocumentEntity Document { get; set; }
+        public string GuestEmail { get; set; }
+        public string DocumentLink { get; set; }
+        // public bool EditAccess { get; set; }
     }
 }

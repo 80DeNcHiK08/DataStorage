@@ -14,6 +14,6 @@ namespace DataStorage.DAL
         }
 
         public DbSet<DocumentEntity> Documents { get; set; }
-        public DbSet<DocumentEntity> UserDocuments { get; set; }
+        public DbSet<UserDocument> UserDocuments { get; set; }
     }
 }
