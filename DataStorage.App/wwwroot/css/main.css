@@ -32,6 +32,10 @@ html input, body input {
   background-color: transparent;
 }
 
+html .invisible, body .invisible {
+  opacity: 0;
+}
+
 .windowwrap {
   width: 100vw;
   height: 100vh;
@@ -463,8 +467,8 @@ html input, body input {
 
 .ustorage .main .workspace .fileblockhandler .block {
   margin: 7px 10px;
-  min-width: 159px;
-  max-width: 160px;
+  min-width: 199px;
+  max-width: 200px;
   min-height: 200px;
   overflow: hidden;
   cursor: pointer;
@@ -480,6 +484,7 @@ html input, body input {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  position: relative;
 }
 
 .ustorage .main .workspace .fileblockhandler .block .brow {
@@ -494,7 +499,7 @@ html input, body input {
 
 .ustorage .main .workspace .fileblockhandler .block .fimg, .ustorage .main .workspace .fileblockhandler .block .fdimg {
   min-height: 140px;
-  min-width: 150px;
+  min-width: 200px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -528,6 +533,35 @@ html input, body input {
   width: 100%;
   height: 100%;
   padding-top: 8px;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .contextmenu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+  padding: 5px 15px;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .contextmenu .func {
+  font-size: 1.3em;
+  margin: 5px 0;
+  border-bottom: 1px solid #666;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.ustorage .main .workspace .fileblockhandler .block .contextmenu .func:hover {
+  text-align: center;
 }
 
 .ustorage .main .workspace .fileblockhandler .block:hover {

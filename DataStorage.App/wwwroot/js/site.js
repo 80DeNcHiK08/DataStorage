@@ -1,4 +1,17 @@
-﻿$(document).ready(function() {
+﻿function deleteDocument() {
+    var str = $(this).find('#hiddenblockid').val();
+    $.ajax({
+        type: "POST",
+        data: {
+            fileId: str
+        },
+        url: '/Document/DeleteFile'
+    }).done(function() {
+        window.location = '/Document/UserStorage';
+    });
+}
+
+$(document).ready(function() {
     /*$("input[type='text']").on('focus', function(e) {
         if($("input[type='text']").valid() == false || $("input[type='password']").valid() == false) {
             $(this).css({
@@ -18,18 +31,43 @@
 
     $('.fileblock').on("click", function(e) {
         e.preventDefault();
-        var str = $(this).find('#hiddenblockid').val();
+        
+    })
+    //var display = true;
+    $('.fileblock').on("contextmenu", function(e) {
+        e.preventDefault()
+        if($(this).find('.contextmenu').hasClass("invisible")) {
+            $(this).find('.contextmenu').removeClass('invisible');
+        } else {
+            $(this).find('.contextmenu').addClass('invisible');
+        }
+        
+    })
+
+    $('.delete').on("click", function() {
+        var str = $(this).parent().parent().find('#hiddenblockid').val();
         $.ajax({
-            type:"POST",
-            data: JSON.stringify(str),
-            url: '/Document/UserStorage'
-        }).done(function(res){
-            alert(str);
+        type: "POST",
+        data: {
+            fileId: str
+        },
+        url: '/Document/DeleteFile'
+        }).done(function() {
+            window.location = '/Document/UserStorage';
         });
     })
 
-    $('.fileblock').on("contextmenu", function(e) {
-        e.preventDefault();
-        alert("Right click (context menu)");
-    })
+    $('.delete').on("click", function() {
+        var str = $(this).parent().parent().find('#hiddenblockid').val();
+        $.ajax({
+            type: "POST",
+            data: {
+                fileId: str
+            },
+            url: '/Document/DownloadFile '
+            }).done(function() {
+                window.location = '/Document/UserStorage';
+            });
+    }
+
 })

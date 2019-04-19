@@ -20,7 +20,7 @@ namespace DataStorage.BLL.Services
             IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
-            _path = Path.Combine(_hostingEnvironment.ContentRootPath, "../localStorage");
+            _path = Path.Combine(_hostingEnvironment.ContentRootPath, "localstorage");
             Directory.CreateDirectory(_path);
             _mapper = mapper;
         }
@@ -33,7 +33,7 @@ namespace DataStorage.BLL.Services
         public void CreateFolderOnRegister(string ownerId)
         {
             var endpath = Path.Combine(_path, ownerId);
-            if (File.Exists(endpath) == true ? false : true)
+            if (!File.Exists(endpath))
             {
                 Directory.CreateDirectory(endpath);
             }
@@ -42,17 +42,17 @@ namespace DataStorage.BLL.Services
         public async Task CreateFile(IFormFile file, string endPath)
         {
             using(var fileStream = new FileStream(endPath, FileMode.Create))
-            {
+            {Â
                 await file.CopyToAsync(fileStream);
             }
         }
 
         public void DeleteFile(string filePath)
         {
-            using (var fileStream = new FileStream(filePath, FileMode.Open))
-            {
+            //if (File.Exists(filePath))
+            //{
                 File.Delete(filePath);
-            }
+            //}
         }
     }
 }

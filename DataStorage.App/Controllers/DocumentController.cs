@@ -26,10 +26,14 @@ namespace DataStorage.App.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> UserStorage(string id = null)
+        public async Task<IActionResult> UserStorage(string id)
         {
+            if(id == null)
+            {
+                id = _userService.GetUserId(User);
+            }
             await _docService.CreateFolderOnRegister(User);
-            return View(_docService.GetAllUserDocumentsAsync(_userService.GetUserId(User)).Result);
+            return View(_docService.GetAllUserDocumentsAsync(id).Result);
         }
 
         [HttpPost]
