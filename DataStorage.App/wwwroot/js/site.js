@@ -27,13 +27,8 @@ $(document).ready(function() {
     if($("input[type='text']").val() != "" || $("input[type='password']").val() != "") {
         //alert();
         $(this).parent().focus();
-    } 
+    }
 
-    $('.fileblock').on("click", function(e) {
-        e.preventDefault();
-        
-    })
-    //var display = true;
     $('.fileblock').on("contextmenu", function(e) {
         e.preventDefault()
         if($(this).find('.contextmenu').hasClass("invisible")) {
@@ -57,17 +52,16 @@ $(document).ready(function() {
         });
     })
 
-    $('.delete').on("click", function() {
+    $('.download').on("click", function () {
         var str = $(this).parent().parent().find('#hiddenblockid').val();
         $.ajax({
             type: "POST",
             data: {
                 fileId: str
             },
-            url: '/Document/DownloadFile '
-            }).done(function() {
-                window.location = '/Document/UserStorage';
-            });
-    }
-
+            url: '/Document/DownloadFile'
+        }).done(function () {
+            //window.location = '/Document/UserStorage';
+        });
+    })
 })

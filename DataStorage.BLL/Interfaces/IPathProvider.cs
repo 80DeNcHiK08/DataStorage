@@ -10,5 +10,6 @@ namespace DataStorage.BLL.Interfaces
         Task CreateFile(IFormFile file, string endPath);
         string ContentPath();
         void DeleteFile(string filePath);
+        byte[] GetFileToArray(string filepath);
     }
 }

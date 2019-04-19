@@ -55,5 +55,15 @@ namespace DataStorage.App.Controllers
             await _docService.DeleteDocumentAsync(fileId);
             return RedirectToAction("UserStorage");
         }
+
+        public async Task<IActionResult> DownloadFile(string fileId)
+        {
+            var doc = await _docService.GetDocumentByIdAsync(fileId);
+            var bytearray = _docService.DownloadFile(fileId);
+            using (var filestream = new FileStream(doc.Path, FileMode.Open))
+            {
+                return File(bytearray, "application/png", doc.Name);
+            }
+        }
     }
 }

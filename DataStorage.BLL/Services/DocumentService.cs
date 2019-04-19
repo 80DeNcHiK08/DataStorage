@@ -121,6 +121,13 @@ namespace DataStorage.BLL.Services
             } else
                 return false;
         }
+
+        public byte[] DownloadFile(string fileId)
+        {
+            var doc = _docRepo.GetDocumentByIdAsync(fileId);
+            byte[] file = _pProvider.GetFileToArray(doc.Result.Path);
+            return file;
+        }
         /*public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
         {
             var documents = await _docRepo.GetChildren(id);

@@ -7,6 +7,7 @@ using DataStorage.DAL;
 using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DataStorage.BLL.Services
 {
@@ -16,7 +17,7 @@ namespace DataStorage.BLL.Services
         private readonly IMapper _mapper;
         private string _path;
 
-        public PathProvider(IHostingEnvironment hostingEnvironment, 
+        public PathProvider(IHostingEnvironment hostingEnvironment,
             IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
@@ -41,18 +42,25 @@ namespace DataStorage.BLL.Services
 
         public async Task CreateFile(IFormFile file, string endPath)
         {
-            using(var fileStream = new FileStream(endPath, FileMode.Create))
-            {Â
+            using (var fileStream = new FileStream(endPath, FileMode.Create))
+            {
                 await file.CopyToAsync(fileStream);
             }
         }
 
         public void DeleteFile(string filePath)
         {
-            //if (File.Exists(filePath))
-            //{
-                File.Delete(filePath);
-            //}
+            File.Delete(filePath);
+        }
+
+        public byte[] GetFileToArray(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                byte[] file = File.ReadAllBytes(filePath);
+                return file;
+            }
+            else throw new Exception();
         }
     }
 }
