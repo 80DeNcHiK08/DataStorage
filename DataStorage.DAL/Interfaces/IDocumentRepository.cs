@@ -8,7 +8,7 @@ namespace DataStorage.DAL.Interfaces
 {
     public interface IDocumentRepository
     {
-        Task<IEnumerable<DocumentEntity>> GetAllUserDocumentsAsync(string OwnerId);
+        Task<IEnumerable<DocumentEntity>> GetAllDocumentsRelatedAsync(string parentId);
         Task<DocumentEntity> GetDocumentByIdAsync(string id);
         Task CreateDocumentAsync(DocumentEntity uploadedFile);
         Task UpdateDocumentAsync(DocumentEntity document);

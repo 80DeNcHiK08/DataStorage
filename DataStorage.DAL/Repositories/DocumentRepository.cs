@@ -17,9 +17,9 @@ namespace DataStorage.DAL.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<DocumentEntity>> GetAllUserDocumentsAsync(string OwnerId)
+        public async Task<IEnumerable<DocumentEntity>> GetAllDocumentsRelatedAsync(string parentId)
         {
-            return await _context.Documents.Where(d => d.OwnerId == OwnerId && d.ParentId != string.Empty).ToListAsync();
+            return await _context.Documents.Where(d => d.ParentId == parentId && d.ParentId != string.Empty).ToListAsync();
         }
 
         public async Task CreateDocumentAsync(DocumentEntity document)

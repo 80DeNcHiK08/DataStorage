@@ -29,6 +29,27 @@ $(document).ready(function() {
         $(this).parent().focus();
     }
 
+    $('.fileblock').on("click", function(e) {
+        e.preventDefault()
+        var isFile = $(this).find('#hiddenblockfiletype').val();
+        var pId = $(this).find('#hiddenblockid').val();
+        console.log(isFile, "\n",pId)
+        if (isFile === 'False') {
+            console.log('pizda');
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action('UserStorage', 'Document', {parentId = " + pId + "})",
+                contentType: "application/json"
+            }).done(function (response) {
+                $('.fileblock').html(response);
+                //window.location = '/Document/UserStorage?parentId=' + parentId;
+                //window.location = '/Document/UserStorage';
+            });
+        } else {
+
+        }
+    })
+
     $('.fileblock').on("contextmenu", function(e) {
         e.preventDefault()
         if($(this).find('.contextmenu').hasClass("invisible")) {

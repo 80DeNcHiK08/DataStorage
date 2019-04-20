@@ -26,27 +26,29 @@ namespace DataStorage.App.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> UserStorage(string id)
+        [HttpGet]
+        public async Task<IActionResult> UserStorage(string parentId)
         {
-            if(id == null)
+            if(parentId == null)
             {
-                id = _userService.GetUserId(User);
+                parentId = _userService.GetUserId(User);
             }
-            await _docService.CreateFolderOnRegister(User);
-            return View(_docService.GetAllUserDocumentsAsync(id).Result);
+            ViewData["parentId"] = parentId;
+            await _docService.CreateFolderOnRegister(_userService.GetUserId(User));
+            return View(_docService.GetAllDocumentsRelatedAsync(parentId).Result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateFile(IFormFile uploadedFile)
+        public async Task<IActionResult> CreateFile(IFormFile uploadedFile, string parentId)
         {
-            await _docService.CreateDocumentAsync(uploadedFile, User);
+            await _docService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
             return RedirectToAction("UserStorage");
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateFolder(string FolderName)
+        public async Task<IActionResult> CreateFolder(string FolderName, string parentId)
         {
-            await _docService.CreateDocumentAsync(null, User, FolderName);
+            await _docService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
             return RedirectToAction("UserStorage");
         }
 

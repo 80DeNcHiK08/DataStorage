@@ -14,22 +14,26 @@
         <div class="leftbar">
             <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
                 <input name="uploadedFile" type="file">
+                @Html.Hidden("parentId", ViewData["parentId"])
                 <input type="submit" value="Upload">
             </form>
             <form asp-action="CreateFolder" asp-controller="Document" method="post">
                 <input name="FolderName" type="text">
+                @Html.Hidden("parentId", ViewData["parentId"])
                 <input type="submit" value="Create">
             </form>
         </div>
 
         <div class="workspace">
             <h3>All files:</h3>
+            @Html.Hidden("parentId", (object)ViewData["parentId"])
             <div class="fileblockhandler">
                 @foreach(var file in Model)
                 {
                     <div class="block fileblock">
                         <div class="brow">
                             <input type="hidden" value='@file.DocumentId' id="hiddenblockid">
+                            <input type="hidden" value='@file.IsFile.ToString()' id="hiddenblockfiletype">
                             @if(file.IsFile == true)
                             {
                                 <text><div class="fimg"></div></text>
