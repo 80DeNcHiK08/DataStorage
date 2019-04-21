@@ -1,0 +1,29 @@
+@model DataStorage.App.ViewModels.DeleteUserViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+@{
+    ViewData["Title"] = "Delete User";
+}
+<div class="formhandler">
+    <form asp-action="DeleteUser" asp-controller="Account" asp-anti-forgery="true">
+        <div class="formlabel">
+            <h3>To delete your account, enter your Email and click Delete.</h3>
+        </div>
+        <span class="signerrormessage">@ViewData["UserDoesNotExistErrorMessage"]</span>
+        <input asp-for="Email" type="hidden" />
+        <div class="validation" asp-validation-summary="ModelOnly" />
+        <div class="form-group-handler">
+            <div class="form-group">
+                <input placeholder=" " required pattern="[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,3}$" type="text" asp-for="ConfirmEmail" />
+                <label asp-for="ConfirmEmail" class="elemental">ConfirmEmail</label>
+                <span asp-validation-for="ConfirmEmail" class="validation-message collapse">* Email should look like this: example@@gmail.com</span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn" />
+            </div>
+        </div>
+    </form>
+</div>
+

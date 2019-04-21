@@ -22,6 +22,12 @@ namespace DataStorage.DAL.Repositories
             return await _context.Documents.Where(d => d.OwnerId == OwnerId && d.ParentId != string.Empty).ToListAsync();
         }
 
+        public void DeleteAllUserDocumentsAsync(string OwnerId)
+        {
+            _context.Documents.RemoveRange(_context.Documents.Where(d => d.OwnerId == OwnerId));
+            _context.SaveChanges();
+        }
+
         public async Task CreateDocumentAsync(DocumentEntity document)
         {
             var doc = _context.Documents.Where(d => d.DocumentId == document.DocumentId);

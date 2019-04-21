@@ -14,5 +14,6 @@ namespace DataStorage.DAL.Interfaces
         Task UpdateDocumentAsync(DocumentEntity document);
         Task DeleteDocumentAsync(string id);
         string GetDocumentPathById(string id);
+        void DeleteAllUserDocumentsAsync(string OwnerId);
     }
 }

@@ -7,6 +7,7 @@ namespace DataStorage.BLL.Interfaces
     public interface IPathProvider
     {
         void CreateFolderOnRegister(string ownerId);
+        void DropFolderOnUserDelete(string ownerId);
         Task CreateFile(IFormFile file, string endPath);
         string ContentPath();
         void DeleteFile(string filePath);

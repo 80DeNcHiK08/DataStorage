@@ -25,5 +25,8 @@ namespace DataStorage.BLL.Interfaces
         Task<IdentityResult> ResetPasswordAsync(string userEmail, string token, string newPassword);
         Task LogOut();
         string GetUserId(ClaimsPrincipal user);
+        Task<bool> ConfirmIncreaseAsync(string userId);
+        Task<bool> NameChange(string UserId, string UserFirstName, string UserLastName);
+        void DeleteUserAsync(string userId);
     }
 }

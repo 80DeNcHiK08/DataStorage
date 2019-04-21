@@ -36,6 +36,13 @@ namespace DataStorage.App.Controllers
             return View(_docService.GetAllUserDocumentsAsync(id).Result);
         }
 
+        [Authorize]
+        public IActionResult DeleteUser()
+        {
+            _docService.DropFolderOnUserDelete(User);
+            return RedirectToAction("Logout", "Account");
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateFile(IFormFile uploadedFile)
         {

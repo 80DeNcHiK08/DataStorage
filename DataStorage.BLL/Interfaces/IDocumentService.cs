@@ -14,6 +14,7 @@ namespace DataStorage.BLL.Interfaces
         Task<DocumentDTO> GetDocumentByIdAsync(string id);
         Task CreateDocumentAsync(IFormFile uploadedFile, ClaimsPrincipal user, string fdName = null, string parentId = null);
         Task CreateFolderOnRegister(ClaimsPrincipal user);
+        void DropFolderOnUserDelete(ClaimsPrincipal user);
         Task UpdateDocumentAsync(DocumentDTO document);
         Task DeleteDocumentAsync(string id);
         bool IfDocumentExists(string id);

@@ -93,6 +93,22 @@ namespace DataStorage.BLL.Services
             }
             _pProvider.CreateFolderOnRegister(_userService.GetUserId(user));
         }
+
+        public async void DropFolderOnUserDelete(ClaimsPrincipal user)
+        {
+            var ownerId = _userService.GetUserId(user);
+            var oId = GetDocumentByIdAsync(ownerId);
+            await _userService.LogOut();
+            if (oId != null)
+            {
+                
+                _pProvider.DropFolderOnUserDelete(ownerId);
+                _docRepo.DeleteAllUserDocumentsAsync(ownerId);
+                _userService.DeleteUserAsync(ownerId);
+
+            }
+        }
+
         public async Task<DocumentDTO> GetDocumentByIdAsync(string id)
         {
             var document = await _docRepo.GetDocumentByIdAsync(id);

@@ -20,5 +20,14 @@ namespace Microsoft.AspNetCore.Mvc
                 values: new { userId, token },
                 protocol: scheme);
         }
+        public static string IncreaseConfirmationLink(this IUrlHelper urlHelper, string userId, string scheme)
+        {
+            return urlHelper.Action(
+                action: "ConfirmIncrease",
+                controller: "Home",
+                values: new { userId },
+                protocol: scheme);
+        }
+
     }
 }
