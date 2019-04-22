@@ -1,0 +1,182 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #d5632a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+    html input, body input {
+        outline: none;
+        border: none;
+        background-color: transparent;
+    }
+
+.formhandler {
+    background-color: #fff;
+    min-width: 400px;
+    width: 400px;
+    height: 300px;
+    margin: calc(50vh - 150px) auto 0 auto;
+    border: 2px solid #056839;
+    border-radius: 8px;
+}
+
+    .formhandler .formlabel h3 {
+        text-align: center;
+        font-weight: normal;
+    }
+
+    .formhandler form {
+        padding: 0 35px;
+    }
+
+.links {
+    text-align: center;
+}
+
+.form-group {
+    position: relative;
+    height: 40px;
+    min-width: 275px;
+    width: inherit;
+    margin: 15px auto;
+}
+
+    .form-group label {
+        font-size: 1.2em;
+        position: absolute;
+        padding: 0 5px;
+        z-index: 2;
+        left: 8px;
+        top: 5px;
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+        background-color: #fff;
+    }
+
+    .form-group span {
+        position: absolute;
+    }
+
+    .form-group input[type="text"], .form-group input[type="password"] {
+        font-size: 1.3em;
+        padding: 5px 13px;
+        width: calc(100% - 30px);
+        z-index: 1;
+        border: 2px solid #056839;
+        border-radius: 5px;
+    }
+
+    .form-group input[type=text]:invalid:not(:focus):not(:placeholder-shown),
+    .form-group input[type=password]:invalid:not(:focus):not(:placeholder-shown) {
+        border-color: red;
+    }
+
+        .form-group input[type=text]:invalid:not(:focus):not(:placeholder-shown) + label,
+        .form-group input[type=password]:invalid:not(:focus):not(:placeholder-shown) + label {
+            font-size: 0.8em;
+            top: -9px;
+        }
+
+    .form-group input[type=text]:valid,
+    .form-group input[type=password]:valid {
+        border-color: #056839;
+    }
+
+        .form-group input[type=text]:valid + label,
+        .form-group input[type=password]:valid + label {
+            font-size: 0.8em;
+            top: -9px;
+        }
+
+    .form-group input[type=text]:focus,
+    .form-group input[type=password]:focus {
+        border-color: #2593c4;
+    }
+
+        .form-group input[type=text]:focus + label,
+        .form-group input[type=password]:focus + label {
+            font-size: 0.8em;
+            top: -9px;
+        }
+
+    .form-group input[type="submit"] {
+        margin: 0 auto;
+        min-width: 160px;
+        height: 100%;
+        background-color: #056839;
+        color: #fff;
+        font-size: 1.1em;
+        cursor: pointer;
+        border-radius: 5px;
+        border: 2px solid transparent;
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+    }
+
+        .form-group input[type="submit"]:hover {
+            border-color: #056839;
+            background-color: #fff;
+            color: #056839;
+            font-weight: bold;
+        }
+
+    .form-group input[type="checkbox"] {
+        display: inline-block;
+        opacity: 0;
+    }
+
+        .form-group input[type="checkbox"] + label::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 3px;
+            left: 0px;
+            cursor: pointer;
+            border: 2px solid #000;
+            -webkit-transition: 0.2s;
+            transition: 0.2s;
+        }
+
+        .form-group input[type="checkbox"]:checked + label::before {
+            border-color: #056839;
+            -webkit-transform: translate(10px, 0) rotate(45deg);
+            transform: translate(10px, 0) rotate(45deg);
+            width: 10px;
+            border-top-style: none;
+            border-left-style: none;
+        }
+
+    .form-group:last-of-type {
+        margin-top: 20px;
+        min-width: 160px;
+        width: inherit;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+.subm p {
+    word-wrap: nowrap;
+}
+
+.subm .remme {
+    margin-right: 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+/*# sourceMappingURL=main.css.map */
