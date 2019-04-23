@@ -236,6 +236,37 @@ namespace DataStorage.App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public IActionResult DeleteUser(string email)
+        {
+            return View(new DeleteUserViewModel { Email = email});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteUser(DeleteUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("DeleteUser", "Document");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> NameChange (string UserId, string UserFirstName, string UserLastName)
+        {
+            var user = await _userService.GetUserByIdAsync(UserId);
+            if (user != null)
+            {
+                await _userService.NameChange(UserId, UserFirstName, UserLastName);
+            }
+            return RedirectToAction("Profile", "Home");
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPassword(string userId, string token)
         {
@@ -263,12 +294,13 @@ namespace DataStorage.App.Controllers
                 var result = await _userService.ResetPasswordAsync(user.Email, model.Token, model.NewPassword);
                 if (result.Succeeded)
                 {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    await _userService.LogOut();
                     return RedirectToAction("Login", "Account");
                 }
 
                 return View("Error");
             }
-
             return View(model);
         }
 

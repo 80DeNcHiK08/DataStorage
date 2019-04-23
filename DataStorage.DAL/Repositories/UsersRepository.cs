@@ -29,16 +29,25 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<IdentityResult> CreateUserAsync(string userEmail, string userPassword)
         {
-            UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail };
+            UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail, StorageSize = 1073741824, RemainingStorageSize = 1073741824,
+                FirstName = "First Name", LastName = "Last Name" };
 
             return await _userManager.CreateAsync(user, userPassword);;
         }
 
         public async Task<IdentityResult> CreateUserAsync(string userEmail)
         {
-            UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail };
+            
+            UserEntity user = new UserEntity { Email = userEmail, UserName = userEmail, StorageSize = 1073741824, RemainingStorageSize = 1073741824,
+                FirstName = "First Name", LastName = "Last Name" };
 
             return await _userManager.CreateAsync(user);;
+        }
+
+        public void DeleteUserAsync(string userId)
+        {
+            _context.Users.Remove(_context.Users.Find(userId));
+            _context.SaveChanges();
         }
 
         public async Task<string> GetEmailTokenAsync(UserEntity user)
@@ -109,6 +118,24 @@ namespace DataStorage.DAL.Repositories
         public async Task<IdentityResult> ResetPasswordAsync(UserEntity user, string token, string newPassword)
         {
             return await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
+
+        public async Task<bool> ConfirmIncrease(UserEntity user)
+        {
+            if(user.StorageSize < 2147483648)
+                user.RemainingStorageSize += 1073741824;
+            user.StorageSize = 2147483648;
+            await _context.SaveChangesAsync();
+            return true; ;
+        }
+
+        public async Task<bool> NameChange(string UserId, string UserFirstName, string UserLastName)
+        {
+            var user = await GetUserByIdAsync(UserId);
+            user.FirstName = UserFirstName;
+            user.LastName = UserLastName;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

@@ -14,6 +14,7 @@
         </div>
         <nav class="m-menu">
             <ul>
+                <li><a asp-action="Profile" asp-controller="Home">Profile</a></li>
                 <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
             </ul>
         </nav>
@@ -33,7 +34,7 @@
         <div class="workspace">
             <h3>All files:</h3>
             <div class="fileblockhandler">
-                @foreach(var file in Model)
+                @foreach (var file in Model)
                 {
                     <div class="block fileblock">
                         <div class="brow">
@@ -42,28 +43,29 @@
                             @if(file.IsFile == true)
                             {
                                 <text><div class="fimg"></div></text>
-                            } else 
+                            }
+                            else
                             {
                                 <text><div class="fdimg"></div></text>
-                            } 
+                            }
                         </div>
                         <div class="brow">
                             <h3 class="caption"><marquee behavior="scroll" direction="left">@file.Name</marquee></h3>
                             <div class="cntr-btns">
                                 <i class="fas fa-angle-up" id="moreoptions"></i>
                             </div>
-                        </div>  
+                        </div>
 
                         <div class="contextmenu invisible">
                             <a class="func delete">Delete</a>
                             <a class="func info">Details</a>
                             <a class="func delete">Share</a>
                             <a class="func download">Download</a>
-                        </div>     
-                        
+                        </div>
+
                     </div>
                 }
-            <hr />
+                <hr />
             </div>
         </div>
     </div>

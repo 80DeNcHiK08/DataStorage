@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using AutoMapper;
 using DataStorage.App.ViewModels;
-using DataStorage.BLL.DTOs;
 using DataStorage.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DataStorage.App.Controllers
@@ -17,19 +11,17 @@ namespace DataStorage.App.Controllers
     public class DocumentController : Controller
     {
         private readonly IDocumentService _documentService;
-        private readonly IMapper _mapper;
         private readonly IUsersService _userService;
         private readonly ISharingService _sharingService;
         private readonly IEmailService _emailService;
 
         public DocumentController(
             IDocumentService documentService,
-            IMapper mapper, IUsersService userService,
+            IUsersService userService,
             ISharingService sharingService,
             IEmailService emailService)
         {
             _documentService = documentService ?? throw new ArgumentNullException(nameof(documentService));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             _sharingService = sharingService ?? throw new ArgumentNullException(nameof(sharingService));
@@ -46,6 +38,13 @@ namespace DataStorage.App.Controllers
             ViewData["parentId"] = parentId;
             await _documentService.CreateFolderOnRegister(_userService.GetUserId(User));
             return View(_documentService.GetAllDocumentsRelatedAsync(parentId).Result);
+        }
+
+        [Authorize]
+        public IActionResult DeleteUser()
+        {
+            _documentService.DropFolderOnUserDelete(User);
+            return RedirectToAction("Logout", "Account");
         }
 
         [HttpPost]

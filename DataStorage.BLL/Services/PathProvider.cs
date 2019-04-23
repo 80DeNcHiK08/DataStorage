@@ -41,6 +41,15 @@ namespace DataStorage.BLL.Services
             }
         }
 
+        public void DropFolderOnUserDelete(string ownerId)
+        {
+            var endpath = Path.Combine(_path, ownerId);
+            if (Directory.Exists(endpath))
+            {
+                Directory.Delete(endpath, true);
+            }
+        }
+
         public async Task CreateFile(IFormFile file, string endPath)
         {
             using (var fileStream = new FileStream(endPath, FileMode.Create))

@@ -25,5 +25,8 @@ namespace DataStorage.DAL.Interfaces
         Task<IdentityResult> ResetPasswordAsync(UserEntity user, string token, string newPassword);
         Task LogOut();
         string GetUserId(ClaimsPrincipal user);
+        Task<bool> ConfirmIncrease(UserEntity user);
+        void DeleteUserAsync(string userId);
+        Task<bool> NameChange(string userId, string userFirstName, string userLastName);
     }
 }

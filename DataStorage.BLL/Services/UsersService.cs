@@ -54,6 +54,11 @@ namespace DataStorage.BLL.Services
             return await _usersRepo.CreateUserAsync(userEmail);
         }
 
+        public void DeleteUserAsync(string userId)
+        {
+            _usersRepo.DeleteUserAsync(userId);
+        }
+
         public async Task<UserDTO> GetUserByNameAsync(string userEmail)
         {
             var userEntity = await _usersRepo.GetUserByNameAsync(userEmail);
@@ -119,6 +124,17 @@ namespace DataStorage.BLL.Services
         {
             var user = await _usersRepo.GetUserByNameAsync(userEmail);
             return await _usersRepo.ResetPasswordAsync(user, token, newPassword);
+        }
+
+        public async Task<bool> ConfirmIncreaseAsync(string userId)
+        {
+            var userEntity = await _usersRepo.GetUserByIdAsync(userId);
+            return await _usersRepo.ConfirmIncrease(userEntity);
+        }
+
+        public async Task<bool> NameChange(string UserId, string UserFirstName, string UserLastName)
+        {
+            return await _usersRepo.NameChange(UserId, UserFirstName, UserLastName);
         }
     }
 }
