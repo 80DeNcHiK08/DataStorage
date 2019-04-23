@@ -91,13 +91,13 @@ namespace DataStorage.BLL.Services
             {
                 folder.Result.Length += content.Length;
             }
-            _documentRepo.UpdateDocumentAsync(_mapper.Map<DocumentEntity>(folder));
+            _documentRepo.UpdateDocumentAsync(_mapper.Map<DocumentEntity>(folder.Result));
         }
 
         public async Task CreateFolderOnRegister(string ownerId)
         {
             var endpath = Path.Combine(_pProvider.ContentPath(), ownerId);
-            if (GetDocumentByIdAsync(ownerId) == null)
+            if (GetDocumentByIdAsync(ownerId).Result == null)
             {
                 DocumentEntity document = new DocumentEntity
                 {

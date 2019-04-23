@@ -4,69 +4,39 @@
     Layout = "~/Views/Document/_Layout.cshtml";
     ViewData["Title"] = "Storage";
 }
-    
-<div class="wrapper ustorage">
-    <div class="header">
-        <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
-        <div class="search_handler">
-            <input id="search" type="text" placeholder="Search files">
-            <button class="btn"><i class="fas fa-search    "></i></button>
-        </div>
-        <nav class="m-menu">
-            <ul>
-                <li><a asp-action="Profile" asp-controller="Home">Profile</a></li>
-                <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <div class="main">
-        <div class="leftbar">
-            <button class="create" id="dropdownMenuButton">Create</button>
-            <form id="crform" asp-action="CreateFile" asp-controller="Document" method="post">
-                <input name="uploadedFile" type="file" onchange="uploadFile();">
-                <input name="parentId" type="hidden" value="@ViewData["parentId"]">
-                <a>Create Folder</a>
-            </form>
-            <hr />
-        </div>
-
-        <div class="workspace">
-            <h3>All files:</h3>
-            <div class="fileblockhandler">
-                @foreach (var file in Model)
-                {
-                    <div class="block fileblock">
-                        <div class="brow">
-                            <input type="hidden" value='@file.DocumentId' id="hiddenblockid">
-                            <input type="hidden" value='@file.IsFile.ToString()' id="hiddenblockfiletype">
-                            @if(file.IsFile == true)
-                            {
-                                <text><div class="fimg"></div></text>
-                            }
-                            else
-                            {
-                                <text><div class="fdimg"></div></text>
-                            }
-                        </div>
-                        <div class="brow">
-                            <h3 class="caption"><marquee behavior="scroll" direction="left">@file.Name</marquee></h3>
-                            <div class="cntr-btns">
-                                <i class="fas fa-angle-up" id="moreoptions"></i>
-                            </div>
-                        </div>
-
-                        <div class="contextmenu invisible">
-                            <a class="func delete">Delete</a>
-                            <a class="func info">Details</a>
-                            <a class="func delete">Share</a>
-                            <a class="func download">Download</a>
-                        </div>
-
-                    </div>
-                }
-                <hr />
+<div class="workspace">
+    <h3>All files:</h3>
+    <div class="fileblockhandler">
+    @foreach (var file in Model) {
+        <div class="block fileblock">
+            <div class="brow">
+                <input type="hidden" value='@file.DocumentId' id="hiddenblockid" name="parentId">
+                <input type="hidden" value='@file.IsFile.ToString()' id="hiddenblockfiletype">
+        @if(file.IsFile == true) 
+        {
+            <text><div class="fimg"></div></text>
+        }
+        else 
+        {
+            <text><div class="fdimg"></div></text>
+        }
             </div>
+            <div class="brow">
+                <h3 class="caption"><marquee behavior="scroll" direction="left">@file.Name</marquee></h3>
+                <div class="cntr-btns">
+                    <i class="fas fa-angle-up" id="moreoptions"></i>
+                </div>
+            </div>
+
+            <div class="contextmenu invisible">
+                <a class="func delete">Delete</a>
+                <a class="func info">Details</a>
+                <a class="func delete">Share</a>
+                <a class="func download">Download</a>
+            </div>
+
         </div>
+    }
+    <hr />
     </div>
 </div>

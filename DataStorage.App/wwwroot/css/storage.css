@@ -21,6 +21,69 @@
   background-color: transparent;
 }
 
+.ustorage .leftbar .crform {
+  display: none;
+}
+
+.ustorage .leftbar .inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.ustorage .leftbar .inputfile + label {
+  max-width: 100%;
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  border-radius: 5px;
+}
+
+.ustorage .leftbar .inputfile + label span {
+  color: #000;
+  text-align: center;
+}
+
+.ustorage .leftbar .inputfile:focus + label,
+.ustorage .leftbar .inputfile.has-focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.ustorage .leftbar .inputfile:focus + label span,
+.ustorage .leftbar .inputfile.has-focus + label span {
+  color: #fff;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.ustorage .leftbar .inputfile + label {
+  background-color: #ccc;
+}
+
+.ustorage .leftbar .inputfile:focus + label,
+.ustorage .leftbar .inputfile.has-focus + label,
+.ustorage .leftbar .inputfile + label:hover {
+  background-color: #d5632a;
+}
+
+.ustorage .leftbar .inputfile:focus + label span,
+.ustorage .leftbar .inputfile.has-focus + label span,
+.ustorage .leftbar .inputfile + label:hover span {
+  color: #fff;
+}
+
 .ustorage .main {
   padding-top: 60px;
   display: -ms-grid;
