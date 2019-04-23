@@ -16,19 +16,27 @@ namespace DataStorage.BLL.Services
         private IHostingEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
         private string _path;
+        private string _pathfortempzip;
 
         public PathProvider(IHostingEnvironment hostingEnvironment,
             IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
             _path = Path.Combine(_hostingEnvironment.ContentRootPath, "localstorage");
+            _pathfortempzip = Path.Combine(_hostingEnvironment.ContentRootPath, "tempZip");
             Directory.CreateDirectory(_path);
+            Directory.CreateDirectory(_pathfortempzip);
             _mapper = mapper;
         }
 
         public string ContentPath()
         {
             return _path;
+        }
+
+        public void CreateDirectory(string path)
+        {
+            Directory.CreateDirectory(path);
         }
 
         public void CreateFolderOnRegister(string ownerId)
@@ -53,14 +61,9 @@ namespace DataStorage.BLL.Services
             File.Delete(filePath);
         }
 
-        public byte[] GetFileToArray(string filePath)
+        public string FolderToZip(string filePath)
         {
-            if (File.Exists(filePath))
-            {
-                byte[] file = File.ReadAllBytes(filePath);
-                return file;
-            }
-            else throw new Exception();
+            return "";
         }
     }
 }

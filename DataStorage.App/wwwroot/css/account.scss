@@ -1,0 +1,184 @@
+@import "_sassVariables.scss";
+
+.wrapper-center {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .formhandler {
+        padding: 20px 35px;
+        border: 2px solid $apr_green;
+        border-radius: 8px;
+    }
+
+    .formlabel h3 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    form {
+        width: 60vw;
+        min-width: 315px;
+        max-width: 540px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .form-group {
+        position: relative;
+        margin: 15px 0;
+
+        label {
+            font-size: 1.2em;
+            position: absolute;
+            padding: 0 5px;
+            z-index: 2;
+            left: 8px;
+            top: 8px;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            background-color: #fff;
+        }
+
+        input[type="text"]:invalid:not(:focus):not(:placeholder-shown), 
+        input[type="password"]:invalid:not(:focus):not(:placeholder-shown) {
+            border-color: red;
+        }
+
+        input[type="text"]:valid, 
+        input[type="password"]:valid {
+            border-color: $apr_green;
+        }
+
+        input[type="text"]:focus, 
+        input[type="password"]:focus {
+            border-color: $apr_blue;
+        }
+
+        input[type="text"] + .error, 
+        input[type="password"] + .error {
+            font-size: 0.8em;
+            color: red;
+            top: 50px;
+        }
+
+        input[type="text"]:invalid:not(:focus):not(:placeholder-shown) + .elemental, 
+        input[type="password"]:invalid:not(:focus):not(:placeholder-shown) + .elemental,
+        input[type="text"]:valid + .elemental, 
+        input[type="password"]:valid + .elemental,
+        input[type="text"]:focus + .elemental, 
+        input[type="password"]:focus + .elemental {
+            font-size: 0.8em;
+            top: -9px;
+        }
+
+        input[type="submit"] {
+            min-width: 70px;
+            min-height: 35px;
+            background-color: $apr_green;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            border-color: $apr_green;
+            background-color: #fff;
+            color: $apr_green;
+            font-weight: bold;
+        }
+
+        .remember_me {
+            display: flex;
+            align-items: center;
+
+            #txtlabel {
+                position: relative;
+                font-size: 1.1em;
+                padding: 0;
+                margin: 0 10px 0 0;
+                left: 0; top: 0;
+            }
+
+            .custom_checkbox {
+                position: relative;
+                height: 20px;
+                width: 20px;
+
+                label[for=c_checkbox] {
+                    top: 3px; left: 15px;
+                }
+        
+                input[type="checkbox"] {
+                    display: none;
+                }
+        
+                input[type="checkbox"] + label {
+                    padding: 0;
+                    margin: 0;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+        
+                input[type="checkbox"] + label::before {
+                    content: "";
+                    position: absolute;
+                    width: 20px;
+                    height: 20px;
+                    top: 0px;
+                    left: 0px;
+                    cursor: pointer;
+                    border: 2px solid #000;
+                    transition: 0.2s;
+                }
+        
+                input[type="checkbox"]:checked + label::before {
+                    border-color: $apr_green;
+                    transform: translate(10px, 0) rotate(45deg);
+                    width: 10px;
+                    border-top-style: none;
+                    border-left-style: none;
+                }
+            }
+        }
+    }
+
+    .sign {
+        margin-bottom: 20px;
+        min-width: 160px;
+        display: grid;
+        grid-template-columns: 50% auto;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btn-google {
+        width: 100%;
+        height: 50px;
+
+        i {
+            line-height: 50px;
+        }
+    }
+
+    .links {
+        text-align: center;
+        a {
+            color: $apr_blue;
+            cursor: pointer;
+        }
+        a:hover {
+            color: $apr_blue;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}

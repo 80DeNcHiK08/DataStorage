@@ -8,8 +8,9 @@ namespace DataStorage.BLL.Interfaces
     {
         void CreateFolderOnRegister(string ownerId);
         Task CreateFile(IFormFile file, string endPath);
+        void CreateDirectory(string path);
         string ContentPath();
         void DeleteFile(string filePath);
-        byte[] GetFileToArray(string filepath);
+        string FolderToZip(string filepath);
     }
 }

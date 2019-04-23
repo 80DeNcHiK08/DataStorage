@@ -60,12 +60,18 @@ namespace DataStorage.App.Controllers
 
         public async Task<IActionResult> DownloadFile(string fileId)
         {
-            var doc = await _docService.GetDocumentByIdAsync(fileId);
-            var bytearray = _docService.DownloadFile(fileId);
-            using (var filestream = new FileStream(doc.Path, FileMode.Open))
-            {
-                return File(bytearray, "application/png", doc.Name);
-            }
+            var file = await _docService.GetDocumentByIdAsync(fileId);
+            var filename = file.Name;
+            var file_path = file.Path;
+            var file_extention = file.Name.Split(".");
+            return PhysicalFile(file_path, "application/" + file_extention[file_extention.Length - 1], filename);
+        }
+
+        public async Task<IActionResult> DownloadFolder(string fileId)
+        {
+            //var folder = await _docService.GetDocumentByIdAsync(fileId);
+            //var foldername = folder.Name;
+            return RedirectToAction("UserStorage");
         }
     }
 }

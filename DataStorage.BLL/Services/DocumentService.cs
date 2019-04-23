@@ -29,11 +29,13 @@ namespace DataStorage.BLL.Services
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
+
         public async Task<IEnumerable<DocumentDTO>> GetAllDocumentsRelatedAsync(string parentId)
         {
             var documents = await _docRepo.GetAllDocumentsRelatedAsync(parentId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
+
         public async Task CreateDocumentRelatedAsync(IFormFile uploadedFile, ClaimsPrincipal user, string parentId, string fdName = null)
         {
             string docId = Guid.NewGuid().ToString();
@@ -72,10 +74,22 @@ namespace DataStorage.BLL.Services
                     ParentId = parentId,
                     Path = filePath
                 };
-
+                UpdateFolderLength(docDto.ParentId);
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                 await _docRepo.CreateDocumentAsync(newDoc);
             }
+        }
+
+        private void UpdateFolderLength(string parentId)
+        {
+            var folder = GetDocumentByIdAsync(parentId);
+            folder.Result.Length = 0;
+            var folder_content = GetAllDocumentsRelatedAsync(parentId);
+            foreach(var content in folder_content.Result)
+            {
+                folder.Result.Length += content.Length;
+            }
+            _docRepo.UpdateDocumentAsync(_mapper.Map<DocumentEntity>(folder));
         }
 
         public async Task CreateFolderOnRegister(string ownerId)
@@ -112,8 +126,15 @@ namespace DataStorage.BLL.Services
 
         public async Task DeleteDocumentAsync(string id)
         {
-            _pProvider.DeleteFile(_docRepo.GetDocumentPathById(id));
-            await _docRepo.DeleteDocumentAsync(id);
+            var doc = await _docRepo.GetDocumentByIdAsync(id);
+            if(doc.IsFile)
+            {
+                _pProvider.DeleteFile(_docRepo.GetDocumentPathById(id));
+                await _docRepo.DeleteDocumentAsync(id);
+            } else
+            {
+                //deleting folder
+            }
         }
 
         public bool IfDocumentExists(string id)
@@ -126,11 +147,29 @@ namespace DataStorage.BLL.Services
                 return false;
         }
 
-        public byte[] DownloadFile(string fileId)
+        public string CreateZipFromFolder(string FileId)
         {
-            var doc = _docRepo.GetDocumentByIdAsync(fileId);
-            byte[] file = _pProvider.GetFileToArray(doc.Result.Path);
-            return file;
+            var foldercontent = GetAllDocumentsRelatedAsync(FileId);
+            foreach(var doc in foldercontent.Result)
+            {
+                if (doc.IsFile)
+                {
+                    //_pProvider
+                }
+                else continue;
+            }
+            return "";
+            /*if (doc.Result.IsFile)
+            {
+                string folder_path = doc.Result.Path;
+                return _pProvider.FolderToZip(folder_path);
+            }
+            else throw new Exception();*/
+        }
+
+        public async Task DeleteZip(string path)
+        {
+            _pProvider.DeleteFile(path);
         }
 
         public string[] GetPathPartsBypId(string fileId)
@@ -147,11 +186,5 @@ namespace DataStorage.BLL.Services
             result.Reverse();
             return result.ToArray();
         }
-        /*public async Task<IEnumerable<DocumentDTO>> GetChildren(Guid? id)
-        {
-            var documents = await _docRepo.GetChildren(id);
-            var result = _mapper.Map<IEnumerable<DocumentDTO>>(documents);
-            return result;
-        }*/
     }
 }

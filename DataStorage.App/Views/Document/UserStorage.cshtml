@@ -1,8 +1,17 @@
 ﻿@model IEnumerable<DataStorage.BLL.DTOs.DocumentDTO>
+
+@{
+    Layout = "~/Views/Document/_Layout.cshtml";
+    ViewData["Title"] = "Storage";
+}
     
 <div class="wrapper ustorage">
     <div class="header">
         <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
+        <div class="search_handler">
+            <input id="search" type="text" placeholder="Search files">
+            <button class="btn"><i class="fas fa-search    "></i></button>
+        </div>
         <nav class="m-menu">
             <ul>
                 <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
@@ -12,21 +21,17 @@
 
     <div class="main">
         <div class="leftbar">
-            <form asp-action="CreateFile" asp-controller="Document" method="post" enctype="multipart/form-data">
-                <input name="uploadedFile" type="file">
-                @Html.Hidden("parentId", ViewData["parentId"])
-                <input type="submit" value="Upload">
+            <button class="create" id="dropdownMenuButton">Create</button>
+            <form id="crform" asp-action="CreateFile" asp-controller="Document" method="post">
+                <input name="uploadedFile" type="file" onchange="uploadFile();">
+                <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+                <a>Create Folder</a>
             </form>
-            <form asp-action="CreateFolder" asp-controller="Document" method="post">
-                <input name="FolderName" type="text">
-                @Html.Hidden("parentId", ViewData["parentId"])
-                <input type="submit" value="Create">
-            </form>
+            <hr />
         </div>
 
         <div class="workspace">
             <h3>All files:</h3>
-            @Html.Hidden("parentId", (object)ViewData["parentId"])
             <div class="fileblockhandler">
                 @foreach(var file in Model)
                 {

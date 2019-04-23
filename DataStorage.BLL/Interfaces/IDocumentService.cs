@@ -17,7 +17,8 @@ namespace DataStorage.BLL.Interfaces
         Task UpdateDocumentAsync(DocumentDTO document);
         Task DeleteDocumentAsync(string id);
         bool IfDocumentExists(string id);
-        byte[] DownloadFile(string fileId);
         string[] GetPathPartsBypId(string fileId);
+        string CreateZipFromFolder(string fileId);
+        Task DeleteZip(string path);
     }
 }
