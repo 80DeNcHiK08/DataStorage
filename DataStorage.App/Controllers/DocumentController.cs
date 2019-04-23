@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
+using DataStorage.App.ViewModels;
 using DataStorage.BLL.DTOs;
 using DataStorage.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -14,15 +16,23 @@ namespace DataStorage.App.Controllers
 {
     public class DocumentController : Controller
     {
-        private readonly IDocumentService _docService;
+        private readonly IDocumentService _documentService;
         private readonly IMapper _mapper;
         private readonly IUsersService _userService;
+        private readonly ISharingService _sharingService;
+        private readonly IEmailService _emailService;
 
-        public DocumentController(IHostingEnvironment hostingEnvironment, IDocumentService docService, IMapper mapper, IUsersService userService)
+        public DocumentController(
+            IDocumentService documentService,
+            IMapper mapper, IUsersService userService,
+            ISharingService sharingService,
+            IEmailService emailService)
         {
-            _docService = docService ?? throw new ArgumentNullException(nameof(docService));
-            _mapper = mapper;
-            _userService = userService;
+            _documentService = documentService ?? throw new ArgumentNullException(nameof(documentService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+            _sharingService = sharingService ?? throw new ArgumentNullException(nameof(sharingService));
         }
 
         [Authorize]
@@ -34,33 +44,122 @@ namespace DataStorage.App.Controllers
                 parentId = _userService.GetUserId(User);
             }
             ViewData["parentId"] = parentId;
-            await _docService.CreateFolderOnRegister(_userService.GetUserId(User));
-            return View(_docService.GetAllDocumentsRelatedAsync(parentId).Result);
+            await _documentService.CreateFolderOnRegister(_userService.GetUserId(User));
+            return View(_documentService.GetAllDocumentsRelatedAsync(parentId).Result);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFile(IFormFile uploadedFile, string parentId)
         {
-            await _docService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
+            await _documentService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
             return RedirectToAction("UserStorage");
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFolder(string FolderName, string parentId)
         {
-            await _docService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
+            await _documentService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
             return RedirectToAction("UserStorage");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OpenPublicAccess(string documentId)
+        {
+            var link = $"{Request.Host.Value}/Share/Get?link={await _sharingService.OpenPublicAccess(documentId, User)}";
+
+            return Content(link);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ClosePublicAccess(string documentId)
+        {
+            await _sharingService.ClosePublicAccess(documentId, User);
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult OpenLimitedAccessForUser(string documentId)
+        {
+            if (documentId == null)
+            {
+                return View("Error");
+            }
+
+            return View("OpenLimitedAccess", new SharingViewModel { DocumentId = documentId });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> OpenLimitedAccessForUser(SharingViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var link = await _sharingService.OpenLimitedAccess(model.DocumentId, User, model.Email);
+                var callbackUrl = Url.FileAccessLink(link, Request.Scheme);
+                await _emailService.SendEmailAsync(model.Email, "You have been granted an access to the file",
+                    $"{User.Identity.Name} has shared a <a href='{callbackUrl}'>file</a> with you");
+
+                return RedirectToAction("UserStorage", "Document");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAvailbleDocument(string link)
+        {
+            var document = await _documentService.GetAvailbleDocumentForUserAsync(link, User);
+            return View(document);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAvailbleDocuments()
+        {
+            var availbleDocuments = await _documentService.GetAllAvailbleDocumentsForUserAsync(User);
+
+            return View(availbleDocuments);
+        }
+
+        [HttpGet]
+        public IActionResult CloseLimitedAccessForUser(string documentId)
+        {
+            if (documentId == null)
+            {
+                return View("Error");
+            }
+
+            return View("CloseLimitedAccess", new SharingViewModel { DocumentId = documentId });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CloseLimitedAccessForUser(SharingViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _sharingService.CloseLimitedAccessForUser(model.DocumentId, User, model.Email);
+
+                return Ok();
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> CloseLimitedAccessEntirely(string documentId)
+        {
+            await _sharingService.CloseLimitedAccessEntirely(documentId, User);
+            return Ok();
         }
 
         public async Task<IActionResult> DeleteFile(string fileId)
         {
-            await _docService.DeleteDocumentAsync(fileId);
+            await _documentService.DeleteDocumentAsync(fileId);
             return RedirectToAction("UserStorage");
         }
 
         public async Task<IActionResult> DownloadFile(string fileId)
         {
-            var file = await _docService.GetDocumentByIdAsync(fileId);
+            var file = await _documentService.GetDocumentByIdAsync(fileId);
             var filename = file.Name;
             var file_path = file.Path;
             var file_extention = file.Name.Split(".");

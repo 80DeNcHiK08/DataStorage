@@ -1,32 +1,25 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using AutoMapper;
 using DataStorage.BLL.Interfaces;
-using DataStorage.DAL;
-using DataStorage.DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DataStorage.BLL.Services
 {
     public class PathProvider : IPathProvider
     {
         private IHostingEnvironment _hostingEnvironment;
-        private readonly IMapper _mapper;
         private string _path;
         private string _pathfortempzip;
 
-        public PathProvider(IHostingEnvironment hostingEnvironment,
-            IMapper mapper)
+        public PathProvider(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
             _path = Path.Combine(_hostingEnvironment.ContentRootPath, "localstorage");
             _pathfortempzip = Path.Combine(_hostingEnvironment.ContentRootPath, "tempZip");
             Directory.CreateDirectory(_path);
             Directory.CreateDirectory(_pathfortempzip);
-            _mapper = mapper;
         }
 
         public string ContentPath()

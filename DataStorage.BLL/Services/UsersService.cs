@@ -18,14 +18,12 @@ namespace DataStorage.BLL.Services
         public IUsersRepository _usersRepo { get; }
         private readonly IPathProvider _pProvider;
         private readonly IMapper _mapper;
-        //private IHttpContextAccessor _httpContextAccessor;
 
         public UsersService(IUsersRepository usersRepo, IPathProvider pProvider, IMapper mapper)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _usersRepo = usersRepo ?? throw new ArgumentNullException(nameof(usersRepo));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
-           // _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public async Task<SignInResult> SignInUserAsync(string userEmail, string userPassword, bool rememberMe)

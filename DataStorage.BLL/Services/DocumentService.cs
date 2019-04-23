@@ -14,25 +14,27 @@ namespace DataStorage.BLL.Services
 {
     public class DocumentService : IDocumentService
     {
-        public IDocumentRepository _docRepo { get; }
+        private readonly IDocumentRepository _documentRepo;
         private readonly IMapper _mapper;
         private readonly IPathProvider _pProvider;
-        private readonly IUsersService _userService;
+        private readonly IUsersRepository _userRepo;
 
-        public DocumentService(IDocumentRepository docRepo, 
-            IMapper mapper, 
-            IPathProvider pProvider, 
-            IUsersService userService)
+        public DocumentService(
+            IDocumentRepository documentRepo,
+            IMapper mapper,
+            IPathProvider pProvider,
+            IUsersRepository userRepo)
         {
-            _docRepo = docRepo ?? throw new ArgumentNullException(nameof(docRepo));
+            _documentRepo = documentRepo ?? throw new ArgumentNullException(nameof(documentRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _userRepo = userRepo ?? throw new ArgumentNullException(nameof(userRepo));
         }
 
         public async Task<IEnumerable<DocumentDTO>> GetAllDocumentsRelatedAsync(string parentId)
         {
-            var documents = await _docRepo.GetAllDocumentsRelatedAsync(parentId);
+            var documents = await _documentRepo.GetAllDocumentsRelatedAsync(parentId);
+            // var documents = await _documentRepo.GetAllUserDocumentsAsync(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
 
@@ -54,14 +56,14 @@ namespace DataStorage.BLL.Services
                     Length = uploadedFile.Length,
                     IsFile = true,
                     DocumentId = docId,
-                    OwnerId = _userService.GetUserId(user),
+                    OwnerId = _userRepo.GetUserId(user),
                     ParentId = parentId,
                     Path = filePath
                 };
-                await _pProvider.CreateFile(uploadedFile, Path.Combine(storagePath, _userService.GetUserId(user), docId));
+                await _pProvider.CreateFile(uploadedFile, Path.Combine(storagePath, _userRepo.GetUserId(user), docId));
 
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                await _docRepo.CreateDocumentAsync(newDoc);
+                await _documentRepo.CreateDocumentAsync(newDoc);
             } else
             {
                 DocumentDTO docDto = new DocumentDTO
@@ -70,13 +72,13 @@ namespace DataStorage.BLL.Services
                     Length = 0,
                     IsFile = false,
                     DocumentId = docId,
-                    OwnerId = _userService.GetUserId(user),
+                    OwnerId = _userRepo.GetUserId(user),
                     ParentId = parentId,
                     Path = filePath
                 };
                 UpdateFolderLength(docDto.ParentId);
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                await _docRepo.CreateDocumentAsync(newDoc);
+                await _documentRepo.CreateDocumentAsync(newDoc);
             }
         }
 
@@ -89,7 +91,7 @@ namespace DataStorage.BLL.Services
             {
                 folder.Result.Length += content.Length;
             }
-            _docRepo.UpdateDocumentAsync(_mapper.Map<DocumentEntity>(folder));
+            _documentRepo.UpdateDocumentAsync(_mapper.Map<DocumentEntity>(folder));
         }
 
         public async Task CreateFolderOnRegister(string ownerId)
@@ -103,34 +105,57 @@ namespace DataStorage.BLL.Services
                     Name = ownerId,
                     IsFile = false,
                     Path = endpath,
-                    Size = 0,
+                    Length = 0,
                     ParentId = string.Empty,
                     OwnerId = ownerId
                 };
-                await _docRepo.CreateDocumentAsync(document);
+                await _documentRepo.CreateDocumentAsync(document);
             }
             _pProvider.CreateFolderOnRegister(ownerId);
         }
+
         public async Task<DocumentDTO> GetDocumentByIdAsync(string id)
         {
-            var document = await _docRepo.GetDocumentByIdAsync(id);
+            var document = await _documentRepo.GetDocumentByIdAsync(id);
             var result = _mapper.Map<DocumentDTO>(document);
             return result;
+        }
+
+        public async Task<DocumentDTO> GetAvailbleDocumentForUserAsync(string link, ClaimsPrincipal user)
+        {
+            string userId = _userRepo.GetUserId(user);
+            var userDocument = await _documentRepo.GetAvailbleDocumentForUserAsync(link, userId);
+
+            return _mapper.Map<DocumentDTO>(userDocument.Document);
+        }
+
+        public async Task<IEnumerable<DocumentDTO>> GetAllAvailbleDocumentsForUserAsync(ClaimsPrincipal user)
+        {
+            string userId = _userRepo.GetUserId(user);
+            var availbleDocuments = await _documentRepo.GetAllAvailbleDocumentsForUserAsync(userId);
+            var documents = new List<DocumentEntity>();
+
+            foreach (var item in availbleDocuments)
+            {
+                documents.Add(item.Document);
+            }
+
+            return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
 
         public async Task UpdateDocumentAsync(DocumentDTO document)
         {
             var newDoc = _mapper.Map<DocumentEntity>(document);
-            await _docRepo.UpdateDocumentAsync(newDoc);
+            await _documentRepo.UpdateDocumentAsync(newDoc);
         }
 
         public async Task DeleteDocumentAsync(string id)
         {
-            var doc = await _docRepo.GetDocumentByIdAsync(id);
+            var doc = await _documentRepo.GetDocumentByIdAsync(id);
             if(doc.IsFile)
             {
-                _pProvider.DeleteFile(_docRepo.GetDocumentPathById(id));
-                await _docRepo.DeleteDocumentAsync(id);
+                _pProvider.DeleteFile(_documentRepo.GetDocumentPathById(id));
+                await _documentRepo.DeleteDocumentAsync(id);
             } else
             {
                 //deleting folder
@@ -139,7 +164,7 @@ namespace DataStorage.BLL.Services
 
         public bool IfDocumentExists(string id)
         {
-            var EntityResult = _docRepo.GetDocumentByIdAsync(id);
+            var EntityResult = _documentRepo.GetDocumentByIdAsync(id);
             if (EntityResult != null)
             {
                 return true;

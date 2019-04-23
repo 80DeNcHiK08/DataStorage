@@ -6,8 +6,8 @@ namespace DataStorage.DAL.Entities
 {
     public class UserEntity : IdentityUser
     {
-        public virtual ICollection<UserDocument> UserDocuments { get; set; }
-        public virtual ICollection<DocumentEntity> Documents { get; set; }
+        public ICollection<UserDocument> UserDocuments { get; set; }
+        public ICollection<DocumentEntity> Documents { get; set; }
         public int StorageSize { get; set; }
     }
 }

@@ -12,12 +12,22 @@ namespace Microsoft.AspNetCore.Mvc
                 values: new { userId, token },
                 protocol: scheme);
         }
+        
         public static string ResetPasswordLink(this IUrlHelper urlHelper, string userId, string token, string scheme)
         {
             return urlHelper.Action(
                 action: "ResetPassword",
                 controller: "Account",
                 values: new { userId, token },
+                protocol: scheme);
+        }
+
+        public static string FileAccessLink(this IUrlHelper urlHelper, string link, string scheme)
+        {
+            return urlHelper.Action(
+                action: "GetAvailbleDocument",
+                controller: "Document",
+                values: new { link },
                 protocol: scheme);
         }
     }

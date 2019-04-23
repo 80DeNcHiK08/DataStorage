@@ -14,10 +14,15 @@ namespace DataStorage.DAL.Entities
         public bool IsFile { get; set; }
         public string OwnerId { get; set; }
         public UserEntity Owner { get; set; }
-        public ulong Size { get; set; }
+        public long Length { get; set; }
         public string DocumentLink { get; set; }
-        // public bool IsPublic { get; set; }
+        public bool IsPublic { get; set; }
         public DateTime ChangeDate { get; set; }
-        // public virtual ICollection<UserDocument> UserDocuments { get; set; }
+        public ICollection<UserDocument> UserDocuments { get; set; }
+
+        public DocumentEntity()
+        {
+            UserDocuments = new List<UserDocument>();
+        }
     }
 }
