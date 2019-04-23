@@ -1,18 +1,16 @@
 ﻿@model DataStorage.App.ViewModels.RegisterViewModel
-
 @{
     Layout = "~/Views/Account/_Layout.cshtml";
-    ViewData["Title"] = "Registration";
+    ViewData["Title"] = "Register";
 }
 
-<div class="formhandler">
-    <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true" class="validate">
+<div class="wrapper-center">
+    <div class="formhandler">
+        <!--Login-->
         <div class="formlabel">
             <h3>Registration</h3>
         </div>
-        <span class="signerrormessage">@ViewData["UserExistErrorMessage"]</span>
-        <div class="validation" asp-validation-summary="ModelOnly" />
-        <div class="form-group-handler">
+        <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true" class="validate">
             <div class="form-group">
                 <input placeholder=" " required pattern="[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,3}$" type="text" asp-for="Email"/>
                 <label asp-for="Email" class="elemental">Email</label>
@@ -21,15 +19,15 @@
             <div class="form-group">
                 <input placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" asp-for="Password"/>
                 <label asp-for="Password" class="elemental">Password</label>
-                <span class="validation-message collapse">* Password field is required<br>* Password should contain one: uppercase, lowercase and non literic symbol<br>* Password must be at least 8 characters long</span>
+                <span class="validation-message collapse">* Password field is required<br>* Password shoul contain one: uppercase, lowercase and non literic symbol<br>* Password must be at least 8 characters long</span>
             </div>
             <div class="form-group">
                 <input placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" asp-for="ConfirmPassword" />
                 <label asp-for="ConfirmPassword" class="elemental">Confirm Password</label>
-                <span class="validation-message collapse">* Password field is required<br>* Password should contain one: uppercase, lowercase and non literic symbol<br>* Password must be at least 8 characters long</span>
+                <span class="validation-message collapse">* Password field is required<br>* Password shoul contain one: uppercase, lowercase and non literic symbol<br>* Password must be at least 8 characters long</span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Sign Up" class="btn" />
+            <div class="form-group sign">
+                <input type="submit" value="Sign Up" />
             </div>
         </form>
     </div>
