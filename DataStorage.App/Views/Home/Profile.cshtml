@@ -1,18 +1,9 @@
 ﻿@model DataStorage.App.ViewModels.ProfileViewModel
 @{
     ViewData["Title"] = "Profile";
+    Layout = "~/Views/Document/_Layout.cshtml";
 }
-<div class="wrapper ustorage">
-    <div class="header">
-        <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
-        <nav class="m-menu">
-            <ul>
-                <li><a asp-action="Profile" asp-controller="Home">Profile</a></li>
-                <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
-            </ul>
-        </nav>
-    </div>
-    <div class="windowwrap">
+    <div class="wrapper-center">
         <div class="formhandler">
             <div class="form-group">
                 <h3>E-Mail: @Model.Email</h3>

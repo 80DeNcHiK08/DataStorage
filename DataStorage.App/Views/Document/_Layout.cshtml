@@ -28,26 +28,12 @@
         </div>
         <nav class="m-menu">
             <ul>
-                <li><a asp-action="Profile" asp-controller="Home">Profile</a></li>
                 <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>
             </ul>
         </nav>
     </div>
 
     <div class="main">
-        <div class="leftbar">
-            <button class="create" id="dropdownMenuButton">Create</button>
-            <form class="crform" id="uploadFile" asp-action="CreateFile" asp-controller="Document" method="post" onchange="submit()" enctype="multipart/form-data">
-                <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" data-multiple-caption="{count} files selected" multiple />
-                <label for="uploadedFile"><span>Choose a file&hellip;</span></label>
-                <input name="parentId" type="hidden" value="@ViewData["parentId"]">
-            </form>
-            <form class="crform" asp-action="CreateFolder" asp-controller="Document" method="post">
-                <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name"/>
-                <input name="parentId" type="hidden" value="@ViewData["parentId"]">
-                <input type="submit" value="Create Folder">
-            </form>
-        </div>
 
         @RenderBody()
     </div>

@@ -4,8 +4,26 @@
     Layout = "~/Views/Document/_Layout.cshtml";
     ViewData["Title"] = "Storage";
 }
+<div class="leftbar">
+    <button class="menu-button" id="create_menu">Create</button>
+    <form class="menu-item create-item" id="uploadFile" asp-action="CreateFile" asp-controller="Document" method="post" onchange="submit()" enctype="multipart/form-data">
+        <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" data-multiple-caption="{count} files selected" multiple />
+        <label for="uploadedFile"><span>Choose a file&hellip;</span></label>
+        <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+    </form>
+    <form class="menu-item create-item crfolder" asp-action="CreateFolder" asp-controller="Document" method="post">
+        <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name"/>
+        <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+        <input type="submit" class="submit" value="Create Folder">
+    </form>
+    <hr>
+    <button class="menu-button" id="settings_menu">Settings</button>
+        <a class="menu-item settings-item">Delete All<input type="hidden"></a>
+        <a class="menu-item settings-item" asp-action="Profile" asp-controller="Home">Profile Settings<input type="hidden"></a>
+    <hr>
+    <button class="menu-button" id="tree">All Files:</button>
+</div>
 <div class="workspace">
-    <h3>All files:</h3>
     <div class="fileblockhandler">
         @foreach (var file in Model)
         {
@@ -29,11 +47,13 @@
                 </div>
             </div>
             <div class="eventhandler"></div>
-            <div class="contextmenu invisible">
-                <a class="func delete">Delete</a>
-                <a class="func info">Details</a>
-                <a class="func delete">Share</a>
-                <a class="func download">Download</a>
+            <div class="contextmenu">
+                <div class="items-handler">
+                    <a class="func delete">Delete</a>
+                    <a class="func info">Details</a>
+                    <a class="func delete">Share</a>
+                    <a class="func download">Download</a>
+                </div>
             </div>
         </div>
             

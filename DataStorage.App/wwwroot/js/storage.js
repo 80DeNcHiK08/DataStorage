@@ -1,7 +1,12 @@
 $(document).ready(function() {
-    $("#dropdownMenuButton").on("click", function (e) {
+    $("#create_menu").on("click", function (e) {
         e.preventDefault();
-        $(".crform").toggle("200");
+        $(".create-item").toggle("200");
+    })
+
+    $("#settings_menu").on("click", function (e) {
+        e.preventDefault();
+        $(".settings-item").toggle("400");
     })
 
     $(".eventhandler").on("click", function (e) {
@@ -14,11 +19,12 @@ $(document).ready(function() {
 
     $('.fileblock').on("contextmenu", function (e) {
         e.preventDefault()
-        if ($(this).find('.contextmenu').hasClass("invisible")) {
+        $(this).find('.contextmenu').toggle("200");
+        /*if ($(this).find('.contextmenu').hasClass("invisible")) {
             $(this).find('.contextmenu').removeClass('invisible');
         } else {
             $(this).find('.contextmenu').addClass('invisible');
-        }
+        }*/
 
     })
 
