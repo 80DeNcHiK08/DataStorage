@@ -111,7 +111,10 @@ namespace DataStorage.App.Controllers
             //{
                 //if (Request.Form["OpenAccess"].ToString() != null)
                 //{
-                    var link = await _sharingService.OpenLimitedAccess(DocumentId, User, Email);
+                
+            
+                    var link = await _sharingService.OpenLimitedAccess(DocumentId, User, Email);//тут оно крашится
+            
                     var callbackUrl = Url.FileAccessLink(link, Request.Scheme);
                     await _emailService.SendEmailAsync(Email, "You have been granted an access to the file",
                         $"{User.Identity.Name} has shared a <a href='{callbackUrl}'>file</a> with you");
