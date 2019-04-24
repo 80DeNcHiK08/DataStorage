@@ -4,6 +4,11 @@ $(document).ready(function() {
         $(".create-item").toggle("200");
     })
 
+    $("#tree").on("click", function (e) {
+        e.preventDefault();
+        $(".filetree").toggle("400");
+    })
+
     $("#settings_menu").on("click", function (e) {
         e.preventDefault();
         $(".settings-item").toggle("400");
@@ -20,18 +25,11 @@ $(document).ready(function() {
     $('.fileblock').on("contextmenu", function (e) {
         e.preventDefault()
         $(this).find('.contextmenu').toggle("200");
-        /*if ($(this).find('.contextmenu').hasClass("invisible")) {
-            $(this).find('.contextmenu').removeClass('invisible');
-        } else {
-            $(this).find('.contextmenu').addClass('invisible');
-        }*/
-
     })
 
     $('.delete').on("click", function (e) {
         e.preventDefault();
         var str = $(this).parent().parent().find('#hiddenblockid').val();
-        //console.log(str);
         $.ajax({
             type: "POST",
             data: {
@@ -52,9 +50,14 @@ $(document).ready(function() {
             },
             url: '/Document/DownloadFile'
         }).done(function () {
-            //window.location = '/Document/UserStorage';
+
         });
     })
+
+    Dropzone.options.UploadForm = {
+        maxFilesize: 20, // MB
+        acceptedFiles : "image/*"
+    };
 })
 
 function sumbmit() {

@@ -35,6 +35,7 @@ namespace DataStorage.App.Controllers
             {
                 parentId = _userService.GetUserId(User);
             }
+            ViewData["ownerId"] = _userService.GetUserId(User);
             ViewData["parentId"] = parentId;
             await _documentService.CreateFolderOnRegister(_userService.GetUserId(User));
             return View(_documentService.GetAllDocumentsRelatedAsync(parentId).Result);
@@ -51,14 +52,14 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> CreateFile(IFormFileCollection uploadedFile, string parentId)
         {
             await _documentService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
-            return RedirectToAction("UserStorage");
+            return Redirect("/UserStorage?parentId=" + parentId);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFolder(string FolderName, string parentId)
         {
             await _documentService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
-            return RedirectToAction("UserStorage");
+            return Redirect("/UserStorage?parentId=" + parentId);
         }
 
         [HttpGet]
