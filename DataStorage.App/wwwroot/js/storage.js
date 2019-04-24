@@ -29,7 +29,7 @@ $(document).ready(function() {
 
     $('.delete').on("click", function (e) {
         e.preventDefault();
-        var str = $(this).parent().parent().find('#hiddenblockid').val();
+        var str = $(this).parent().parent().parent().find('#hiddenblockid').val();
         $.ajax({
             type: "POST",
             data: {
@@ -37,27 +37,30 @@ $(document).ready(function() {
             },
             url: '/Document/DeleteFile'
         }).done(function () {
-            window.location = '/Document/UserStorage';
+            //window.location = '/Document/UserStorage';
         });
     })
 
-    $('.download').on("click", function () {
-        var str = $(this).parent().parent().find('#hiddenblockid').val();
-        $.ajax({
-            type: "POST",
-            data: {
-                fileId: str
-            },
-            url: '/Document/DownloadFile'
-        }).done(function () {
-
-        });
+    $('.delete').on("click", function (e) {
+        e.preventDefault();
+        var parentId = $(this).parent().parent().parent().find("#hiddenblockid").val();
+        console.log($(this).parent().parent().parent().find("#hiddenblockid").val());
+        window.location = '/Document/DeleteFile?fileId=' + parentId;
     })
 
-    Dropzone.options.UploadForm = {
-        maxFilesize: 20, // MB
-        acceptedFiles : "image/*"
-    };
+    $('.download').on("click", function (e) {
+        e.preventDefault();
+        if ($(this).parent().parent().parent().find("#hiddenblockfiletype").val() === 'True') {
+            var parentId = $(this).parent().parent().parent().find("#hiddenblockid").val();
+            console.log($(this).parent().parent().parent().find("#hiddenblockfiletype").val(), $(this).parent().parent().parent().find("#hiddenblockid").val());
+            window.location = '/Document/DownloadFile?fileId=' + parentId;
+        }
+    })
+
+    $('.info').on('click', function(e) {
+        e.preventDefault();
+        var str = $(this).parent().parent().parent().find('.detblock').toggle("200");
+    })
 })
 
 function sumbmit() {

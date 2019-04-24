@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using DataStorage.App.ViewModels;
 using DataStorage.BLL.Interfaces;
@@ -52,14 +53,14 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> CreateFile(IFormFileCollection uploadedFile, string parentId)
         {
             await _documentService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
-            return Redirect("/UserStorage?parentId=" + parentId);
+            return Redirect("/Document/UserStorage?parentId=" + parentId);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFolder(string FolderName, string parentId)
         {
             await _documentService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
-            return Redirect("/UserStorage?parentId=" + parentId);
+            return Redirect("/Document/UserStorage?parentId=" + parentId);
         }
 
         [HttpGet]
@@ -138,7 +139,6 @@ namespace DataStorage.App.Controllers
             if (ModelState.IsValid)
             {
                 await _sharingService.CloseLimitedAccessForUser(model.DocumentId, User, model.Email);
-
                 return Ok();
             }
 
@@ -154,23 +154,24 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> DeleteFile(string fileId)
         {
             await _documentService.DeleteDocumentAsync(fileId);
-            ViewData["parentId"] = null;
-            return RedirectToAction("UserStorage");
+            return Redirect("/Document/UserStorage?parentId=" + ViewData["parentId"]);
         }
 
         public async Task<IActionResult> DownloadFile(string fileId)
         {
             var file = await _documentService.GetDocumentByIdAsync(fileId);
-            var filename = file.Name;
-            var file_path = file.Path;
             var file_extention = file.Name.Split(".");
-            return PhysicalFile(file_path, "application/" + file_extention[file_extention.Length - 1], filename);
+            var memory = new MemoryStream();
+            using (var filestream = new FileStream(file.Path, FileMode.Open))
+            {
+                await filestream.CopyToAsync(memory);
+            }
+            return File(memory, "application/" + file_extention[file_extention.Length - 1], file.Name);
         }
 
-        public async Task<IActionResult> DownloadFolder(string fileId)
+        public async Task<IActionResult> DeleteAll()
         {
-            //var folder = await _docService.GetDocumentByIdAsync(fileId);
-            //var foldername = folder.Name;
+            await _documentService.DeleteAllFiles(User.Identity.Name.ToString());
             return RedirectToAction("UserStorage");
         }
     }

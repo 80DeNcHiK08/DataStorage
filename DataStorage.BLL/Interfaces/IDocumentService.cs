@@ -19,9 +19,8 @@ namespace DataStorage.BLL.Interfaces
         Task DeleteDocumentAsync(string id);
         bool IfDocumentExists(string id);
         string[] GetPathPartsBypId(string fileId);
-        string CreateZipFromFolder(string fileId);
-        Task DeleteZip(string path);
         Task<DocumentDTO> GetAvailbleDocumentForUserAsync(string link, ClaimsPrincipal user);
         Task<IEnumerable<DocumentDTO>> GetAllAvailbleDocumentsForUserAsync(ClaimsPrincipal user);
+        Task DeleteAllFiles(string ownerId);
     }
 }

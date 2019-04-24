@@ -135,11 +135,9 @@ namespace DataStorage.BLL.Services
             await _userRepo.LogOut();
             if (oId != null)
             {
-                
                 _pProvider.DropFolderOnUserDelete(ownerId);
                 await _documentRepo.DeleteAllUserDocumentsAsync(ownerId);
                 _userRepo.DeleteUserAsync(ownerId);
-
             }
         }
 
@@ -180,47 +178,27 @@ namespace DataStorage.BLL.Services
 
         public async Task DeleteDocumentAsync(string id)
         {
-            //await GetAllChilderAsync(id);
-            var to_delete = await _documentRepo.GetAllDocumentsRelatedAsync(id);
-            foreach(var doc in to_delete)
+            var doc = await _documentRepo.GetDocumentByIdAsync(id);
+            if (doc.IsFile)
             {
-                if(!doc.IsFile)
-                {
-                    await DeleteDocumentAsync(doc.DocumentId);
-                } else
-                {
-                    _pProvider.DeleteFile(_documentRepo.GetDocumentPathById(doc.DocumentId));
-                    await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
-                }
+                _pProvider.DeleteFile(doc.Path);
+                await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
             }
-        }
-
-        public async Task GetAllChilderAsync(string id)
-        {
-            var docs = await _documentRepo.GetAllDocumentsRelatedAsync(id);
-            foreach (var doc in docs)
+            else
             {
-                _result_list.Add(doc);
-            }
-
-            foreach (var folder in _result_list)
-            {
-                if (folder.DocumentId == id)
+                var to_delete = await _documentRepo.GetAllUserDocumentsAsync(doc.OwnerId);
+                foreach(var document in to_delete)
                 {
-                    break;
-                } else
-                {
-                    if (!folder.IsFile)
+                    if(document.Path.IndexOf(doc.Path) > -1)
                     {
-                        id = folder.DocumentId;
-                        await GetAllChilderAsync(id);
-                    }
-                    else
-                    {
-                        continue;
+                        _pProvider.DeleteFile(document.Path);
+                        await _documentRepo.DeleteDocumentAsync(document.DocumentId);
                     }
                 }
+                _pProvider.DeleteFile(doc.Path);
+                await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
             }
+
         }
 
         public bool IfDocumentExists(string id)
@@ -233,29 +211,9 @@ namespace DataStorage.BLL.Services
                 return false;
         }
 
-        public string CreateZipFromFolder(string FileId)
+        public async Task DeleteAllFiles(string ownerId)
         {
-            var foldercontent = GetAllDocumentsRelatedAsync(FileId);
-            foreach(var doc in foldercontent.Result)
-            {
-                if (doc.IsFile)
-                {
-                    //_pProvider
-                }
-                else continue;
-            }
-            return "";
-            /*if (doc.Result.IsFile)
-            {
-                string folder_path = doc.Result.Path;
-                return _pProvider.FolderToZip(folder_path);
-            }
-            else throw new Exception();*/
-        }
-
-        public async Task DeleteZip(string path)
-        {
-            _pProvider.DeleteFile(path);
+            await _documentRepo.DeleteAllUserDocumentsAsync(ownerId);
         }
 
         public string[] GetPathPartsBypId(string fileId)
