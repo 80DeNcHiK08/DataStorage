@@ -38,7 +38,7 @@
         <div class="leftbar">
             <button class="create" id="dropdownMenuButton">Create</button>
             <form class="crform" id="uploadFile" asp-action="CreateFile" asp-controller="Document" method="post" onchange="submit()" enctype="multipart/form-data">
-                <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" /> <!--data-multiple-caption="{count} files selected" multiple-->
+                <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" data-multiple-caption="{count} files selected" multiple />
                 <label for="uploadedFile"><span>Choose a file&hellip;</span></label>
                 <input name="parentId" type="hidden" value="@ViewData["parentId"]">
             </form>

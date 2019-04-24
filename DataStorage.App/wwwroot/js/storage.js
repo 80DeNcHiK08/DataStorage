@@ -4,10 +4,10 @@ $(document).ready(function() {
         $(".crform").toggle("200");
     })
 
-    $(".fileblock").on("click", function (e) {
+    $(".eventhandler").on("click", function (e) {
         e.preventDefault();
-        if ($(this).find("#hiddenblockfiletype").val() === 'False') {
-            var parentId = $("#hiddenblockid").val();
+        if ($(this).parent().find("#hiddenblockfiletype").val() === 'False') {
+            var parentId = $(this).parent().find("#hiddenblockid").val();
             window.location = '/Document/UserStorage?parentId=' + parentId;
         }
     })
@@ -22,8 +22,10 @@ $(document).ready(function() {
 
     })
 
-    $('.delete').on("click", function () {
+    $('.delete').on("click", function (e) {
+        e.preventDefault();
         var str = $(this).parent().parent().find('#hiddenblockid').val();
+        //console.log(str);
         $.ajax({
             type: "POST",
             data: {

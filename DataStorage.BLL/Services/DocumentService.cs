@@ -18,6 +18,7 @@ namespace DataStorage.BLL.Services
         private readonly IMapper _mapper;
         private readonly IPathProvider _pProvider;
         private readonly IUsersRepository _userRepo;
+        private readonly List<DocumentEntity> _result_list;
 
         public DocumentService(
             IDocumentRepository documentRepo,
@@ -29,6 +30,7 @@ namespace DataStorage.BLL.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
             _userRepo = userRepo ?? throw new ArgumentNullException(nameof(userRepo));
+            _result_list = new List<DocumentEntity>();
         }
 
         public async Task<IEnumerable<DocumentDTO>> GetAllDocumentsRelatedAsync(string parentId)
@@ -38,34 +40,46 @@ namespace DataStorage.BLL.Services
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
 
-        public async Task CreateDocumentRelatedAsync(IFormFile uploadedFile, ClaimsPrincipal user, string parentId, string fdName = null)
+        public async Task CreateDocumentRelatedAsync(IFormFileCollection uploadedFile, ClaimsPrincipal user, string parentId, string fdName = null)
         {
-            string docId = Guid.NewGuid().ToString();
-            string storagePath = Path.Combine(_pProvider.ContentPath());
-            string combinedFilePath = "";
-            foreach(var str in GetPathPartsBypId(parentId)) {
-                combinedFilePath += str + "\\";
-            }
-            combinedFilePath.Substring(combinedFilePath.Length - 2);
-            var filePath = Path.Combine(storagePath, combinedFilePath, docId);
             if (uploadedFile != null)
             {
-                DocumentDTO docDto = new DocumentDTO
+                foreach(var file in uploadedFile)
                 {
-                    Name = uploadedFile.FileName,
-                    Length = uploadedFile.Length,
-                    IsFile = true,
-                    DocumentId = docId,
-                    OwnerId = _userRepo.GetUserId(user),
-                    ParentId = parentId,
-                    Path = filePath
-                };
-                await _pProvider.CreateFile(uploadedFile, Path.Combine(storagePath, _userRepo.GetUserId(user), docId));
-
-                DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                await _documentRepo.CreateDocumentAsync(newDoc);
+                    string docId = Guid.NewGuid().ToString();
+                    string storagePath = Path.Combine(_pProvider.ContentPath());
+                    string combinedFilePath = "";
+                    foreach (var str in GetPathPartsBypId(parentId))
+                    {
+                        combinedFilePath += str + "\\";
+                    }
+                    combinedFilePath.Substring(combinedFilePath.Length - 2);
+                    var filePath = Path.Combine(storagePath, combinedFilePath, docId);
+                    DocumentDTO docDto = new DocumentDTO
+                    {
+                        Name = file.FileName,
+                        Length = file.Length,
+                        IsFile = true,
+                        DocumentId = docId,
+                        OwnerId = _userRepo.GetUserId(user),
+                        ParentId = parentId,
+                        Path = filePath
+                    };
+                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(user), docId));
+                    DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
+                    await _documentRepo.CreateDocumentAsync(newDoc);
+                }
             } else
             {
+                string docId = Guid.NewGuid().ToString();
+                string storagePath = Path.Combine(_pProvider.ContentPath());
+                string combinedFilePath = "";
+                foreach (var str in GetPathPartsBypId(parentId))
+                {
+                    combinedFilePath += str + "\\";
+                }
+                combinedFilePath.Substring(combinedFilePath.Length - 2);
+                var filePath = Path.Combine(storagePath, combinedFilePath, docId);
                 DocumentDTO docDto = new DocumentDTO
                 {
                     Name = fdName,
@@ -166,14 +180,46 @@ namespace DataStorage.BLL.Services
 
         public async Task DeleteDocumentAsync(string id)
         {
-            var doc = await _documentRepo.GetDocumentByIdAsync(id);
-            if(doc.IsFile)
+            //await GetAllChilderAsync(id);
+            var to_delete = await _documentRepo.GetAllDocumentsRelatedAsync(id);
+            foreach(var doc in to_delete)
             {
-                _pProvider.DeleteFile(_documentRepo.GetDocumentPathById(id));
-                await _documentRepo.DeleteDocumentAsync(id);
-            } else
+                if(!doc.IsFile)
+                {
+                    await DeleteDocumentAsync(doc.DocumentId);
+                } else
+                {
+                    _pProvider.DeleteFile(_documentRepo.GetDocumentPathById(doc.DocumentId));
+                    await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
+                }
+            }
+        }
+
+        public async Task GetAllChilderAsync(string id)
+        {
+            var docs = await _documentRepo.GetAllDocumentsRelatedAsync(id);
+            foreach (var doc in docs)
             {
-                //deleting folder
+                _result_list.Add(doc);
+            }
+
+            foreach (var folder in _result_list)
+            {
+                if (folder.DocumentId == id)
+                {
+                    break;
+                } else
+                {
+                    if (!folder.IsFile)
+                    {
+                        id = folder.DocumentId;
+                        await GetAllChilderAsync(id);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
             }
         }
 

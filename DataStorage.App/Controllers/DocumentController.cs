@@ -48,7 +48,7 @@ namespace DataStorage.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateFile(IFormFile uploadedFile, string parentId)
+        public async Task<IActionResult> CreateFile(IFormFileCollection uploadedFile, string parentId)
         {
             await _documentService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
             return RedirectToAction("UserStorage");
@@ -153,6 +153,7 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> DeleteFile(string fileId)
         {
             await _documentService.DeleteDocumentAsync(fileId);
+            ViewData["parentId"] = null;
             return RedirectToAction("UserStorage");
         }
 
