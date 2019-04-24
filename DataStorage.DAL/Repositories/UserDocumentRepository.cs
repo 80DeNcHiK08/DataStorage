@@ -35,7 +35,7 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<UserDocument> GetUserDocumentAsync(string userEmail, string id)
         {
-            return await _context.UserDocuments.FirstOrDefaultAsync(u => u.DocumentId == id && u.GuestEmail == userEmail);
+            return await _context.UserDocuments.FirstOrDefaultAsync(u => u.DocumentId == id && u.User.Email == userEmail);
         }
 
         public async Task<string> GetUserDocumentLinkByIdAsync(string id)

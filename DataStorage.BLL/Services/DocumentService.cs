@@ -56,7 +56,7 @@ namespace DataStorage.BLL.Services
                     Length = uploadedFile.Length,
                     IsFile = true,
                     DocumentId = docId,
-                    OwnerId = _userRepo.GetUserId(user),
+                    OwnerId = _userRepo.GetUserId(user), // добавляй не ownerid, а owner = await _userRepo.GetUserByIdAsync(_userRepo.GetUserId(user));
                     ParentId = parentId,
                     Path = filePath
                 };

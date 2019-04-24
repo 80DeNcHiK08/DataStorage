@@ -69,9 +69,9 @@ namespace DataStorage.BLL.Services
             return _mapper.Map<DocumentDTO>(document);
         }
 
-        public async Task<string> OpenLimitedAccess(string documentId, ClaimsPrincipal user, string guestEmail)
+        public async Task<string> OpenLimitedAccess(string documentId, ClaimsPrincipal owner, string guestEmail)
         {
-            string ownerId = _userRepo.GetUserId(user);
+            string ownerId = _userRepo.GetUserId(owner);
 
             if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
             {
@@ -82,11 +82,11 @@ namespace DataStorage.BLL.Services
             if (!document.IsPublic)
             {
                 var userDocumentLink = _documentRepo.GenerateAccessLink();
+                var user = await _userRepo.GetUserByNameAsync(guestEmail);
                 await _userDocumentRepo.CreateAsync(new UserDocument
                 {
                     Document = document,
-                    DocumentId = documentId,
-                    GuestEmail = guestEmail,
+                    User = user,
                     DocumentLink = userDocumentLink
                 });
 
