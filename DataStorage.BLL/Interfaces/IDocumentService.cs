@@ -23,5 +23,6 @@ namespace DataStorage.BLL.Interfaces
         Task DeleteZip(string path);
         Task<DocumentDTO> GetAvailbleDocumentForUserAsync(string link, ClaimsPrincipal user);
         Task<IEnumerable<DocumentDTO>> GetAllAvailbleDocumentsForUserAsync(ClaimsPrincipal user);
+        Task<IEnumerable<DocumentDTO>> SearchDocuments(string searchString, string userId);
     }
 }

@@ -172,6 +172,12 @@ namespace DataStorage.BLL.Services
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
 
+        public async Task<IEnumerable<DocumentDTO>> SearchDocuments(string searchString, string userId)
+        {
+            var availbleDocuments = await _documentRepo.SearchDocuments(searchString, userId);
+            return _mapper.Map<IEnumerable<DocumentDTO>>(availbleDocuments); ;
+        }
+
         public async Task UpdateDocumentAsync(DocumentDTO document)
         {
             var newDoc = _mapper.Map<DocumentEntity>(document);

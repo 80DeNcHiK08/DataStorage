@@ -50,11 +50,15 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<bool> IsUserDocumentOwner(string documentId, string userId)
         {
-            var document = await _context.Documents.Where(doc => doc.OwnerId == userId).FirstOrDefaultAsync();
+            var document = await _context.Documents.Where(doc => doc.OwnerId == userId && doc.DocumentId == documentId).FirstOrDefaultAsync();
 
             if (document != null)
             {
-                return document.DocumentId == documentId;
+                return true;
+            }
+            else
+            {
+                return false;
             }
 
             return false;
@@ -86,6 +90,13 @@ namespace DataStorage.DAL.Repositories
             return user.UserDocuments.ToList();
         }
 
+        public async Task<IEnumerable<DocumentEntity>> SearchDocuments(string searchString, string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            return _context.Documents.Where(doc => doc.Name.Contains(searchString) && doc.OwnerId==userId);
+        }
+
         public async Task<UserDocument> GetAvailbleDocumentForUserAsync(string link, string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -103,5 +114,7 @@ namespace DataStorage.DAL.Repositories
         {
             return GetDocumentByIdAsync(id).Result.Path;
         }
+
+
     }
 }

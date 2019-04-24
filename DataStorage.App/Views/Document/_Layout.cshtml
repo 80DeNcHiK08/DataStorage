@@ -22,10 +22,12 @@
 <div class="wrapper ustorage">
     <div class="header">
         <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
-        <div class="search_handler">
-            <input id="search" type="text" placeholder="Search files">
+        <form class="search_handler" asp-action="SearchDocuments" asp-controller="Document">
+
+            <input id="search" type="text" placeholder="Search files" name="SearchString">
             <button class="btn"><i class="fas fa-search    "></i></button>
-        </div>
+
+        </form>
         <nav class="m-menu">
             <ul>
                 <li><a asp-action="LogOut" asp-controller="Account">LogOut</a></li>

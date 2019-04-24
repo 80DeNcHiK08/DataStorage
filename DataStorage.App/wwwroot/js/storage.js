@@ -43,6 +43,21 @@ $(document).ready(function() {
         });
     })
 
+    /*$('.share').on("click", function (e) {
+        e.preventDefault();
+        var str = $(this).parent().parent().parent().find('#hiddenblockid').val();
+        //console.log(str);
+        $.ajax({
+            type: "POST",
+            data: {
+                fileId: str
+            },
+            url: '/Document/ShareFile'
+        })//.done(function () {
+            //window.location = '/Document/UserStorage';
+        });
+    })*/
+
     $('.download').on("click", function () {
         var str = $(this).parent().parent().find('#hiddenblockid').val();
         $.ajax({
@@ -99,6 +114,6 @@ function deleteDocument() {
         },
         url: '/Document/DeleteFile'
     }).done(function () {
-        window.location = '/Document/UserStorage';
+        //window.location = '/Document/UserStorage';
     });
 }
