@@ -84,8 +84,12 @@ namespace DataStorage.BLL.Services
             {
                 var userDocumentLink = _documentRepo.GenerateAccessLink();
                 var user = await _userRepo.GetUserByNameAsync(guestEmail);
+                if (ownerId == user.Id)
+                {
+                    return null;
+                }
 
-                await _userDocumentRepo.AddUserDocumentAsync(user.Id, documentId);
+                await _userDocumentRepo.AddUserDocumentAsync(user.Id, documentId, userDocumentLink);
 
                 return userDocumentLink;
             }
@@ -103,7 +107,6 @@ namespace DataStorage.BLL.Services
             }
 
             var user = await _userRepo.GetUserByNameAsync(guestEmail);
-            // var document = await _documentRepo.GetDocumentByIdAsync(documentId);
 
             var userDocument = user.UserDocuments.FirstOrDefault(ud => ud.DocumentId == documentId);
             await _userDocumentRepo.DeleteUserDocumentAsync(user, userDocument);

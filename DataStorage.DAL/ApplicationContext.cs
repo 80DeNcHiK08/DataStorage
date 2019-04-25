@@ -15,18 +15,8 @@ namespace DataStorage.DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // builder.Entity<UserDocument>().HasKey(ud => new { ud.GuestEmail, ud.DocumentId });
             builder.Entity<DocumentEntity>().HasKey(de => de.DocumentId);
-            // builder.Entity<DocumentEntity>().Property(de => de.DocumentId).IsRequired();
 
-            // builder.Entity<UserEntity>()
-            //     .HasMany(ue => ue.Documents)
-            //     .WithOne(de => de.Owner)
-            //     .HasForeignKey(de => de.OwnerId);
-            //     .OnDelete(DeleteBehavior.Cascade);
-
-            // builder.Entity<UserDocument>().Property(ud => ud.DocumentId).IsRequired();
-            // builder.Entity<UserDocument>().Property(ud => ud.UserId).IsRequired();
             builder.Entity<UserDocument>().HasKey(ud => new { ud.UserId, ud.DocumentId });
 
             builder.Entity<UserDocument>()
@@ -43,6 +33,5 @@ namespace DataStorage.DAL
         }
 
         public DbSet<DocumentEntity> Documents { get; set; }
-        // public DbSet<UserDocument> UserDocuments { get; set; }
     }
 }

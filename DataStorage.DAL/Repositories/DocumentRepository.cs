@@ -39,7 +39,6 @@ namespace DataStorage.DAL.Repositories
             if (doc.Count() == 0)
             {
                 await _context.Documents.AddAsync(document);
-                // document.UserDocuments.Add(new UserDocument { DocumentId = document.DocumentId, UserId = document.OwnerId });
                 await _context.SaveChangesAsync();
             }
         }
@@ -84,7 +83,7 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<IEnumerable<DocumentEntity>> GetAllAvailbleDocumentsForUserAsync(string userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.Include(u => u.UserDocuments).FirstOrDefaultAsync(u => u.Id == userId);
 
             return user.UserDocuments.Select(ud => ud.Document).ToList();
         }
@@ -98,9 +97,9 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<DocumentEntity> GetAvailbleDocumentForUserAsync(string link, string userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.Include(u => u.UserDocuments).ThenInclude(ud => ud.Document).FirstOrDefaultAsync(u => u.Id == userId);
 
-            return user.UserDocuments.Select(ud => ud.Document).FirstOrDefault(doc => doc.DocumentLink == link);
+            return user.UserDocuments.FirstOrDefault(ud => ud.DocumentLink == link).Document;
         }
 
         public async Task DeleteDocumentAsync(string id)

@@ -16,11 +16,11 @@ namespace DataStorage.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddUserDocumentAsync(string userId, string documentId)
+        public async Task AddUserDocumentAsync(string userId, string documentId, string documentLink = null)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             // var document = await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == documentId);
-            user.UserDocuments.Add(new UserDocument { UserId = user.Id, DocumentId = documentId });
+            user.UserDocuments.Add(new UserDocument { UserId = user.Id, DocumentId = documentId, DocumentLink = documentLink });
             await _context.SaveChangesAsync();
         }
 

@@ -17,11 +17,11 @@ namespace DataStorage.BLL.DTOs
         public string DocumentLink { get; set; }
         public bool IsPublic { get; set; }
         public DateTime ChangeDate { get; set; }
-        public ICollection<UserDocument> UserDocuments { get; set; }
+        // public ICollection<UserDocument> UserDocuments { get; set; }
 
-        public DocumentDTO()
-        {
-            UserDocuments = new List<UserDocument>();
-        }
+        // public DocumentDTO()
+        // {
+        //     UserDocuments = new List<UserDocument>();
+        // }
     }
 }

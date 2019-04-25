@@ -19,8 +19,8 @@ namespace DataStorage.BLL.Mappings
                 .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Length))
                 .ForMember(d => d.DocumentLink, opt => opt.MapFrom(src => src.DocumentLink))
                 .ForMember(d => d.ChangeDate, opt => opt.MapFrom(src => src.ChangeDate))
-                .ForMember(d => d.IsPublic, opt => opt.MapFrom(src => src.IsPublic))
-                .ForMember(d => d.UserDocuments, opt => opt.MapFrom(src => src.UserDocuments));
+                .ForMember(d => d.IsPublic, opt => opt.MapFrom(src => src.IsPublic));
+                // .ForMember(d => d.UserDocuments, opt => opt.MapFrom(src => src.UserDocuments));
 
             CreateMap<DocumentEntity, DocumentDTO>()
                 .ForMember(d => d.DocumentId, opt => opt.MapFrom(src => src.DocumentId))
@@ -33,8 +33,8 @@ namespace DataStorage.BLL.Mappings
                 .ForMember(d => d.Length, opt => opt.MapFrom(src => src.Length))
                 .ForMember(d => d.DocumentLink, opt => opt.MapFrom(src => src.DocumentLink))
                 .ForMember(d => d.ChangeDate, opt => opt.MapFrom(src => src.ChangeDate))
-                .ForMember(d => d.IsPublic, opt => opt.MapFrom(src => src.IsPublic))
-                .ForMember(d => d.UserDocuments, opt => opt.MapFrom(src => src.UserDocuments));
+                .ForMember(d => d.IsPublic, opt => opt.MapFrom(src => src.IsPublic));
+                // .ForMember(d => d.UserDocuments, opt => opt.MapFrom(src => src.UserDocuments));
         }
     }
 }

@@ -11,5 +11,7 @@ namespace DataStorage.App.ViewModels
 
         [Required]
         public string DocumentId { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }
