@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using DataStorage.BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DataStorage.App.Controllers
@@ -16,7 +17,9 @@ namespace DataStorage.App.Controllers
             _sharingService = sharingService ?? throw new ArgumentNullException(nameof(sharingService));
         }
 
-        public async Task<IActionResult> GetPublicDocumentAsync(string link)
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Get(string link)
         {
             var document = await _sharingService.GetPublicDocumentByLinkAsync(link);
             return View(document);

@@ -30,8 +30,9 @@ namespace DataStorage.BLL.Services
         public async Task<string> OpenPublicAccess(string documentId, ClaimsPrincipal user)
         {
             string ownerId = _userRepo.GetUserId(user);
+            bool isOwner = await _documentRepo.IsUserDocumentOwner(documentId, ownerId);
 
-            if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
+            if (!isOwner)
             {
                 throw new UnauthorizedAccessException($"The user {ownerId} is not the owner of the document");
             }
@@ -69,9 +70,9 @@ namespace DataStorage.BLL.Services
             return _mapper.Map<DocumentDTO>(document);
         }
 
-        public async Task<string> OpenLimitedAccess(string documentId, ClaimsPrincipal user, string guestEmail)
+        public async Task<string> OpenLimitedAccess(string documentId, ClaimsPrincipal owner, string guestEmail)
         {
-            string ownerId = _userRepo.GetUserId(user);
+            string ownerId = _userRepo.GetUserId(owner);
 
             if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
             {
@@ -82,50 +83,46 @@ namespace DataStorage.BLL.Services
             if (!document.IsPublic)
             {
                 var userDocumentLink = _documentRepo.GenerateAccessLink();
-                await _userDocumentRepo.CreateAsync(new UserDocument
-                {
-                    Document = document,
-                    DocumentId = documentId,
-                    GuestEmail = guestEmail,
-                    DocumentLink = userDocumentLink
-                });
+                var user = await _userRepo.GetUserByNameAsync(guestEmail);
+
+                await _userDocumentRepo.AddUserDocumentAsync(user.Id, documentId);
 
                 return userDocumentLink;
             }
 
-            return await _userDocumentRepo.GetUserDocumentLinkByIdAsync(documentId);
+            return document.DocumentLink;
         }
 
-        public async Task CloseLimitedAccessForUser(string documentId, ClaimsPrincipal user, string guestEmail)
+        public async Task CloseLimitedAccessForUser(string documentId, ClaimsPrincipal owner, string guestEmail)
         {
-            string ownerId = _userRepo.GetUserId(user);
+            string ownerId = _userRepo.GetUserId(owner);
 
             if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
             {
                 throw new UnauthorizedAccessException($"The user {ownerId} is not the owner of the document");
             }
 
-            var userDocument = await _userDocumentRepo.GetUserDocumentAsync(guestEmail, documentId);
-            if (userDocument != null)
-            {
-                await _userDocumentRepo.DeleteAsync(userDocument);
-            }
+            var user = await _userRepo.GetUserByNameAsync(guestEmail);
+            // var document = await _documentRepo.GetDocumentByIdAsync(documentId);
+
+            var userDocument = user.UserDocuments.FirstOrDefault(ud => ud.DocumentId == documentId);
+            await _userDocumentRepo.DeleteUserDocumentAsync(user, userDocument);
         }
 
-        public async Task CloseLimitedAccessEntirely(string documentId, ClaimsPrincipal user)
-        {
-            string ownerId = _userRepo.GetUserId(user);
+        // public async Task CloseLimitedAccessEntirely(string documentId, ClaimsPrincipal owner)
+        // {
+        //     string ownerId = _userRepo.GetUserId(owner);
 
-            if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
-            {
-                throw new UnauthorizedAccessException($"The user {ownerId} is not the owner of the document");
-            }
+        //     if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
+        //     {
+        //         throw new UnauthorizedAccessException($"The user {ownerId} is not the owner of the document");
+        //     }
 
-            var userDocument = await _userDocumentRepo.GetUserDocumentByIdAsync(documentId);
-            if (userDocument != null)
-            {
-                await _userDocumentRepo.DeleteAsync(userDocument);
-            }
-        }
+        //     var userDocument = await _userDocumentRepo.GetUserDocumentByIdAsync(documentId);
+        //     if (userDocument != null)
+        //     {
+        //         await _userDocumentRepo.DeleteAsync(userDocument);
+        //     }
+        // }
     }
 }

@@ -5,10 +5,10 @@ namespace DataStorage.DAL.Interfaces
 {
     public interface IUserDocumentRepository
     {
-        Task CreateAsync(UserDocument document);
-        Task DeleteAsync(UserDocument document);
-        Task<UserDocument> GetUserDocumentByIdAsync(string id);
-        Task<UserDocument> GetUserDocumentAsync(string userEmail, string id);
+        Task AddUserDocumentAsync(string userId, string documentId);
+        Task DeleteUserDocumentAsync(UserEntity user, UserDocument document);
+        // Task<DocumentEntity> GetUserDocumentByIdAsync(string id);
+        Task<DocumentEntity> GetUserDocumentAsync(string userEmail, string id);
         Task<string> GetUserDocumentLinkByIdAsync(string id);
     }
 }

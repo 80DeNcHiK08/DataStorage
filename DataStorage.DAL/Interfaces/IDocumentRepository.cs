@@ -18,8 +18,8 @@ namespace DataStorage.DAL.Interfaces
         Task DeleteDocumentAsync(string id);
         string GetDocumentPathById(string id);
         Task<DocumentEntity> GetPublicDocumentByLinkAsync(string link);
-        Task<UserDocument> GetAvailbleDocumentForUserAsync(string documentId, string userId);
-        Task<IEnumerable<UserDocument>> GetAllAvailbleDocumentsForUserAsync(string userId);
+        Task<DocumentEntity> GetAvailbleDocumentForUserAsync(string documentId, string userId);
+        Task<IEnumerable<DocumentEntity>> GetAllAvailbleDocumentsForUserAsync(string userId);
         Task DeleteAllUserDocumentsAsync(string OwnerId);
         Task<IEnumerable<DocumentEntity>> SearchDocuments(string searchString, string userId);
     }

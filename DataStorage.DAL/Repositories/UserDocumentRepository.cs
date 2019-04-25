@@ -16,31 +16,31 @@ namespace DataStorage.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task CreateAsync(UserDocument document)
+        public async Task AddUserDocumentAsync(string userId, string documentId)
         {
-            await _context.UserDocuments.AddAsync(document);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            // var document = await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == documentId);
+            user.UserDocuments.Add(new UserDocument { UserId = user.Id, DocumentId = documentId });
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(UserDocument document)
+        public async Task DeleteUserDocumentAsync(UserEntity user, UserDocument document)
         {
-            _context.UserDocuments.Remove(document);
+            user.UserDocuments.Remove(document);
             await _context.SaveChangesAsync();
         }  
         
-        public async Task<UserDocument> GetUserDocumentByIdAsync(string id)
+        public async Task<DocumentEntity> GetUserDocumentAsync(string userEmail, string id)
         {
-            return await _context.UserDocuments.FirstOrDefaultAsync(u => u.DocumentId == id);
-        }
+            var document = await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == id);
+            var userDocument = document.UserDocuments.FirstOrDefault(ud => ud.User.Email == userEmail);
 
-        public async Task<UserDocument> GetUserDocumentAsync(string userEmail, string id)
-        {
-            return await _context.UserDocuments.FirstOrDefaultAsync(u => u.DocumentId == id && u.GuestEmail == userEmail);
+            return userDocument.Document;
         }
 
         public async Task<string> GetUserDocumentLinkByIdAsync(string id)
         {
-            var userDocument = await _context.UserDocuments.FirstOrDefaultAsync(u => u.DocumentId == id);
+            var userDocument = await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == id);
 
             return userDocument.DocumentLink;
         }

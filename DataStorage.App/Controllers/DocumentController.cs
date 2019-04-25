@@ -31,7 +31,7 @@ namespace DataStorage.App.Controllers
         [HttpGet]
         public async Task<IActionResult> UserStorage(string parentId)
         {
-            if(parentId == null)
+            if (parentId == null)
             {
                 parentId = _userService.GetUserId(User);
             }
@@ -57,17 +57,17 @@ namespace DataStorage.App.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFolder(string FolderName, string parentId)
         {
-            await _documentService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
+            await _documentService.CreateDocumentRelatedAsync(null, User, parentId, FolderName);
             return RedirectToAction("UserStorage");
         }
 
-        /*[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> OpenPublicAccess(string documentId)
         {
             var link = $"{Request.Host.Value}/Share/Get?link={await _sharingService.OpenPublicAccess(documentId, User)}";
 
             return Content(link);
-        }*/
+        }
 
         [HttpGet]
         public async Task<IActionResult> ClosePublicAccess(string documentId)
@@ -76,7 +76,7 @@ namespace DataStorage.App.Controllers
             return Ok();
         }
 
-        /*[HttpGet]
+        [HttpGet]
         public IActionResult OpenLimitedAccessForUser(string documentId)
         {
             if (documentId == null)
@@ -86,7 +86,6 @@ namespace DataStorage.App.Controllers
 
             return View("OpenLimitedAccess", new SharingViewModel { DocumentId = documentId });
         }
-
 
         [HttpPost]
         public async Task<IActionResult> OpenLimitedAccessForUser(SharingViewModel model)
@@ -102,35 +101,35 @@ namespace DataStorage.App.Controllers
             }
 
             return View(model);
-        }*/
+        }
 
         [HttpPost]
         public async Task<IActionResult> LimitedAccessForUser(string DocumentId, string Email)
         {
             //if (ModelState.IsValid)
             //{
-                //if (Request.Form["OpenAccess"].ToString() != null)
-                //{
-                
-            
-                    var link = await _sharingService.OpenLimitedAccess(DocumentId, User, Email);//тут оно крашится
-            
-                    var callbackUrl = Url.FileAccessLink(link, Request.Scheme);
-                    await _emailService.SendEmailAsync(Email, "You have been granted an access to the file",
-                        $"{User.Identity.Name} has shared a <a href='{callbackUrl}'>file</a> with you");
+            //if (Request.Form["OpenAccess"].ToString() != null)
+            //{
 
-                    //return RedirectToAction("ShareFile", "Document", new { fileId = model.DocumentId });
-                //}
-                /*if (Request.Form["CloseAccess"].ToString() != null)
-                {
-                    await _sharingService.CloseLimitedAccessForUser(model.DocumentId, User, model.Email);
-                    //return RedirectToAction("ShareFile", "Document", new { fileId = model.DocumentId });
-                }*/
-                return RedirectToAction("ShareFile", "Document", new { fileId = DocumentId });
-            }
-            
-           // return View(model);
-       // }
+
+            var link = await _sharingService.OpenLimitedAccess(DocumentId, User, Email);//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+
+            var callbackUrl = Url.FileAccessLink(link, Request.Scheme);
+            await _emailService.SendEmailAsync(Email, "You have been granted an access to the file",
+                $"{User.Identity.Name} has shared a <a href='{callbackUrl}'>file</a> with you");
+
+            //return RedirectToAction("ShareFile", "Document", new { fileId = model.DocumentId });
+            //}
+            /*if (Request.Form["CloseAccess"].ToString() != null)
+            {
+                await _sharingService.CloseLimitedAccessForUser(model.DocumentId, User, model.Email);
+                //return RedirectToAction("ShareFile", "Document", new { fileId = model.DocumentId });
+            }*/
+            return RedirectToAction("ShareFile", "Document", new { fileId = DocumentId });
+        }
+
+        // return View(model);
+        // }
 
         [HttpGet]
         public async Task<IActionResult> GetAvailbleDocument(string link)
@@ -146,7 +145,7 @@ namespace DataStorage.App.Controllers
 
             return View(availbleDocuments);
         }
-        /*
+        
         [HttpGet]
         public IActionResult CloseLimitedAccessForUser(string documentId)
         {
@@ -170,13 +169,14 @@ namespace DataStorage.App.Controllers
             }
 
             return View(model);
-        }*/
-
-        public async Task<IActionResult> CloseLimitedAccessEntirely(string documentId)
-        {
-            await _sharingService.CloseLimitedAccessEntirely(documentId, User);
-            return Ok();
         }
+
+        // [HttpPost]
+        // public async Task<IActionResult> CloseLimitedAccessEntirely(string documentId)
+        // {
+        //     await _sharingService.CloseLimitedAccessEntirely(documentId, User);
+        //     return Ok();
+        // }
 
         public async Task<IActionResult> DeleteFile(string fileId)
         {
@@ -189,7 +189,7 @@ namespace DataStorage.App.Controllers
         {
             var link = $"{Request.Host.Value}/Share/Get?link={ _sharingService.OpenPublicAccess(fileId, User)}";
             //var model = new ShareViewModel { DocumentId = fileId, ShareLink = link };
-            return View(new ShareViewModel { DocumentId = fileId, ShareLink = link, Email=null}
+            return View(new ShareViewModel { DocumentId = fileId, ShareLink = link, Email = null }
                 );
         }
 
@@ -219,6 +219,6 @@ namespace DataStorage.App.Controllers
             var availbleDocuments = await _documentService.SearchDocuments(searchString, userId);
             return View("UserStorage", availbleDocuments);
         }
-            
+
     }
 }

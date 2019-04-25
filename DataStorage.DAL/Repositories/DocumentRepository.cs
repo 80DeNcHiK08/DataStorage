@@ -27,9 +27,9 @@ namespace DataStorage.DAL.Repositories
             return await _context.Documents.Where(d => d.OwnerId == ownerId).ToListAsync();
         }
 
-        public async Task DeleteAllUserDocumentsAsync(string OwnerId)
+        public async Task DeleteAllUserDocumentsAsync(string ownerId)
         {
-            _context.Documents.RemoveRange(_context.Documents.Where(d => d.OwnerId == OwnerId));
+            _context.Documents.RemoveRange(_context.Documents.Where(d => d.OwnerId == ownerId));
             await _context.SaveChangesAsync();
         }
 
@@ -38,19 +38,20 @@ namespace DataStorage.DAL.Repositories
             var doc = _context.Documents.Where(d => d.DocumentId == document.DocumentId);
             if (doc.Count() == 0)
             {
-                var newdoc = await _context.Documents.AddAsync(document);
+                await _context.Documents.AddAsync(document);
+                // document.UserDocuments.Add(new UserDocument { DocumentId = document.DocumentId, UserId = document.OwnerId });
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<DocumentEntity> GetDocumentByIdAsync(string id)
         {
-            return await _context.Documents.Where(f => f.DocumentId == id).FirstOrDefaultAsync();
+            return await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == id);
         }
 
         public async Task<bool> IsUserDocumentOwner(string documentId, string userId)
         {
-            var document = await _context.Documents.Where(doc => doc.OwnerId == userId && doc.DocumentId == documentId).FirstOrDefaultAsync();
+            var document = await _context.Documents.FirstOrDefaultAsync(doc => doc.DocumentId == documentId && doc.OwnerId == userId);
 
             if (document != null)
             {
@@ -60,8 +61,6 @@ namespace DataStorage.DAL.Repositories
             {
                 return false;
             }
-
-            return false;
         }
 
         public string GenerateAccessLink()
@@ -83,11 +82,11 @@ namespace DataStorage.DAL.Repositories
             return await _context.Documents.Where(doc => doc.DocumentLink == link && doc.IsPublic == true).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<UserDocument>> GetAllAvailbleDocumentsForUserAsync(string userId)
+        public async Task<IEnumerable<DocumentEntity>> GetAllAvailbleDocumentsForUserAsync(string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            return user.UserDocuments.ToList();
+            return user.UserDocuments.Select(ud => ud.Document).ToList();
         }
 
         public async Task<IEnumerable<DocumentEntity>> SearchDocuments(string searchString, string userId)
@@ -97,11 +96,11 @@ namespace DataStorage.DAL.Repositories
             return _context.Documents.Where(doc => doc.Name.Contains(searchString) && doc.OwnerId==userId);
         }
 
-        public async Task<UserDocument> GetAvailbleDocumentForUserAsync(string link, string userId)
+        public async Task<DocumentEntity> GetAvailbleDocumentForUserAsync(string link, string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            return user.UserDocuments.FirstOrDefault(doc => doc.DocumentLink == link);;
+            return user.UserDocuments.Select(ud => ud.Document).FirstOrDefault(doc => doc.DocumentLink == link);
         }
 
         public async Task DeleteDocumentAsync(string id)

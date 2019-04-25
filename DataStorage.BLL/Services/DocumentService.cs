@@ -15,6 +15,7 @@ namespace DataStorage.BLL.Services
     public class DocumentService : IDocumentService
     {
         private readonly IDocumentRepository _documentRepo;
+        private readonly IUserDocumentRepository _userDocumentRepo;
         private readonly IMapper _mapper;
         private readonly IPathProvider _pProvider;
         private readonly IUsersRepository _userRepo;
@@ -24,12 +25,14 @@ namespace DataStorage.BLL.Services
             IDocumentRepository documentRepo,
             IMapper mapper,
             IPathProvider pProvider,
-            IUsersRepository userRepo)
+            IUsersRepository userRepo,
+            IUserDocumentRepository userDocumentRepo)
         {
             _documentRepo = documentRepo ?? throw new ArgumentNullException(nameof(documentRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _pProvider = pProvider ?? throw new ArgumentNullException(nameof(pProvider));
             _userRepo = userRepo ?? throw new ArgumentNullException(nameof(userRepo));
+            _userDocumentRepo = userDocumentRepo ?? throw new ArgumentNullException(nameof(userDocumentRepo));
             _result_list = new List<DocumentEntity>();
         }
 
@@ -40,7 +43,7 @@ namespace DataStorage.BLL.Services
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
 
-        public async Task CreateDocumentRelatedAsync(IFormFileCollection uploadedFile, ClaimsPrincipal user, string parentId, string fdName = null)
+        public async Task CreateDocumentRelatedAsync(IFormFileCollection uploadedFile, ClaimsPrincipal owner, string parentId, string fdName = null)
         {
             if (uploadedFile != null)
             {
@@ -61,13 +64,14 @@ namespace DataStorage.BLL.Services
                         Length = file.Length,
                         IsFile = true,
                         DocumentId = docId,
-                        OwnerId = _userRepo.GetUserId(user),
+                        OwnerId = _userRepo.GetUserId(owner),
                         ParentId = parentId,
                         Path = filePath
                     };
-                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(user), docId));
+                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
                     DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                     await _documentRepo.CreateDocumentAsync(newDoc);
+                    await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
                 }
             } else
             {
@@ -86,13 +90,14 @@ namespace DataStorage.BLL.Services
                     Length = 0,
                     IsFile = false,
                     DocumentId = docId,
-                    OwnerId = _userRepo.GetUserId(user),
+                    OwnerId = _userRepo.GetUserId(owner),
                     ParentId = parentId,
                     Path = filePath
                 };
                 UpdateFolderLength(docDto.ParentId);
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                 await _documentRepo.CreateDocumentAsync(newDoc);
+                await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
             }
         }
 
@@ -124,6 +129,7 @@ namespace DataStorage.BLL.Services
                     OwnerId = ownerId
                 };
                 await _documentRepo.CreateDocumentAsync(document);
+                // await _userDocumentRepo.AddUserDocumentAsync(ownerId, ownerId);
             }
             _pProvider.CreateFolderOnRegister(ownerId);
         }
@@ -153,9 +159,9 @@ namespace DataStorage.BLL.Services
         public async Task<DocumentDTO> GetAvailbleDocumentForUserAsync(string link, ClaimsPrincipal user)
         {
             string userId = _userRepo.GetUserId(user);
-            var userDocument = await _documentRepo.GetAvailbleDocumentForUserAsync(link, userId);
+            var document = await _documentRepo.GetAvailbleDocumentForUserAsync(link, userId);
 
-            return _mapper.Map<DocumentDTO>(userDocument.Document);
+            return _mapper.Map<DocumentDTO>(document);
         }
 
         public async Task<IEnumerable<DocumentDTO>> GetAllAvailbleDocumentsForUserAsync(ClaimsPrincipal user)
@@ -166,7 +172,7 @@ namespace DataStorage.BLL.Services
 
             foreach (var item in availbleDocuments)
             {
-                documents.Add(item.Document);
+                documents.Add(item);
             }
 
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
