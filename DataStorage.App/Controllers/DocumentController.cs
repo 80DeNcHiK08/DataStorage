@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using DataStorage.App.ViewModels;
 using DataStorage.BLL.Interfaces;
+using DataStorage.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +16,20 @@ namespace DataStorage.App.Controllers
         private readonly IUsersService _userService;
         private readonly ISharingService _sharingService;
         private readonly IEmailService _emailService;
+        private readonly IPathProvider _pProvider;
 
         public DocumentController(
             IDocumentService documentService,
             IUsersService userService,
             ISharingService sharingService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IPathProvider pProvider)
         {
             _documentService = documentService ?? throw new ArgumentNullException(nameof(documentService));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             _sharingService = sharingService ?? throw new ArgumentNullException(nameof(sharingService));
+            _pProvider = pProvider;
         }
 
         [Authorize]
@@ -151,22 +155,29 @@ namespace DataStorage.App.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> DeleteFile(string fileId)
+        public JsonResult DeleteFile(string fileId)
         {
-            await _documentService.DeleteDocumentAsync(fileId);
-            return Redirect("/Document/UserStorage?parentId=" + ViewData["parentId"]);
+            bool res = false;
+            if(fileId != null)
+            {
+                _documentService.DeleteDocumentAsync(fileId);
+            }
+            return Json(res);
         }
 
-        public async Task<IActionResult> DownloadFile(string fileId)
+        public IActionResult DownloadFile(string fileId)
         {
-            var file = await _documentService.GetDocumentByIdAsync(fileId);
-            var file_extention = file.Name.Split(".");
-            var memory = new MemoryStream();
-            using (var filestream = new FileStream(file.Path, FileMode.Open))
+            var file = _documentService.GetDocumentByIdAsync(fileId);
+            string physical_path = _pProvider.ContentPath() + "\\" + file.Result.OwnerId + "\\" + file.Result.DocumentId;
+
+            if(file.Result.IsFile)
             {
-                await filestream.CopyToAsync(memory);
+                string contentType = ContentType.GetContentType(file.Result.Name);
+                return PhysicalFile(physical_path, contentType, file.Result.Name);
+            } else {
+                return View();
+                //
             }
-            return File(memory, "application/" + file_extention[file_extention.Length - 1], file.Name);
         }
 
         public async Task<IActionResult> DeleteAll()

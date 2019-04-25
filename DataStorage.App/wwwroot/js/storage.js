@@ -1,70 +1,84 @@
-$(document).ready(function() {
+$(document).ready(function () {
+
+
+    Dropzone.options.uploader = {
+        //url: "Document/CreateFile",
+        paramName: 'uploadedFile',
+        ignoreHiddenFiles: false,
+        maxFileSize: 30,
+        maxFiles: 10,
+        clickable: true,
+        uploadMultiple: true,
+        createImageThumbnails: false,
+        parallelUploads: 1,
+        autoProcessQueue: true,
+        init: function () {
+            var _this = this;
+            this.on("sending", function (data) {
+                alert(sessionStorage.getItem("parentId"));
+                data.append("parentId", GetParentId());
+            });
+            /*this.on("dropfile", function (data) {
+                data.append("parentId", GetParentId());
+            });*/
+        }
+    } 
+
+
     $("#create_menu").on("click", function (e) {
         e.preventDefault();
-        $(".create-item").toggle("200");
-    })
-
-    $("#tree").on("click", function (e) {
-        e.preventDefault();
-        $(".filetree").toggle("400");
+        $("#dropdown-create").toggle("200");
     })
 
     $("#settings_menu").on("click", function (e) {
         e.preventDefault();
-        $(".settings-item").toggle("400");
+        $("#dropdown-settings").toggle("200");
     })
 
-    $(".eventhandler").on("click", function (e) {
+    $(".block").on("contextmenu", function(e) {
         e.preventDefault();
-        if ($(this).parent().find("#hiddenblockfiletype").val() === 'False') {
-            var parentId = $(this).parent().find("#hiddenblockid").val();
-            window.location = '/Document/UserStorage?parentId=' + parentId;
-        }
-    })
-
-    $('.fileblock').on("contextmenu", function (e) {
-        e.preventDefault()
-        $(this).find('.contextmenu').toggle("200");
-    })
-
-    $('.delete').on("click", function (e) {
-        e.preventDefault();
-        var str = $(this).parent().parent().parent().find('#hiddenblockid').val();
-        $.ajax({
-            type: "POST",
-            data: {
-                fileId: str
-            },
-            url: '/Document/DeleteFile'
-        }).done(function () {
-            //window.location = '/Document/UserStorage';
+        $(this).find(".documentoptions").slideToggle("100", function() {
+            if($(this).parent().hasClass("folderblock"))
+            {
+                if($(this).parent().hasClass("increase"))
+                {
+                    $(this).parent().removeClass("increase")
+                } else {
+                    $(this).parent().addClass("increase")
+                }
+            }
         });
     })
 
-    $('.delete').on("click", function (e) {
+    $(".delete").on("click", function(e) {
         e.preventDefault();
-        var parentId = $(this).parent().parent().parent().find("#hiddenblockid").val();
-        console.log($(this).parent().parent().parent().find("#hiddenblockid").val());
-        window.location = '/Document/DeleteFile?fileId=' + parentId;
+        var id = $(this).parent().parent().parent().find("#hiddendocid").val();
+        Delete(id);
     })
 
-    $('.download').on("click", function (e) {
+    $(".download").on("click", function(e) {
         e.preventDefault();
-        if ($(this).parent().parent().parent().find("#hiddenblockfiletype").val() === 'True') {
-            var parentId = $(this).parent().parent().parent().find("#hiddenblockid").val();
-            console.log($(this).parent().parent().parent().find("#hiddenblockfiletype").val(), $(this).parent().parent().parent().find("#hiddenblockid").val());
-            window.location = '/Document/DownloadFile?fileId=' + parentId;
-        }
+        var id = $(this).parent().parent().parent().find("#hiddendocid").val();
+        Download(id);
     })
 
-    $('.info').on('click', function(e) {
+    $(".folderblock").find(".eventhandler").on("click", function(e) {
         e.preventDefault();
-        var str = $(this).parent().parent().parent().find('.detblock').toggle("200");
+        var parentId = $(this).parent().find("#hiddendocid").val();
+        window.location = '/Document/UserStorage?parentId=' + parentId;
     })
 })
 
-function sumbmit() {
-    $("#uploadFile").submit();
+function GetParentId() {
+    var parentId = sessionStorage.getItem("parentId");
+    $("#parentId").val(parentId);
+    return parentId;
+}
+
+function GetOwnerId() {
+    var ownerId = sessionStorage.getItem("ownerId");
+    $("#ownerId").val(ownerId);
+    return ownerId;
 }
 
 ;( function($, window, document, undefined)
@@ -96,15 +110,26 @@ function sumbmit() {
 	});
 })(jQuery, window, document);
 
-function deleteDocument() {
-    var str = $(this).find('#hiddenblockid').val();
-    $.ajax({
+function Delete(id) {
+    $.ajax ({
         type: "POST",
-        data: {
-            fileId: str
-        },
-        url: '/Document/DeleteFile'
-    }).done(function () {
-        window.location = '/Document/UserStorage';
-    });
+        url: "/Document/DeleteFile",
+        data: {fileId : id},
+        success: function(e) {
+            if(e) {
+                $("#" + id).remove();
+            }
+        }
+    })
+}
+
+function Download(id) {
+    $.ajax ({
+        type: "GET",
+        url: "/Document/DownloadFile",
+        data: {fileId : id},
+        success: function(e) {
+            window.location = '/Document/DownloadFile?fileId='+id;
+        }
+    })
 }

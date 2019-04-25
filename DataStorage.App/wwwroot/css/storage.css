@@ -21,88 +21,6 @@
   background-color: transparent;
 }
 
-.ustorage .leftbar .menu-item {
-  display: none;
-}
-
-.ustorage .leftbar .inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-
-.ustorage .leftbar .inputfile + label {
-  max-width: 100%;
-  width: 100%;
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
-  overflow: hidden;
-  padding: 0.625rem 1.25rem;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
-  border-radius: 5px;
-  background-color: #056839;
-  border: 2px solid transparent;
-}
-
-.ustorage .leftbar .inputfile + label span {
-  color: #fff;
-  text-align: center;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
-}
-
-.ustorage .leftbar .inputfile:focus + label,
-.ustorage .leftbar .inputfile.has-focus + label {
-  outline: 1px dotted #000;
-  outline: -webkit-focus-ring-color auto 5px;
-}
-
-.ustorage .leftbar .inputfile:focus + label,
-.ustorage .leftbar .inputfile.has-focus + label,
-.ustorage .leftbar .inputfile + label:hover {
-  background-color: #fff;
-  border-color: #056839;
-}
-
-.ustorage .leftbar .inputfile:focus + label span,
-.ustorage .leftbar .inputfile.has-focus + label span,
-.ustorage .leftbar .inputfile + label:hover span {
-  color: #056839;
-}
-
-.ustorage .leftbar .submit, .ustorage .leftbar .settings-item {
-  width: 100%;
-  height: 40px;
-  background-color: #056839;
-  color: #fff;
-  border-radius: 5px;
-  margin-top: 10px;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
-  border: 2px solid transparent;
-  cursor: pointer;
-}
-
-.ustorage .leftbar .submit:hover, .ustorage .leftbar .settings-item:hover {
-  background-color: #fff;
-  color: #056839;
-  border-color: #056839;
-}
-
-.ustorage .leftbar .settings-item {
-  display: block;
-  font-size: 1.1em;
-  padding: 5px 13px;
-}
-
 .ustorage .main {
   padding-top: 60px;
   display: -ms-grid;
@@ -113,8 +31,12 @@
 }
 
 .ustorage .main .leftbar {
-  border-right: 2px solid #ccc;
+  border-right: 3px solid #ccc;
   padding: 10px;
+}
+
+.ustorage .main .leftbar .menu-dropdown {
+  display: none;
 }
 
 .ustorage .main .leftbar .menu-button {
@@ -132,33 +54,99 @@
   font-weight: bold;
 }
 
-.ustorage .main .leftbar .menu-button {
+.ustorage .main .leftbar .menu-button:hover {
   border-color: #d5632a;
 }
 
-.ustorage .main .leftbar .dropdownmenu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+.ustorage .main .leftbar .inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
-.ustorage .main .leftbar .filetree {
-  padding: 0 15px;
+.ustorage .main .leftbar .inputfile + label {
+  max-width: 100%;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  border-radius: 5px;
+  background-color: #056839;
+  border: 2px solid transparent;
 }
 
-.ustorage .main .workspace {
-  padding: 10px;
-  border: 3px dashed transparent;
-  border-radius: 10px;
+.ustorage .main .leftbar .inputfile + label span {
+  color: #fff;
+  text-align: center;
   -webkit-transition: 0.2s;
   transition: 0.2s;
 }
 
-.ustorage .main .workspace .filehandler {
+.ustorage .main .leftbar .inputfile:focus + label,
+.ustorage .main .leftbar .inputfile.has-focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.ustorage .main .leftbar .inputfile:focus + label,
+.ustorage .main .leftbar .inputfile.has-focus + label,
+.ustorage .main .leftbar .inputfile + label:hover {
+  background-color: #fff;
+  border-color: #056839;
+}
+
+.ustorage .main .leftbar .inputfile:focus + label span,
+.ustorage .main .leftbar .inputfile.has-focus + label span,
+.ustorage .main .leftbar .inputfile + label:hover span {
+  color: #056839;
+}
+
+.ustorage .main .leftbar .submit, .ustorage .main .leftbar .settings-item {
+  width: 100%;
+  height: 45px;
+  background-color: #056839;
+  color: #fff;
+  border-radius: 5px;
+  margin-top: 10px;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.ustorage .main .leftbar .submit:hover, .ustorage .main .leftbar .settings-item:hover {
+  background-color: #fff;
+  color: #056839;
+  border-color: #056839;
+}
+
+.ustorage .main .leftbar .settings-item {
+  display: block;
+  font-size: 1.1em;
+  padding: 5px 13px;
+}
+
+.ustorage .main .workspace .dropzone-drop-area {
+  padding: 15px;
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+
+.ustorage .main .workspace .sectionname {
+  padding: 10px;
+}
+
+.ustorage .main .workspace .documenthandler {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -166,7 +154,38 @@
       flex-wrap: wrap;
 }
 
-.ustorage .main .workspace .filehandler .eventhandler {
+.ustorage .main .workspace .documenthandler .block {
+  background-color: #fff;
+  border: 2px solid #056839;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  margin: 10px;
+  overflow: hidden;
+  width: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.ustorage .main .workspace .documenthandler .block .caption {
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ustorage .main .workspace .documenthandler .block .eventhandler {
+  border-radius: 10px;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -175,89 +194,18 @@
   z-index: 8;
 }
 
-.ustorage .main .workspace .filehandler .block {
-  margin: 7px 10px;
-  min-width: 199px;
-  max-width: 200px;
-  min-height: 200px;
-  overflow: hidden;
-  cursor: pointer;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-  padding: 15px 5px;
-  background-color: #e9e9e9;
-  border: 2px solid #056839;
-  border-radius: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  position: relative;
-}
-
-.ustorage .main .workspace .filehandler .block .brow {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-.ustorage .main .workspace .filehandler .block .fimg, .ustorage .main .workspace .filehandler .block .fdimg {
-  min-height: 140px;
-  min-width: 200px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 5px;
-}
-
-.ustorage .main .workspace .filehandler .block .fimg {
-  background-image: url("../images/file.png");
-}
-
-.ustorage .main .workspace .filehandler .block .fdimg {
-  background-image: url("../images/folder.png");
-}
-
-.ustorage .main .workspace .filehandler .block .caption {
-  margin: 0;
-  font-size: 1.1em;
-  padding: 5px 15px;
-  width: 80%;
-  height: 100%;
-  overflow: hidden;
-  float: left;
-}
-
-.ustorage .main .workspace .filehandler .block .cntr-btns {
-  width: 20%;
-}
-
-.ustorage .main .workspace .filehandler .block .cntr-btns #moreoptions {
-  text-align: center;
+.ustorage .main .workspace .documenthandler .block .documentoptions {
+  display: none;
   width: 100%;
   height: 100%;
-  padding-top: 8px;
-}
-
-.ustorage .main .workspace .filehandler .block .contextmenu, .ustorage .main .workspace .filehandler .block .detblock {
-  display: none;
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #ccc;
-  z-index: 10;
+  z-index: 8;
+  background-color: #fff;
 }
 
-.ustorage .main .workspace .filehandler .block .contextmenu .items-handler, .ustorage .main .workspace .filehandler .block .detblock .items-handler {
+.ustorage .main .workspace .documenthandler .block .documentoptions .funchandler {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -265,31 +213,91 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -ms-flex-item-align: safe center;
-      align-self: safe center;
 }
 
-.ustorage .main .workspace .filehandler .block .contextmenu .func, .ustorage .main .workspace .filehandler .block .detblock .func {
-  font-size: 1.3em;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-  padding: 5px 13px;
-  height: 53px;
+.ustorage .main .workspace .documenthandler .block .documentoptions .funchandler .func {
+  padding: 0 10px;
+  width: 100%;
+  height: 52px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.2em;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
 }
 
-.ustorage .main .workspace .filehandler .block .contextmenu .func:hover, .ustorage .main .workspace .filehandler .block .detblock .func:hover {
+.ustorage .main .workspace .documenthandler .block .documentoptions .funchandler .func:hover {
   background-color: #056839;
   color: #fff;
 }
 
-.ustorage .main .workspace .filehandler .block .detblock {
-  z-index: 15;
-}
-
-.ustorage .main .workspace .filehandler .block:hover {
+.ustorage .main .workspace .documenthandler .block:hover {
   -webkit-transform: translate(-3px, -5px) scale(1.01);
           transform: translate(-3px, -5px) scale(1.01);
   -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.4);
           box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.4);
+}
+
+.ustorage .main .workspace .documenthandler .increase {
+  height: 210px !important;
+}
+
+.ustorage .main .workspace .documenthandler .folderblock {
+  height: 80px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding: 10px;
+}
+
+.ustorage .main .workspace .documenthandler .folderblock .brow {
+  height: calc(inherit - 20px);
+}
+
+.ustorage .main .workspace .documenthandler .folderblock .fdimg {
+  background: url("../images/folder.png");
+  width: 50px;
+  height: 56px;
+  margin-right: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.ustorage .main .workspace .documenthandler .folderblock .caption {
+  min-width: 110px;
+  overflow: hidden;
+}
+
+.ustorage .main .workspace .documenthandler .fileblock {
+  height: 210px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 10px;
+}
+
+.ustorage .main .workspace .documenthandler .fileblock .brow {
+  width: calc(inherit - 20px);
+}
+
+.ustorage .main .workspace .documenthandler .fileblock .fimg {
+  background: url("../images/file.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: calc(inherit - 20px);
+  height: 150px;
+}
+
+.ustorage .main .workspace .documenthandler .fileblock .caption {
+  min-height: 50px;
+  padding: 10px 0;
 }
 /*# sourceMappingURL=storage.css.map */

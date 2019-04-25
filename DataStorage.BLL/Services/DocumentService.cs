@@ -65,11 +65,12 @@ namespace DataStorage.BLL.Services
                         ParentId = parentId,
                         Path = filePath
                     };
+                    UpdateFolderLength(docDto.ParentId);
                     await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(user), docId));
                     DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                     await _documentRepo.CreateDocumentAsync(newDoc);
                 }
-            } else
+            } else if(fdName != null)
             {
                 string docId = Guid.NewGuid().ToString();
                 string storagePath = Path.Combine(_pProvider.ContentPath());
@@ -90,7 +91,6 @@ namespace DataStorage.BLL.Services
                     ParentId = parentId,
                     Path = filePath
                 };
-                UpdateFolderLength(docDto.ParentId);
                 DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
                 await _documentRepo.CreateDocumentAsync(newDoc);
             }
@@ -189,7 +189,7 @@ namespace DataStorage.BLL.Services
                 var to_delete = await _documentRepo.GetAllUserDocumentsAsync(doc.OwnerId);
                 foreach(var document in to_delete)
                 {
-                    if(document.Path.IndexOf(doc.Path) > -1)
+                    if(document.Path.Contains(doc.Path))
                     {
                         _pProvider.DeleteFile(document.Path);
                         await _documentRepo.DeleteDocumentAsync(document.DocumentId);
@@ -229,6 +229,11 @@ namespace DataStorage.BLL.Services
             }
             result.Reverse();
             return result.ToArray();
+        }
+
+        public string CreateZipFromFolder(string path)
+        {
+            return "";
         }
     }
 }
