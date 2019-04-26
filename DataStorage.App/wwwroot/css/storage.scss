@@ -190,9 +190,7 @@
                 flex-wrap: wrap;
 
                 .dz-file-prewiew {
-                    .dz-success-mark, .dz-error-mark {
-                        display: none;
-                    }
+                    display: none !important;
                 }
 
                 .block {
@@ -305,7 +303,7 @@
                     }
                 }
 
-                .fileblock, .dz-file-prewiew {
+                .fileblock {
                     height: 210px;
                     flex-direction: column;
                     padding: 10px;
