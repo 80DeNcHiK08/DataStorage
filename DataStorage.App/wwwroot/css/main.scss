@@ -98,6 +98,15 @@ input[type="text"], input[type="password"] {
         overflow: hidden;
     }
 
+    .blockhan {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
     .block {
         padding: 40px 0;
 
@@ -117,20 +126,13 @@ input[type="text"], input[type="password"] {
             margin: 30px auto;
         }
 
-        .blockhan {
-            width: 80%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            flex-wrap: nowrap;
-        }
+        
 
         .block-f {
             display: flex;
-            justify-content: center;
             flex-direction: column;
             align-items: center;
+            width: 250px;
 
             .bcap {
                 margin: 10px 0;
