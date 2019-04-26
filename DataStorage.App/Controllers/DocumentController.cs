@@ -64,7 +64,7 @@ namespace DataStorage.App.Controllers
         [HttpGet]
         public async Task<IActionResult> OpenPublicAccess(string documentId)
         {
-            var link = $"{Request.Host.Value}/Share/Get?link={await _sharingService.OpenPublicAccess(documentId, User)}";
+            var link = $"{Request.Host.Value}/Document/Get?link={await _sharingService.OpenPublicAccess(documentId, User)}";
 
             return Content(link);
         }
