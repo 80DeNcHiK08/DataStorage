@@ -17,7 +17,7 @@ namespace Configuration
         public static IServiceCollection AddWebServices(this IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options =>
-               options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;"//"server=mssqlserver.c78p8wykbefv.eu-central-1.rds.amazonaws.com;database=DataStorage;uid=root;pwd=rootroot123;"
+               options.UseSqlServer(/*"Server=(localdb)\\mssqllocaldb;Database=DataStorage;Trusted_Connection=True;"*/ "server=mssqlserver.c78p8wykbefv.eu-central-1.rds.amazonaws.com;database=DataStorage;uid=root;pwd=rootroot123;"
                ,x => x.MigrationsAssembly("DataStorage.DAL")));
 
             services.AddIdentity<UserEntity, IdentityRole>(options =>

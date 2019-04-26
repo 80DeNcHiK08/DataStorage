@@ -27,6 +27,9 @@
     <Content Update="Views\Account\DeleteUser.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Document\UserStorage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_LayoutAccount.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

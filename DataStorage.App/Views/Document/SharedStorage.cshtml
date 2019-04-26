@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Document/_Layout.cshtml";
-    ViewData["Title"] = "Storage";
+    ViewData["Title"] = "SharedStorage";
 }
 <input type="hidden" value="@ViewData["parentId"]" id="parentId">
 <script>
@@ -62,14 +62,11 @@
                         <div class="brow caption">
                             @document.Name
                         </div>
-                        <div class="eventhandler"></div>
+                        <div class="eventhandlert"></div>
                         <div class="buttonmenu"><i class="fas fa-bars"></i></div>
                         <div class="documentoptions">
                             <div class="funchandler">
-                                <a class="func download">Download</a>
                                 <a class="func info">Details</a>
-                                <a class="func share">Share</a>
-                                <a class="func delete">Delete</a>
                             </div>
                         </div>
                         <!--div class="documentinfo">
@@ -107,14 +104,12 @@
                         <div class="brow caption">
                             @document.Name
                         </div>
-                        <div class="eventhandler"></div>
+                        <div class="eventhandlert"></div>
                         <div class="buttonmenu"><i class="fas fa-bars"></i></div>
                         <div class="documentoptions">
                             <div class="funchandler">
                                 <a class="func download">Download</a>
                                 <a class="func info">Details</a>
-                                <a class="func share" asp-route-documentId="@document.DocumentId" asp-action="ShareFile" asp-controller="Document">Share</a>
-                                <a class="func delete">Delete</a>
                             </div>
                         </div>
                         <!--div class="documentinfo">
