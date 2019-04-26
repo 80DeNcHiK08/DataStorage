@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-signin-client_id" content="683865802300-uqhcsp84nqbqjmmsr1r8v98dh8c9mmme.apps.googleusercontent.com">
+    <title>DataStorage - @ViewData["Title"]</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="~/css/main.css" />
+        <link rel="stylesheet" href="~/css/media.css" />
+        <link rel="stylesheet" href="~/css/account.css" />
+        <link rel="stylesheet" href="~/css/storage.css" />
+    </environment>
+    <environment exclude="Development">
+
+    </environment>
+</head>
+<body>
+<div class="wrapper ustorage">
+    <div class="header">
+        <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
+       
+        <nav class="m-menu">
+            <ul>
+                <li><a asp-action="Welcome" asp-controller="Home">Home</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main">
+
+        @RenderBody()
+    </div>
+</div>
+    <environment include="Development">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-social.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+
+        <script src="~/js/functions.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/storage.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

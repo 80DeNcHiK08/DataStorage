@@ -1,0 +1,23 @@
+@model DataStorage.App.ViewModels.SharingViewModel
+
+<div class="formhandler">
+    <div class="formlabel">
+        <h3>Set access to the file for user</h3>
+        <span>Enter user email</span>
+    </div>
+
+    <form asp-action="OpenLimitedAccessForUser" asp-controller="Document" asp-anti-forgery="true">
+        <input asp-for="DocumentId" type="hidden" />
+        <div class="validation" asp-validation-summary="ModelOnly" />
+        <div>
+            <div class="form-group">
+                <input placeholder=" " required pattern="[a-z0-9._%+-]+@@[a-z0-9.-]+\.[a-z]{2,3}$" type="text" asp-for="Email" />
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" />
+            </div>
+            <div class="form-group subm">
+                <input type="submit" value="Send" class="btn" />
+            </div>
+        </div>
+    </form>
+</div>

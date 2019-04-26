@@ -1,0 +1,57 @@
+﻿@model DataStorage.BLL.DTOs.DocumentDTO
+
+@{
+    Layout = "~/Views/Document/_Layout_share.cshtml";
+    ViewData["Title"] = "SharedFile";
+}
+<div class="workspace">
+    <div class="dropzone-container" id="dropzoneForm">
+        <div class="documenthandler">
+
+            @if (@Model.IsFile == false)
+            {
+                <div class="block folderblock" id="@Model.DocumentId" title="@Model.Name">
+                    <input type="hidden" value="@Model.DocumentId" id="hiddendocid">
+                    <div class="brow">
+                        <div class="fdimg"></div>
+                    </div>
+                    <div class="brow caption">
+                        @Model.Name
+                    </div>
+                    <div class="eventhandlert"></div>
+                    <div class="buttonmenu"><i class="fas fa-bars"></i></div>
+                    <div class="documentoptions">
+                        <div class="funchandler">
+                            <a class="func info">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="block fileblock" id="@Model.DocumentId" title="@Model.Name">
+                    <input type="hidden" value="@Model.DocumentId" id="hiddendocid">
+                    <div class="brow">
+                        <div class="fimg"></div>
+                    </div>
+                    <div class="brow caption">
+                        @Model.Name
+                    </div>
+                    <div class="eventhandlert"></div>
+                    <div class="buttonmenu"><i class="fas fa-bars"></i></div>
+                    <div class="documentoptions">
+                        <div class="funchandler">
+                            <a class="func download">Download</a>
+                            <a class="func info">Details</a>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            }
+        </div>
+    </div>
+</div>
+
+

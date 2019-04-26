@@ -1,0 +1,136 @@
+﻿@model IEnumerable<DataStorage.BLL.DTOs.DocumentDTO>
+
+@{
+    Layout = "~/Views/Document/_Layout.cshtml";
+    ViewData["Title"] = "SharedStorage";
+}
+<input type="hidden" value="@ViewData["parentId"]" id="parentId">
+<input type="hidden" value="@ViewData["CurentSize"]" id="CurentSize">
+<input type="hidden" value="@ViewData["StorageSize"]" id="StorageSize">
+<script>
+    sessionStorage.setItem("parentId", '@ViewData["parentId"]');
+    GetParentId();
+</script>
+<div class="leftbar">
+    <button class="menu-button" id="create_menu">Create</button>
+    <div class="menu-dropdown" id="dropdown-create">
+        <form class="menu-item create-item" id="uploadFile" asp-action="CreateFile" asp-controller="Document" method="post" onchange="submit()" enctype="multipart/form-data">
+            <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" data-multiple-caption="{count} files selected" multiple />
+            <label for="uploadedFile"><span>Choose a file&hellip;</span></label>
+            <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+        </form>
+        <form class="menu-item create-item crfolder" asp-action="CreateFolder" asp-controller="Document" method="post">
+            <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name" />
+            <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+            <input type="submit" class="submit" value="Create Folder">
+        </form>
+    </div>
+    <hr>
+    <button class="menu-button" id="settings_menu">Settings</button>
+    <div class="menu-dropdown" id="dropdown-settings">
+        <a class="menu-item settings-item" asp-action="DeleteAll" asp-controller="Document">Delete All<input type="hidden"></a>
+        <a class="menu-item settings-item" asp-action="Profile" asp-controller="Home">Profile Settings<input type="hidden"></a>
+    </div>
+    <hr>
+    <button class="menu-button" id="tree">Storage using:</button>
+    <div id="percentageContainer">
+        <div id="percentageValue"></div>
+    </div>
+    <h5><span id="CurrentSizeoutput"></span>/<span id="StorageSizeoutput"></span></h5>
+</div>
+<div class="workspace">
+    <div class="dropzone-container" id="dropzoneForm">
+        @if (Model.Any())
+        {
+            <div class="sectionmenu">
+                <h3 class="sectionname">Folders</h3>
+                <button class="oppensortdropdown"><h3 class="sectionname">Sort by:</h3></button>
+                <div class="sortmenu">
+                    <div class="itemhandler">
+                        <a id="sortbyname">Name</a>
+                        <a id="sortbylength">Size</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="documenthandler">
+        @foreach (var document in Model)
+        {
+                @if (@document.IsFile == false)
+                {
+                    <div class="block folderblock" id="@document.DocumentId" title="@document.Name">
+                        <input type="hidden" value="@document.DocumentId" id="hiddendocid">
+                        <div class="brow">
+                            <div class="fdimg"></div>
+                        </div>
+                        <div class="brow caption">
+                            @document.Name
+                        </div>
+                        <div class="eventhandlert"></div>
+                        <div class="buttonmenu"><i class="fas fa-bars"></i></div>
+                        <div class="documentoptions">
+                            <div class="funchandler">
+                                <a class="func info">Details</a>
+                            </div>
+                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
+                    </div>
+                }
+            }
+        </div>
+
+        @if (Model.Any())
+        {
+            <h3 class="sectionname">Files</h3>
+        }
+        <div class="documenthandler dz-documenthandler">
+        @foreach (var document in Model)
+        {
+                @if (@document.IsFile == true)
+                {
+                    <div class="block fileblock" id="@document.DocumentId" title="@document.Name">
+                        <input type="hidden" value="@document.DocumentId" id="hiddendocid">
+                        <div class="brow">
+                            <div class="fimg"></div>
+                        </div>
+                        <div class="brow caption">
+                            @document.Name
+                        </div>
+                        <div class="eventhandlert"></div>
+                        <div class="buttonmenu"><i class="fas fa-bars"></i></div>
+                        <div class="documentoptions">
+                            <div class="funchandler">
+                                <a class="func download">Download</a>
+                                <a class="func info">Details</a>
+                            </div>
+                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
+                    </div>
+                }
+            }
+    </div>
+</div>

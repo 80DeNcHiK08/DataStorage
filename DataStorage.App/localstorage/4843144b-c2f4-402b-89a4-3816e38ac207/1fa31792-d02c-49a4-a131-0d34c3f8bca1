@@ -1,0 +1,5 @@
+function piapprox = par_pi(F, a, b)
+a = (labindex - 1) / numlabs;
+b = labindex / numlabs;
+myInt = quadl(F, a, b);
+piapprox = gplus(myInt)
