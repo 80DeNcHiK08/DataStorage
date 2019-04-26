@@ -111,7 +111,7 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> GetAvailbleDocument(string link)
         {
             var document = await _documentService.GetAvailbleDocumentForUserAsync(link, User);
-            return View(document);
+            return View("SharedFile", document);
         }
 
         [HttpGet]
@@ -197,5 +197,12 @@ namespace DataStorage.App.Controllers
             return View("UserStorage", availbleDocuments);
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Get(string link)
+        {
+            var document = await _sharingService.GetPublicDocumentByLinkAsync(link);
+            return View("SharedFile", document);
+        }
     }
 }

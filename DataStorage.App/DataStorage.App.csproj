@@ -30,10 +30,10 @@
     <Content Update="Views\Shared\_LayoutAccount.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Share\SharedFile.cshtml">
+    <Content Update="Views\Document\SharedFile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Share\_Layout.cshtml">
+    <Content Update="Views\Document\_Layout_share.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
