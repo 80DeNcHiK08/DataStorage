@@ -8,8 +8,7 @@ $(document).ready(function () {
     $("#dropzoneForm").dropzone({
         url: "/Document/CreateFile",
         paramName: "uploadedFile",
-        uploadMultiple: true,
-        parallelUploads: 2,
+        uploadMultiple: false,
         maxFilesize: 30,
         addRemoveLinks: true,
         clickable: false,
@@ -23,6 +22,10 @@ $(document).ready(function () {
                 $(this).css({
                     "border-color":"blue"
                 })
+            })
+
+            this.on("complete", function(e) {
+                window.location = '/Document/UserStorage?parentId='+ GetParentId(); 
             })
         }
     });
@@ -70,25 +73,6 @@ $(document).ready(function () {
                 }
             }
         });
-    })
-
-    $("#sortbyname").on("click", function(e) {
-        e.preventDefault();
-        parentId = GetParentId();
-        window.location = '/Document/UserStorage?parentId='+ parentId + '?name=true'; 
-    })
-
-    $("#sortbylength").on("click", function(e) {
-        e.preventDefault();
-        parentId = GetParentId();
-        $.ajax ({
-            type: "POST",
-            url: "/Document/UserStorage",
-            data: {length : true},
-            success: function(e) {
-                //window.location = '/Document/UserStorage?fileId='+id;
-            }
-        })
     })
 
     $(".delete").on("click", function(e) {
