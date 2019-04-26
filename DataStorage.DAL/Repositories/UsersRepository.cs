@@ -44,10 +44,10 @@ namespace DataStorage.DAL.Repositories
             return await _userManager.CreateAsync(user);;
         }
 
-        public void DeleteUserAsync(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
             _context.Users.Remove(_context.Users.Find(userId));
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<string> GetEmailTokenAsync(UserEntity user)

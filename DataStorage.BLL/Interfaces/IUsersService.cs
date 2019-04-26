@@ -27,6 +27,6 @@ namespace DataStorage.BLL.Interfaces
         string GetUserId(ClaimsPrincipal user);
         Task<bool> ConfirmIncreaseAsync(string userId);
         Task<bool> NameChange(string UserId, string UserFirstName, string UserLastName);
-        void DeleteUserAsync(string userId);
+        Task DeleteUserAsync(string userId);
     }
 }

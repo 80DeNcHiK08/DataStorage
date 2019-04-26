@@ -62,14 +62,6 @@ namespace DataStorage.DAL.Repositories
             }
         }
 
-        public string GenerateAccessLink()
-        {
-            byte[] time = BitConverter.GetBytes(DateTime.Now.ToBinary());
-            byte[] key = Guid.NewGuid().ToByteArray();
-
-            return Convert.ToBase64String(time.Concat(key).ToArray());
-        }
-
         public async Task UpdateDocumentAsync(DocumentEntity document)
         {
             _context.Documents.Update(document);
@@ -83,9 +75,9 @@ namespace DataStorage.DAL.Repositories
 
         public async Task<IEnumerable<DocumentEntity>> GetAllAvailbleDocumentsForUserAsync(string userId)
         {
-            var user = await _context.Users.Include(u => u.UserDocuments).FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.Include(u => u.UserDocuments).ThenInclude(ud => ud.Document).FirstOrDefaultAsync(u => u.Id == userId);
 
-            return user.UserDocuments.Select(ud => ud.Document).ToList();
+            return user.UserDocuments.Where(ud => ud.UserId == userId && ud.DocumentLink != null).Select(ud => ud.Document);
         }
 
         public async Task<IEnumerable<DocumentEntity>> SearchDocuments(string searchString, string userId)

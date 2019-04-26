@@ -148,12 +148,12 @@ namespace DataStorage.App.Controllers
             return View(model);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> CloseLimitedAccessEntirely(string documentId)
-        // {
-        //     await _sharingService.CloseLimitedAccessEntirely(documentId, User);
-        //     return Ok();
-        // }
+        [HttpPost]
+        public async Task<IActionResult> CloseLimitedAccessEntirely(string documentId)
+        {
+            await _sharingService.CloseLimitedAccessEntirely(documentId, User);
+            return Ok();
+        }
 
         public async Task<IActionResult> DeleteFile(string fileId)
         {

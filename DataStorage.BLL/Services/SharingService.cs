@@ -38,10 +38,10 @@ namespace DataStorage.BLL.Services
             }
 
             var document = await _documentRepo.GetDocumentByIdAsync(documentId);
-            if (!document.IsPublic)
+            if (document.DocumentLink == null)
             {
                 document.IsPublic = true;
-                document.DocumentLink = _documentRepo.GenerateAccessLink();
+                document.DocumentLink = Guid.NewGuid().ToString();
                 await _documentRepo.UpdateDocumentAsync(document);
                 return document.DocumentLink;
             }
@@ -60,7 +60,7 @@ namespace DataStorage.BLL.Services
 
             var document = await _documentRepo.GetDocumentByIdAsync(documentId);
             document.IsPublic = false;
-            document.DocumentLink = string.Empty;
+            document.DocumentLink = null;
             await _documentRepo.UpdateDocumentAsync(document);
         }
 
@@ -82,7 +82,7 @@ namespace DataStorage.BLL.Services
             var document = await _documentRepo.GetDocumentByIdAsync(documentId);
             if (!document.IsPublic)
             {
-                var userDocumentLink = _documentRepo.GenerateAccessLink();
+                var userDocumentLink = Guid.NewGuid().ToString();
                 var user = await _userRepo.GetUserByNameAsync(guestEmail);
                 if (ownerId == user.Id)
                 {
@@ -108,24 +108,19 @@ namespace DataStorage.BLL.Services
 
             var user = await _userRepo.GetUserByNameAsync(guestEmail);
 
-            var userDocument = user.UserDocuments.FirstOrDefault(ud => ud.DocumentId == documentId);
-            await _userDocumentRepo.DeleteUserDocumentAsync(user, userDocument);
+            await _userDocumentRepo.DeleteUserDocumentAsync(user.Id, documentId);
         }
 
-        // public async Task CloseLimitedAccessEntirely(string documentId, ClaimsPrincipal owner)
-        // {
-        //     string ownerId = _userRepo.GetUserId(owner);
+        public async Task CloseLimitedAccessEntirely(string documentId, ClaimsPrincipal owner)
+        {
+            string ownerId = _userRepo.GetUserId(owner);
 
-        //     if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
-        //     {
-        //         throw new UnauthorizedAccessException($"The user {ownerId} is not the owner of the document");
-        //     }
+            if (!(await _documentRepo.IsUserDocumentOwner(documentId, ownerId)))
+            {
+                throw new UnauthorizedAccessException($"The user {ownerId} is not the owner of the document");
+            }
 
-        //     var userDocument = await _userDocumentRepo.GetUserDocumentByIdAsync(documentId);
-        //     if (userDocument != null)
-        //     {
-        //         await _userDocumentRepo.DeleteAsync(userDocument);
-        //     }
-        // }
+            await _userDocumentRepo.DeleteUserDocumentEntirelyAsync(documentId);
+        }
     }
 }

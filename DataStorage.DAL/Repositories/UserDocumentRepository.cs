@@ -19,17 +19,31 @@ namespace DataStorage.DAL.Repositories
         public async Task AddUserDocumentAsync(string userId, string documentId, string documentLink = null)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            // var document = await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == documentId);
             user.UserDocuments.Add(new UserDocument { UserId = user.Id, DocumentId = documentId, DocumentLink = documentLink });
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteUserDocumentAsync(UserEntity user, UserDocument document)
+        public async Task DeleteUserDocumentAsync(string userId, string documentId)
         {
-            user.UserDocuments.Remove(document);
+            var user = await _context.Users.Include(u => u.UserDocuments).FirstOrDefaultAsync(u => u.Id == userId);
+            var userDocument = user.UserDocuments.FirstOrDefault(ud => ud.DocumentId == documentId);
+            user.UserDocuments.Remove(userDocument);
             await _context.SaveChangesAsync();
-        }  
-        
+        }
+
+        public async Task DeleteUserDocumentEntirelyAsync(string documentId)
+        {
+            var document = await _context.Documents.Include(d => d.UserDocuments).FirstOrDefaultAsync(d => d.DocumentId == documentId);
+            for (int i = document.UserDocuments.Count - 1; i >= 1; i--)
+            {
+                if (document.UserDocuments.ElementAt(i).DocumentLink != null)
+                {
+                    document.UserDocuments.Remove(document.UserDocuments.ElementAt(i));
+                    i++;
+                }
+            }
+        }
+
         public async Task<DocumentEntity> GetUserDocumentAsync(string userEmail, string id)
         {
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.DocumentId == id);

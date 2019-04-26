@@ -54,9 +54,9 @@ namespace DataStorage.BLL.Services
             return await _usersRepo.CreateUserAsync(userEmail);
         }
 
-        public void DeleteUserAsync(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
-            _usersRepo.DeleteUserAsync(userId);
+            await _usersRepo.DeleteUserAsync(userId);
         }
 
         public async Task<UserDTO> GetUserByNameAsync(string userEmail)

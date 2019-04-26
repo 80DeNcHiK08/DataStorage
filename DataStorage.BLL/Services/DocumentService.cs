@@ -58,19 +58,20 @@ namespace DataStorage.BLL.Services
                     }
                     combinedFilePath.Substring(combinedFilePath.Length - 2);
                     var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-                    DocumentDTO docDto = new DocumentDTO
-                    {
+  
+                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
+                    var doc = new DocumentEntity {
                         Name = file.FileName,
                         Length = file.Length,
                         IsFile = true,
                         DocumentId = docId,
                         OwnerId = _userRepo.GetUserId(owner),
                         ParentId = parentId,
-                        Path = filePath
+                        Path = filePath,
+                        ChangeDate = DateTime.Now
                     };
-                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
-                    DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                    await _documentRepo.CreateDocumentAsync(newDoc);
+
+                    await _documentRepo.CreateDocumentAsync(doc);
                     await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
                 }
             } else
@@ -84,19 +85,20 @@ namespace DataStorage.BLL.Services
                 }
                 combinedFilePath.Substring(combinedFilePath.Length - 2);
                 var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-                DocumentDTO docDto = new DocumentDTO
-                {
-                    Name = fdName,
-                    Length = 0,
-                    IsFile = false,
-                    DocumentId = docId,
-                    OwnerId = _userRepo.GetUserId(owner),
-                    ParentId = parentId,
-                    Path = filePath
-                };
-                UpdateFolderLength(docDto.ParentId);
-                DocumentEntity newDoc = _mapper.Map<DocumentEntity>(docDto);
-                await _documentRepo.CreateDocumentAsync(newDoc);
+                
+                var doc = new DocumentEntity {
+                        Name = fdName,
+                        Length = 0,
+                        IsFile = false,
+                        DocumentId = docId,
+                        OwnerId = _userRepo.GetUserId(owner),
+                        ParentId = parentId,
+                        Path = filePath,
+                        ChangeDate = DateTime.Now
+                    };
+                UpdateFolderLength(doc.ParentId);
+
+                await _documentRepo.CreateDocumentAsync(doc);
                 await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
             }
         }
@@ -145,7 +147,6 @@ namespace DataStorage.BLL.Services
                 _pProvider.DropFolderOnUserDelete(ownerId);
                 await _documentRepo.DeleteAllUserDocumentsAsync(ownerId);
                 _userRepo.DeleteUserAsync(ownerId);
-
             }
         }
 

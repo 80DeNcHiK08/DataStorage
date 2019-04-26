@@ -10,7 +10,6 @@ namespace DataStorage.DAL.Interfaces
     {
         Task<IEnumerable<DocumentEntity>> GetAllDocumentsRelatedAsync(string parentId);
         Task<IEnumerable<DocumentEntity>> GetAllUserDocumentsAsync(string OwnerId);
-        string GenerateAccessLink();
         Task<bool> IsUserDocumentOwner(string id, string userId);
         Task<DocumentEntity> GetDocumentByIdAsync(string id);
         Task CreateDocumentAsync(DocumentEntity uploadedFile);

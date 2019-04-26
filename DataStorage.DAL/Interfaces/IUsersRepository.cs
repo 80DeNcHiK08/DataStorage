@@ -26,7 +26,7 @@ namespace DataStorage.DAL.Interfaces
         Task LogOut();
         string GetUserId(ClaimsPrincipal user);
         Task<bool> ConfirmIncrease(UserEntity user);
-        void DeleteUserAsync(string userId);
+        Task DeleteUserAsync(string userId);
         Task<bool> NameChange(string userId, string userFirstName, string userLastName);
     }
 }

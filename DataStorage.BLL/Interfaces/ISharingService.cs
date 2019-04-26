@@ -12,6 +12,6 @@ namespace DataStorage.BLL.Interfaces
          Task<DocumentDTO> GetPublicDocumentByLinkAsync(string link);
          Task<string> OpenLimitedAccess(string documentId, ClaimsPrincipal user, string guestEmail);
          Task CloseLimitedAccessForUser(string documentId, ClaimsPrincipal user, string guestEmail);
-        //  Task CloseLimitedAccessEntirely(string documentId, ClaimsPrincipal user);
+         Task CloseLimitedAccessEntirely(string documentId, ClaimsPrincipal user);
     }
 }
