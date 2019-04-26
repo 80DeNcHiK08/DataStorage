@@ -21,5 +21,7 @@ namespace DataStorage.DAL.Interfaces
         Task<IEnumerable<DocumentEntity>> GetAllAvailbleDocumentsForUserAsync(string userId);
         Task DeleteAllUserDocumentsAsync(string OwnerId);
         Task<IEnumerable<DocumentEntity>> SearchDocuments(string searchString, string userId);
+        bool CheckPublic(string documentId);
+        List<string> GetAllUsersWithAccess(string documentId);
     }
 }

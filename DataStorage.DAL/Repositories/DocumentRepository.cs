@@ -105,6 +105,24 @@ namespace DataStorage.DAL.Repositories
             return GetDocumentByIdAsync(id).Result.Path;
         }
 
+        public bool CheckPublic(string documentId)
+        {
+            var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == documentId).IsPublic;
+            return doc;
+        }
 
+        public List<string> GetAllUsersWithAccess(string documentId)
+        {
+            var document = _context.Documents.Include(d => d.UserDocuments).ThenInclude(ud => ud.User).FirstOrDefault(d => d.DocumentId == documentId);
+            var emailList = new List<string>();
+            foreach (UserDocument userDocument in document.UserDocuments)
+            {
+                if (document.OwnerId != userDocument.UserId)
+                {
+                    emailList.Add(userDocument.User.Email);
+                }
+            }
+            return emailList;
+        }
     }
 }

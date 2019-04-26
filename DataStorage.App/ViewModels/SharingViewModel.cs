@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataStorage.App.ViewModels
@@ -13,5 +14,7 @@ namespace DataStorage.App.ViewModels
         public string DocumentId { get; set; }
 
         public bool IsPublic { get; set; }
+
+        public List<string> UsersEmails { get; set; }
     }
 }

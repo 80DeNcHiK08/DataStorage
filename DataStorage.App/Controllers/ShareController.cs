@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using DataStorage.BLL.DTOs;
 using DataStorage.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +24,7 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> Get(string link)
         {
             var document = await _sharingService.GetPublicDocumentByLinkAsync(link);
-            return View(document);
+            return View("SharedFile", document);
         }
     }
 }

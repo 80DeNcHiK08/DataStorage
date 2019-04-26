@@ -82,7 +82,11 @@ namespace DataStorage.BLL.Services
             var document = await _documentRepo.GetDocumentByIdAsync(documentId);
             if (!document.IsPublic)
             {
+<<<<<<< HEAD
                 var userDocumentLink = Guid.NewGuid().ToString();
+=======
+                var userDocumentLink = new Guid().ToString();
+>>>>>>> ed2b3b8f687253f005503f53118e7ce4ab207e1d
                 var user = await _userRepo.GetUserByNameAsync(guestEmail);
                 if (ownerId == user.Id)
                 {
