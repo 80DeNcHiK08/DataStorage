@@ -50,6 +50,21 @@ $(document).ready(function () {
         });
     })
 
+    $(".buttonmenu").on("click", function(e) {
+        e.preventDefault();
+        $(this).parent().find(".documentoptions").slideToggle("100", function() {
+            if($(this).parent().hasClass("folderblock"))
+            {
+                if($(this).parent().hasClass("increase"))
+                {
+                    $(this).parent().removeClass("increase")
+                } else {
+                    $(this).parent().addClass("increase")
+                }
+            }
+        });
+    })
+
     $("#sortbyname").on("click", function(e) {
         e.preventDefault();
         parentId = GetParentId();
