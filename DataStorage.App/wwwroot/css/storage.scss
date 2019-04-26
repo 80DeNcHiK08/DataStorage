@@ -131,6 +131,34 @@
             }
         }
 
+        #percentageContainer {
+            color: grey;
+            width: 200px;
+            min-height: 15px;
+            text-align: left;
+            margin: 10px auto 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        #percentageValue {
+            background-color: $apr_green;
+            height: 15px;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+        }
+        h5 {
+            text-align: center;
+            margin-top: 10px;
+        }
+
         .workspace {
             padding: 10px;
             #dropzoneForm {

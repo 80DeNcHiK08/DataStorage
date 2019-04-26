@@ -1,9 +1,9 @@
 $(document).ready(function () {
     var cursize = $("#CurentSize").val();
     var totalsize = $("#StorageSize").val();
-
     document.getElementById('CurrentSizeoutput').innerHTML = (parseInt(cursize)/8000000).toFixed(2).toString() + " mb";
     document.getElementById('StorageSizeoutput').innerHTML = (parseInt(totalsize)/8000000).toFixed(2).toString() + " mb";
+    setPercentage((parseInt(cursize)/parseInt(totalsize) * 100).toFixed(1));
 
     $("#dropzoneForm").dropzone({
         url: "/Document/CreateFile",
@@ -172,4 +172,13 @@ function Download(id) {
             window.location = '/Document/DownloadFile?fileId='+id;
         }
     })
+}
+
+function setPercentage(value) {
+    var newWidth = parseInt($("#percentageContainer").width() * value / 100.0);
+    console.log("total : " + $("#percentageContainer").width());
+    console.log("new : " + newWidth);
+    $("#percentageValue").animate({
+        width: newWidth + "px"
+    }, 500);
 }

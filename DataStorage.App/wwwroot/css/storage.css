@@ -136,6 +136,35 @@
   padding: 5px 13px;
 }
 
+.ustorage .main #percentageContainer {
+  color: grey;
+  width: 200px;
+  min-height: 15px;
+  text-align: left;
+  margin: 10px auto 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.ustorage .main #percentageValue {
+  background-color: #056839;
+  height: 15px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+}
+
+.ustorage .main h5 {
+  text-align: center;
+  margin-top: 10px;
+}
+
 .ustorage .main .workspace {
   padding: 10px;
 }
@@ -210,8 +239,8 @@
       flex-wrap: wrap;
 }
 
-.ustorage .main .workspace .documenthandler .dz-file-prewiew .dz-success-mark, .ustorage .main .workspace .documenthandler .dz-file-prewiew .dz-error-mark {
-  display: none;
+.ustorage .main .workspace .documenthandler .dz-file-prewiew {
+  display: none !important;
 }
 
 .ustorage .main .workspace .documenthandler .block {
@@ -357,7 +386,7 @@
   top: 23px;
 }
 
-.ustorage .main .workspace .documenthandler .fileblock, .ustorage .main .workspace .documenthandler .dz-file-prewiew {
+.ustorage .main .workspace .documenthandler .fileblock {
   height: 210px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -366,11 +395,11 @@
   padding: 10px;
 }
 
-.ustorage .main .workspace .documenthandler .fileblock .brow, .ustorage .main .workspace .documenthandler .dz-file-prewiew .brow {
+.ustorage .main .workspace .documenthandler .fileblock .brow {
   width: calc(inherit - 20px);
 }
 
-.ustorage .main .workspace .documenthandler .fileblock .fimg, .ustorage .main .workspace .documenthandler .dz-file-prewiew .fimg {
+.ustorage .main .workspace .documenthandler .fileblock .fimg {
   background: url("../images/file.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -379,12 +408,12 @@
   height: 150px;
 }
 
-.ustorage .main .workspace .documenthandler .fileblock .caption, .ustorage .main .workspace .documenthandler .dz-file-prewiew .caption {
+.ustorage .main .workspace .documenthandler .fileblock .caption {
   min-height: 50px;
   padding: 10px 0;
 }
 
-.ustorage .main .workspace .documenthandler .fileblock .buttonmenu, .ustorage .main .workspace .documenthandler .dz-file-prewiew .buttonmenu {
+.ustorage .main .workspace .documenthandler .fileblock .buttonmenu {
   bottom: 7px;
 }
 /*# sourceMappingURL=storage.css.map */

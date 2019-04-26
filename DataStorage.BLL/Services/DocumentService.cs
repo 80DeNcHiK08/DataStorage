@@ -51,29 +51,32 @@ namespace DataStorage.BLL.Services
             {
                 foreach (var file in uploadedFile)
                 {
-                    string docId = Guid.NewGuid().ToString();
-                    foreach (var str in GetPathPartsBypId(parentId))
+                    if(_documentRepo.GetDocumentByIdAsync(parentId).Result.Length <= _userRepo.GetUserByIdAsync(ownerId).Result.StorageSize)
                     {
-                        combinedFilePath += str + "\\";
-                    }
-                    combinedFilePath.Substring(combinedFilePath.Length - 2);
-                    var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-                    var doc = new DocumentEntity
-                    {
-                        Name = file.FileName,
-                        Length = file.Length,
-                        IsFile = true,
-                        DocumentId = docId,
-                        OwnerId = ownerId,
-                        ParentId = parentId,
-                        Path = filePath,
-                        ChangeDate = DateTime.Now
-                    };
+                        string docId = Guid.NewGuid().ToString();
+                        foreach (var str in GetPathPartsBypId(parentId))
+                        {
+                            combinedFilePath += str + "\\";
+                        }
+                        combinedFilePath.Substring(combinedFilePath.Length - 2);
+                        var filePath = Path.Combine(storagePath, combinedFilePath, docId);
+                        var doc = new DocumentEntity
+                        {
+                            Name = file.FileName,
+                            Length = file.Length,
+                            IsFile = true,
+                            DocumentId = docId,
+                            OwnerId = ownerId,
+                            ParentId = parentId,
+                            Path = filePath,
+                            ChangeDate = DateTime.Now
+                        };
 
-                    await _documentRepo.CreateDocumentAsync(doc);
-                    await _userDocumentRepo.AddUserDocumentAsync(ownerId, docId);
-                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
-                    await UpdateFolderLength(doc.ParentId);
+                        await _documentRepo.CreateDocumentAsync(doc);
+                        await _userDocumentRepo.AddUserDocumentAsync(ownerId, docId);
+                        await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
+                        await UpdateFolderLength(doc.ParentId);
+                    }
                 }
             } else if (fdName != null) {
                 string docId = Guid.NewGuid().ToString();
