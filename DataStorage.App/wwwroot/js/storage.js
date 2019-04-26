@@ -1,8 +1,15 @@
 $(document).ready(function () {
+    var cursize = $("#CurentSize").val();
+    var totalsize = $("#StorageSize").val();
+
+    document.getElementById('CurrentSizeoutput').innerHTML = (parseInt(cursize)/8000000).toFixed(2).toString() + " mb";
+    document.getElementById('StorageSizeoutput').innerHTML = (parseInt(totalsize)/8000000).toFixed(2).toString() + " mb";
+
     $("#dropzoneForm").dropzone({
         url: "/Document/CreateFile",
         paramName: "uploadedFile",
-        //uploadMultiple: true,
+        uploadMultiple: true,
+        parallelUploads: 2,
         maxFilesize: 30,
         addRemoveLinks: true,
         clickable: false,
