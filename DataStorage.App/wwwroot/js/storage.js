@@ -1,38 +1,25 @@
 $(document).ready(function () {
-
-
-    Dropzone.options.uploader = {
-        //url: "Document/CreateFile",
-        paramName: 'uploadedFile',
-        ignoreHiddenFiles: false,
-        maxFileSize: 30,
-        maxFiles: 10,
-        clickable: true,
-        uploadMultiple: true,
-        createImageThumbnails: false,
-        parallelUploads: 1,
-        autoProcessQueue: true,
-        init: function () {
-            var _this = this;
-            this.on("sending", function (data) {
-                alert(sessionStorage.getItem("parentId"));
-                data.append("parentId", GetParentId());
-            });
-            /*this.on("dropfile", function (data) {
-                data.append("parentId", GetParentId());
-            });*/
+    $("#dropzoneForm").dropzone({
+        url: "/Document/CreateFile",
+        paramName: "uploadedFile",
+        params: {
+            'parentId': GetParentId()
         }
-    } 
-
+    });
 
     $("#create_menu").on("click", function (e) {
         e.preventDefault();
-        $("#dropdown-create").toggle("200");
+        $("#dropdown-create").slideToggle("200");
     })
 
     $("#settings_menu").on("click", function (e) {
         e.preventDefault();
-        $("#dropdown-settings").toggle("200");
+        $("#dropdown-settings").slideToggle("200");
+    })
+
+    $(".oppensortdropdown").on("click", function(e) {
+        e.preventDefault();
+        $(".sortmenu").slideToggle("fast");
     })
 
     $(".block").on("contextmenu", function(e) {
@@ -48,6 +35,25 @@ $(document).ready(function () {
                 }
             }
         });
+    })
+
+    $("#sortbyname").on("click", function(e) {
+        e.preventDefault();
+        parentId = GetParentId();
+        window.location = '/Document/UserStorage?parentId='+ parentId + '?name=true'; 
+    })
+
+    $("#sortbylength").on("click", function(e) {
+        e.preventDefault();
+        parentId = GetParentId();
+        $.ajax ({
+            type: "POST",
+            url: "/Document/UserStorage",
+            data: {length : true},
+            success: function(e) {
+                //window.location = '/Document/UserStorage?fileId='+id;
+            }
+        })
     })
 
     $(".delete").on("click", function(e) {

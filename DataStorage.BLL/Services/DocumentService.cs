@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -200,6 +201,22 @@ namespace DataStorage.BLL.Services
             }
 
         }
+
+        /*public IEnumerable<DocumentDTO> SortOutputAsync(IEnumerable<DocumentDTO> doclist, bool name = false, bool length = false)
+        {
+            var resultList = doclist.ToList();
+            if(name)
+            {
+                resultList.OrderBy(n => n.Name);
+            } else if (length)
+            {
+                resultList.OrderBy(s => s.Length);
+            } else if (name && length)
+            {
+                resultList.OrderBy(n => n.Name).ThenBy(s => s.Length);
+            }
+            return (IEnumerable<DocumentDTO>)resultList;
+        }*/
 
         public bool IfDocumentExists(string id)
         {

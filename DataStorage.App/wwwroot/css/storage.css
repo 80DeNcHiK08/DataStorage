@@ -136,14 +136,64 @@
   padding: 5px 13px;
 }
 
-.ustorage .main .workspace .dropzone-drop-area {
-  padding: 15px;
+.ustorage .main .workspace #dropzoneForm {
+  background-color: red;
   width: 100%;
-  height: calc(100vh - 60px);
+  height: 200px;
 }
 
 .ustorage .main .workspace .sectionname {
   padding: 10px;
+}
+
+.ustorage .main .workspace .sectionmenu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  position: relative;
+}
+
+.ustorage .main .workspace .sectionmenu .oppensortdropdown {
+  cursor: pointer;
+  outline: none;
+}
+
+.ustorage .main .workspace .sectionmenu .sortmenu {
+  display: none;
+  position: absolute;
+  top: 55px;
+  right: 0;
+  z-index: 10;
+  background-color: #fff;
+  width: 120px;
+  border: 2px solid #056839;
+  border-radius: 5px;
+}
+
+.ustorage .main .workspace .sectionmenu .sortmenu .itemhandler {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.ustorage .main .workspace .sectionmenu .sortmenu .itemhandler a {
+  font-size: 1.5em;
+  padding: 10px;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.ustorage .main .workspace .sectionmenu .sortmenu .itemhandler a:hover {
+  color: #fff;
+  background-color: #056839;
 }
 
 .ustorage .main .workspace .documenthandler {

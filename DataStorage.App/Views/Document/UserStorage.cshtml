@@ -37,67 +37,76 @@
 
 </div>
 <div class="workspace">
-    <div class="dropzone-container" id="dropzone">
-        <form action="/Document/CreateFile" id="uploader" class="dropzone" enctype="multipart/form-data">
-            <div id="dropzone-drop-area" class="dropzone-drop-area">
-                @if(Model.Any())
-                {
-                    <h3 class="sectionname">Folders</h3>
-                }
-                <div class="documenthandler">
-                @foreach(var document in Model)
-                {
-                    @if(document.OwnerId.ToString() == ViewData["ownerId"].ToString())
-                    {
-                        @if (@document.IsFile == false)
-                        {
-                        <div class="block folderblock" id="@document.DocumentId" title="@document.Name">
-                            <input type="hidden" value="@document.DocumentId" id="hiddendocid">
-                            <div class="brow">
-                                <div class="fdimg"></div>
-                            </div>
-                            <div class="brow caption">
-                                @document.Name
-                            </div>
-                            <div class="eventhandler"></div>
-                            <div class="documentoptions">
-                                <div class="funchandler">
-                                    <a class="func download">Download</a>
-                                    <a class="func info">Details</a>
-                                    <a class="func share">Share</a>
-                                    <a class="func delete">Delete</a>
-                                </div>
-                            </div>
-                            <!--div class="documentinfo">
-                                Name: @document.Name
-                                Size: @document.Length
-                                Has pub access: 
-                                @if(document.IsPublic == false)
-                                {
-                                    <text>no</text>
-                                }
-                                else 
-                                {
-                                    <text>yes</text>
-                                }
-                            </div-->
-                        </div>
-                        }
-                    }
-                }
-                </div>
+    <div class="dropzone-container" id="dropzoneForm">
 
-                @if(Model.Any())
+    </div>    
+        @if (Model.Any())
+        {
+            <div class="sectionmenu">
+                <h3 class="sectionname">Folders</h3>
+                <button class="oppensortdropdown"><h3 class="sectionname">Sort by:</h3></button>
+                <div class="sortmenu">
+                    <div class="itemhandler">
+                        <a id="sortbyname">Name</a>
+                        <a id="sortbylength">Size</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="documenthandler">
+        @foreach (var document in Model)
+        {
+            @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
+            {
+                @if (@document.IsFile == false)
                 {
-                    <h3 class="sectionname">Files</h3>
+                    <div class="block folderblock" id="@document.DocumentId" title="@document.Name">
+                        <input type="hidden" value="@document.DocumentId" id="hiddendocid">
+                        <div class="brow">
+                            <div class="fdimg"></div>
+                        </div>
+                        <div class="brow caption">
+                            @document.Name
+                        </div>
+                        <div class="eventhandler"></div>
+                        <div class="documentoptions">
+                            <div class="funchandler">
+                                <a class="func download">Download</a>
+                                <a class="func info">Details</a>
+                                <a class="func share">Share</a>
+                                <a class="func delete">Delete</a>
+                            </div>
+                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
+                    </div>
                 }
-                <div class="documenthandler">
-                @foreach(var document in Model)
+            }
+        }
+        </div>
+
+        @if (Model.Any())
+        {
+            <h3 class="sectionname">Files</h3>
+        }
+            <div class="documenthandler">
+            @foreach (var document in Model)
+            {
+                @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
                 {
-                    @if(document.OwnerId.ToString() == ViewData["ownerId"].ToString())
+                    @if (@document.IsFile == true)
                     {
-                        @if (@document.IsFile == true)
-                        {
                         <div class="block fileblock" id="@document.DocumentId" title="@document.Name">
                             <input type="hidden" value="@document.DocumentId" id="hiddendocid">
                             <div class="brow">
@@ -108,31 +117,29 @@
                             </div>
                             <div class="eventhandler"></div>
                             <div class="documentoptions">
-                                <div class="funchandler">
-                                    <a class="func download">Download</a>
-                                    <a class="func info">Details</a>
-                                    <a class="func share">Share</a>
-                                    <a class="func delete">Delete</a>
-                                </div>
+                            <div class="funchandler">
+                                <a class="func download">Download</a>
+                                <a class="func info">Details</a>
+                                <a class="func share">Share</a>
+                                <a class="func delete">Delete</a>
                             </div>
-                            <!--div class="documentinfo">
-                                Name: @document.Name
-                                Size: @document.Length
-                                Has pub access: 
-                                @if(document.IsPublic == false)
-                                {
-                                    <text>no</text>
-                                }
-                                else 
-                                {
-                                    <text>yes</text>
-                                }
-                            </div-->
                         </div>
-                        }
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
+                    </div>
                     }
                 }
-                </div>
-        </form>
-    </div>
+            }
+            </div>
 </div>
