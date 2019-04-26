@@ -50,6 +50,23 @@ namespace DataStorage.App.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public IActionResult SharedStorage(string parentId)
+        {
+            ViewData["ownerId"] = _userService.GetUserId(User);
+            ViewData["parentId"] = parentId;
+            //await _documentService.CreateFolderOnRegister(_userService.GetUserId(User));
+            //await _documentService.UpdateFolderLength(_userService.GetUserId(User));
+            ViewData["CurentSize"] = _documentService.GetDocumentByIdAsync(_userService.GetUserId(User)).Result.Length.ToString();
+            ViewData["StorageSize"] = _userService.GetUserByIdAsync(_userService.GetUserId(User)).Result.StorageSize.ToString();
+            if (parentId == null)
+            {
+                return View(_documentService.GetAllAvailbleDocumentsForUserAsync(User).Result);
+            }
+            return View(_documentService.GetAllDocumentsRelatedAsync(parentId).Result);
+        }
+
+        [Authorize]
         public IActionResult DeleteUser()
         {
             _documentService.DropFolderOnUserDelete(User);

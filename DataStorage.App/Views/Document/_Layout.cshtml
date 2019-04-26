@@ -25,6 +25,8 @@
 <div class="wrapper ustorage">
     <div class="header">
         <a asp-action="Welcome" asp-controller="Home" class="logo">Logo</a>
+        <a asp-action="UserStorage" asp-controller="Document">Storage</a>
+        <a asp-action="SharedStorage" asp-controller="Document">SharedFiles</a>
         <form class="search_handler" asp-action="SearchDocuments" asp-controller="Document">
 
             <input id="search" type="text" placeholder="Search files" name="SearchString">

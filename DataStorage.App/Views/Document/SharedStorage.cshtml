@@ -2,11 +2,9 @@
 
 @{
     Layout = "~/Views/Document/_Layout.cshtml";
-    ViewData["Title"] = "Storage";
+    ViewData["Title"] = "SharedStorage";
 }
 <input type="hidden" value="@ViewData["parentId"]" id="parentId">
-<input type="hidden" value="@ViewData["CurentSize"]" id="CurentSize">
-<input type="hidden" value="@ViewData["StorageSize"]" id="StorageSize">
 <script>
     sessionStorage.setItem("parentId", '@ViewData["parentId"]');
     GetParentId();
@@ -28,20 +26,28 @@
     <hr>
     <button class="menu-button" id="settings_menu">Settings</button>
     <div class="menu-dropdown" id="dropdown-settings">
+        <a class="menu-item settings-item" asp-action="DeleteAll" asp-controller="Document">Delete All<input type="hidden"></a>
         <a class="menu-item settings-item" asp-action="Profile" asp-controller="Home">Profile Settings<input type="hidden"></a>
     </div>
     <hr>
     <button class="menu-button" id="tree">Storage using:</button>
-    <div id="percentageContainer">
-        <div id="percentageValue"></div>
-    </div>
-    <h5><span id="CurrentSizeoutput"></span>/<span id="StorageSizeoutput"></span></h5>
+    <h3>@ViewData["CurentSize"]</h3>
+    <h3>@ViewData["StorageSize"]</h3>
 </div>
 <div class="workspace">
     <div class="dropzone-container" id="dropzoneForm">
         @if (Model.Any())
         {
-            <h3 class="sectionname">Folders</h3>
+            <div class="sectionmenu">
+                <h3 class="sectionname">Folders</h3>
+                <button class="oppensortdropdown"><h3 class="sectionname">Sort by:</h3></button>
+                <div class="sortmenu">
+                    <div class="itemhandler">
+                        <a id="sortbyname">Name</a>
+                        <a id="sortbylength">Size</a>
+                    </div>
+                </div>
+            </div>
         }
         <div class="documenthandler">
         @foreach (var document in Model)
@@ -56,36 +62,26 @@
                         <div class="brow caption">
                             @document.Name
                         </div>
-                        <div class="eventhandler"></div>
+                        <div class="eventhandlert"></div>
                         <div class="buttonmenu"><i class="fas fa-bars"></i></div>
                         <div class="documentoptions">
                             <div class="funchandler">
                                 <a class="func info">Details</a>
-                                <a class="func share">Share</a>
-                                <a class="func delete">Delete</a>
                             </div>
                         </div>
-                        <div class="documentinfo">
-                            <div class="funchandler">
-                                <span>Name: @document.Name
-                                </span><br>
-                                <span>Size: @document.Length
-                                </span><br>
-                                <span>Has pub access:
-                                @if(document.IsPublic == false)
-                                {
-                                    <text>no</text>
-                                }
-                                else
-                                {
-                                    <text>yes</text>
-                                }</span><br>
-                                <span>Size: @document.Length
-                                </span><br>
-                                <span>Creation Date: @document.ChangeDate
-                                </span><br>
-                            </div>
-                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
                     </div>
                 }
             }
@@ -108,37 +104,27 @@
                         <div class="brow caption">
                             @document.Name
                         </div>
-                        <div class="eventhandler"></div>
+                        <div class="eventhandlert"></div>
                         <div class="buttonmenu"><i class="fas fa-bars"></i></div>
                         <div class="documentoptions">
                             <div class="funchandler">
                                 <a class="func download">Download</a>
                                 <a class="func info">Details</a>
-                                <a class="func share" asp-route-documentId="@document.DocumentId" asp-action="ShareFile" asp-controller="Document">Share</a>
-                                <a class="func delete">Delete</a>
                             </div>
                         </div>
-                        <div class="documentinfo">
-                            <div class="funchandler">
-                                <span>Name: @document.Name
-                                </span><br>
-                                <span>Size: @document.Length
-                                </span><br>
-                                <span>Has pub access:
-                                @if(document.IsPublic == false)
-                                {
-                                    <text>no</text>
-                                }
-                                else
-                                {
-                                    <text>yes</text>
-                                }</span><br>
-                                <span>Size: @document.Length
-                                </span><br>
-                                <span>Creation Date: @document.ChangeDate
-                                </span><br>
-                            </div>
-                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
                     </div>
                 }
             }

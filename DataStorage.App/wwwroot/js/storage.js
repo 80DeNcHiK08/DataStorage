@@ -102,6 +102,13 @@ $(document).ready(function () {
         var parentId = $(this).parent().find("#hiddendocid").val();
         window.location = '/Document/UserStorage?parentId=' + parentId;
     })
+
+    $(".folderblock").find(".eventhandlert").on("click", function (e) {
+        alert();
+        e.preventDefault();
+        var parentId = $(this).parent().find("#hiddendocid").val();
+        window.location = '/Document/SharedStorage?parentId=' + parentId;
+    })
 })
 
 function GetParentId() {
