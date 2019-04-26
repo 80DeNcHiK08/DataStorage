@@ -38,8 +38,6 @@
 </div>
 <div class="workspace">
     <div class="dropzone-container" id="dropzoneForm">
-
-    </div>    
         @if (Model.Any())
         {
             <div class="sectionmenu">
@@ -100,23 +98,23 @@
         {
             <h3 class="sectionname">Files</h3>
         }
-            <div class="documenthandler">
-            @foreach (var document in Model)
+        <div class="documenthandler dz-documenthandler">
+        @foreach (var document in Model)
+        {
+            @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
             {
-                @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
+                @if (@document.IsFile == true)
                 {
-                    @if (@document.IsFile == true)
-                    {
-                        <div class="block fileblock" id="@document.DocumentId" title="@document.Name">
-                            <input type="hidden" value="@document.DocumentId" id="hiddendocid">
-                            <div class="brow">
-                                <div class="fimg"></div>
-                            </div>
-                            <div class="brow caption">
-                                @document.Name
-                            </div>
-                            <div class="eventhandler"></div>
-                            <div class="documentoptions">
+                    <div class="block fileblock" id="@document.DocumentId" title="@document.Name">
+                        <input type="hidden" value="@document.DocumentId" id="hiddendocid">
+                        <div class="brow">
+                            <div class="fimg"></div>
+                        </div>
+                        <div class="brow caption">
+                            @document.Name
+                        </div>
+                        <div class="eventhandler"></div>
+                        <div class="documentoptions">
                             <div class="funchandler">
                                 <a class="func download">Download</a>
                                 <a class="func info">Details</a>
@@ -138,8 +136,8 @@
                             }
                         </div-->
                     </div>
-                    }
                 }
             }
-            </div>
+        }
+    </div>
 </div>

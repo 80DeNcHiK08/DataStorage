@@ -1,0 +1,92 @@
+/* You can add global styles to this file, and also import other style files */
+body, html {
+    font-family: Helvetica;
+    margin: 0; padding: 0;
+
+    button, input {
+        outline: none;
+        background-color: transparent;
+        border: none;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    ul, li {
+        list-style-type: none;
+        margin: 0; padding: 0;
+    }
+}
+
+.header {
+    position: fixed;
+    left: 0; top: 0;
+    height: 60px;
+    width: 100vw;
+    background-color: #9C64E8;
+    display: flex;
+    z-index: 2;
+
+    .logo {
+        font-size: 1.5em;
+    }
+}
+
+.container {
+    padding-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-width: 100vw;
+}
+
+.btn {
+    width: 80px;
+    height: 30px;
+    border: 2px solid #FF9137;
+    border-radius: 5px;
+    margin: 5px 10px;
+}
+
+ .addnew {
+    position: fixed;
+    top: 10px; right: 20px;
+    background-color: #cecece;
+    z-index: 3;
+ }
+
+ .note {
+     min-width: 300px;
+     background: url("./sticker.jpg");
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     min-height: 250px;
+     padding: 45px 15px 60px 15px;
+     position: relative;
+     margin: 20px;
+     overflow: hidden;
+
+     .controls {
+         position: absolute;
+         bottom: 15px;
+         left: 50px;
+     }
+
+     .noteCaption {
+         font-size: 1.3em;
+         font-weight: bold;
+         margin-bottom: 65px;
+         margin-right: 30px;
+         text-align: right;
+     }
+
+     .noteBody {
+         font-size: 1.1em;
+     }
+ }

@@ -2,8 +2,21 @@ $(document).ready(function () {
     $("#dropzoneForm").dropzone({
         url: "/Document/CreateFile",
         paramName: "uploadedFile",
+        //uploadMultiple: true,
+        maxFilesize: 30,
+        addRemoveLinks: true,
+        clickable: false,
+        previewsContainer: ".dz-documenthandler",
+        createImageThumbnails: false,
         params: {
             'parentId': GetParentId()
+        },
+        init: function() {
+            this.on("dragstart", function(e) {
+                $(this).css({
+                    "border-color":"blue"
+                })
+            })
         }
     });
 
@@ -117,14 +130,14 @@ function GetOwnerId() {
 })(jQuery, window, document);
 
 function Delete(id) {
+    alert(id);
     $.ajax ({
         type: "POST",
         url: "/Document/DeleteFile",
         data: {fileId : id},
         success: function(e) {
-            if(e) {
-                $("#" + id).remove();
-            }
+            alert(id + " deleted");
+            $("#" + id).remove();
         }
     })
 }
