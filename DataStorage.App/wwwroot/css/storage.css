@@ -250,7 +250,6 @@
   position: relative;
   cursor: pointer;
   margin: 10px;
-  overflow: hidden;
   width: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -302,14 +301,28 @@
   right: 10px;
 }
 
+.ustorage .main .workspace .documenthandler .block .documentinfo {
+  position: absolute;
+  background-color: #fff;
+  width: calc(100% + 6px);
+  left: -3px;
+  top: -3px;
+  z-index: 21;
+  padding: 10px;
+  border-radius: 10px;
+  border: 3px solid #056839;
+  display: none;
+}
+
 .ustorage .main .workspace .documenthandler .block .documentoptions {
+  border-radius: 10px;
   display: none;
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 8;
+  z-index: 9;
   background-color: #fff;
 }
 
@@ -338,6 +351,14 @@
   transition: 0.2s;
 }
 
+.ustorage .main .workspace .documenthandler .block .documentoptions .funchandler .func:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+.ustorage .main .workspace .documenthandler .block .documentoptions .funchandler .func:last-child {
+  border-radius: 0 0 5px 5px;
+}
+
 .ustorage .main .workspace .documenthandler .block .documentoptions .funchandler .func:hover {
   background-color: #056839;
   color: #fff;
@@ -351,7 +372,7 @@
 }
 
 .ustorage .main .workspace .documenthandler .increase {
-  height: 210px !important;
+  height: 158px !important;
 }
 
 .ustorage .main .workspace .documenthandler .folderblock {
@@ -410,10 +431,15 @@
 
 .ustorage .main .workspace .documenthandler .fileblock .caption {
   min-height: 50px;
+  max-width: 150px;
   padding: 10px 0;
 }
 
 .ustorage .main .workspace .documenthandler .fileblock .buttonmenu {
   bottom: 7px;
+}
+
+.ustorage .main .workspace .documenthandler .fileblock .documentinfo {
+  min-height: 213px;
 }
 /*# sourceMappingURL=storage.css.map */

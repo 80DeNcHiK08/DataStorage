@@ -60,25 +60,32 @@
                         <div class="buttonmenu"><i class="fas fa-bars"></i></div>
                         <div class="documentoptions">
                             <div class="funchandler">
-                                <a class="func download">Download</a>
                                 <a class="func info">Details</a>
                                 <a class="func share">Share</a>
                                 <a class="func delete">Delete</a>
                             </div>
                         </div>
-                        <!--div class="documentinfo">
-                            Name: @document.Name
-                            Size: @document.Length
-                            Has pub access:
-                            @if(document.IsPublic == false)
-                            {
-                                <text>no</text>
-                            }
-                            else
-                            {
-                                <text>yes</text>
-                            }
-                        </div-->
+                        <div class="documentinfo">
+                            <div class="funchandler">
+                                <span>Name: @document.Name
+                                </span><br>
+                                <span>Size: @document.Length
+                                </span><br>
+                                <span>Has pub access:
+                                @if(document.IsPublic == false)
+                                {
+                                    <text>no</text>
+                                }
+                                else
+                                {
+                                    <text>yes</text>
+                                }</span><br>
+                                <span>Size: @document.Length
+                                </span><br>
+                                <span>Creation Date: @document.ChangeDate
+                                </span><br>
+                            </div>
+                        </div>
                     </div>
                 }
             }
@@ -111,19 +118,27 @@
                                 <a class="func delete">Delete</a>
                             </div>
                         </div>
-                        <!--div class="documentinfo">
-                            Name: @document.Name
-                            Size: @document.Length
-                            Has pub access:
-                            @if(document.IsPublic == false)
-                            {
-                                <text>no</text>
-                            }
-                            else
-                            {
-                                <text>yes</text>
-                            }
-                        </div-->
+                        <div class="documentinfo">
+                            <div class="funchandler">
+                                <span>Name: @document.Name
+                                </span><br>
+                                <span>Size: @document.Length
+                                </span><br>
+                                <span>Has pub access:
+                                @if(document.IsPublic == false)
+                                {
+                                    <text>no</text>
+                                }
+                                else
+                                {
+                                    <text>yes</text>
+                                }</span><br>
+                                <span>Size: @document.Length
+                                </span><br>
+                                <span>Creation Date: @document.ChangeDate
+                                </span><br>
+                            </div>
+                        </div>
                     </div>
                 }
             }

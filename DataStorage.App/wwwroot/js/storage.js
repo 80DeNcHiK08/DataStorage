@@ -103,6 +103,16 @@ $(document).ready(function () {
         Download(id);
     })
 
+    $(".info").on("click", function(e) {
+        e.preventDefault();
+        $(this).parent().parent().parent().find(".documentinfo").slideToggle("fast");
+    })
+
+    $(".documentinfo").on("click", function(e) {
+        e.preventDefault();
+        $(this).slideToggle("fast");
+    })
+
     $(".folderblock").find(".eventhandler").on("click", function(e) {
         e.preventDefault();
         var parentId = $(this).parent().find("#hiddendocid").val();
