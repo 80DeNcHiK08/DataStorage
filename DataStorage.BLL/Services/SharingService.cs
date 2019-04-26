@@ -41,7 +41,7 @@ namespace DataStorage.BLL.Services
             if (!document.IsPublic)
             {
                 document.IsPublic = true;
-                document.DocumentLink = _documentRepo.GenerateAccessLink();
+                document.DocumentLink = Guid.NewGuid().ToString();
                 await _documentRepo.UpdateDocumentAsync(document);
                 return document.DocumentLink;
             }
@@ -82,7 +82,7 @@ namespace DataStorage.BLL.Services
             var document = await _documentRepo.GetDocumentByIdAsync(documentId);
             if (!document.IsPublic)
             {
-                var userDocumentLink = _documentRepo.GenerateAccessLink();
+                var userDocumentLink = new Guid().ToString();
                 var user = await _userRepo.GetUserByNameAsync(guestEmail);
                 if (ownerId == user.Id)
                 {

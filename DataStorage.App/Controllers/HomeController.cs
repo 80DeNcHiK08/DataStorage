@@ -33,6 +33,11 @@ namespace DataStorage.App.Controllers
         [AllowAnonymous]
         public IActionResult Welcome()
         {
+            var isAut = User.Identity.IsAuthenticated;
+            if (isAut == true)
+            {
+                return RedirectToAction("UserStorage", "Document");
+            }
             return View();
         }
 

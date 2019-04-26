@@ -284,5 +284,15 @@ namespace DataStorage.BLL.Services
             result.Reverse();
             return result.ToArray();
         }
+
+        public bool CheckPublic(string documentId)
+        {
+            return _documentRepo.CheckPublic(documentId);
+        }
+
+        public List<string> GetAllUsersWithAccess(string documentId)
+        {
+            return _documentRepo.GetAllUsersWithAccess(documentId);
+        }
     }
 }

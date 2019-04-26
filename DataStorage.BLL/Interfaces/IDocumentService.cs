@@ -24,5 +24,7 @@ namespace DataStorage.BLL.Interfaces
         Task<DocumentDTO> GetAvailbleDocumentForUserAsync(string link, ClaimsPrincipal user);
         Task<IEnumerable<DocumentDTO>> GetAllAvailbleDocumentsForUserAsync(ClaimsPrincipal user);
         Task<IEnumerable<DocumentDTO>> SearchDocuments(string searchString, string userId);
+        bool CheckPublic(string documentId);
+        List<string> GetAllUsersWithAccess(string documentId);
     }
 }

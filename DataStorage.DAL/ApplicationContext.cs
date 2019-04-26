@@ -27,7 +27,7 @@ namespace DataStorage.DAL
             builder.Entity<UserDocument>()
                 .HasOne<DocumentEntity>(ud => ud.Document)
                 .WithMany(de => de.UserDocuments)
-                .HasForeignKey(ud => ud.UserId);
+                .HasForeignKey(ud => ud.DocumentId);
 
             base.OnModelCreating(builder);
         }

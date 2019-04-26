@@ -52,8 +52,8 @@
                 <div class="items-handler">
                     <a class="func delete">Delete</a>
                     <a class="func info">Details</a>
-                    <a class="func share" asp-action="OpenPublicAccess" asp-controller="Document" asp-route-documentId="@file.DocumentId">Set open access</a>
-                    <a class="func share" asp-action="OpenLimitedAccessForUser" asp-controller="Document" asp-route-documentId="@file.DocumentId">Share with user</a>
+                    <a class="func share" asp-action="ShareFile" asp-controller="Document" asp-route-documentId="@file.DocumentId">Share</a>
+                    <!--<a class="func share" asp-action="OpenLimitedAccessForUser" asp-controller="Document" asp-route-documentId="@file.DocumentId">Share with user</a>--->
                     <a class="func download">Download</a>
                 </div>
             </div>
