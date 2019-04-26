@@ -43,80 +43,74 @@ namespace DataStorage.BLL.Services
             // var documents = await _documentRepo.GetAllUserDocumentsAsync(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
-
         public async Task CreateDocumentRelatedAsync(IFormFileCollection uploadedFile, ClaimsPrincipal owner, string parentId, string fdName = null)
         {
+            string storagePath = Path.Combine(_pProvider.ContentPath());
+            string combinedFilePath = "";
+            string ownerId = _userRepo.GetUserId(owner);
             if (uploadedFile != null)
             {
                 foreach (var file in uploadedFile)
                 {
                     string docId = Guid.NewGuid().ToString();
-                    string storagePath = Path.Combine(_pProvider.ContentPath());
-                    string combinedFilePath = "";
                     foreach (var str in GetPathPartsBypId(parentId))
                     {
                         combinedFilePath += str + "\\";
                     }
                     combinedFilePath.Substring(combinedFilePath.Length - 2);
                     var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-
                     var doc = new DocumentEntity
                     {
                         Name = file.FileName,
                         Length = file.Length,
                         IsFile = true,
                         DocumentId = docId,
-                        OwnerId = _userRepo.GetUserId(owner),
+                        OwnerId = ownerId,
                         ParentId = parentId,
                         Path = filePath,
                         ChangeDate = DateTime.Now
                     };
 
-                    UpdateFolderLength(doc.ParentId);
-                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
                     await _documentRepo.CreateDocumentAsync(doc);
-                    await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
+                    await _userDocumentRepo.AddUserDocumentAsync(ownerId, docId);
+                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
+                    await UpdateFolderLength(doc.ParentId);
                 }
-            }
-            else if (fdName != null)
-            {
+            } else if (fdName != null) {
                 string docId = Guid.NewGuid().ToString();
-                string storagePath = Path.Combine(_pProvider.ContentPath());
-                string combinedFilePath = "";
                 foreach (var str in GetPathPartsBypId(parentId))
                 {
                     combinedFilePath += str + "\\";
                 }
                 combinedFilePath.Substring(combinedFilePath.Length - 2);
                 var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-
                 var doc = new DocumentEntity
                 {
                     Name = fdName,
                     Length = 0,
                     IsFile = false,
                     DocumentId = docId,
-                    OwnerId = _userRepo.GetUserId(owner),
+                    OwnerId = ownerId,
                     ParentId = parentId,
                     Path = filePath,
                     ChangeDate = DateTime.Now
                 };
 
                 await _documentRepo.CreateDocumentAsync(doc);
-                await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
+                await _userDocumentRepo.AddUserDocumentAsync(ownerId, docId);
             }
         }
 
-        private void UpdateFolderLength(string parentId)
+        public async Task UpdateFolderLength(string parentId)
         {
-            var folder = GetDocumentByIdAsync(parentId);
-            folder.Result.Length = 0;
+            var folder = await _documentRepo.GetDocumentByIdAsync(parentId);
+            folder.Length = 0;
             var folder_content = GetAllDocumentsRelatedAsync(parentId);
             foreach (var content in folder_content.Result)
             {
-                folder.Result.Length += content.Length;
+                folder.Length += content.Length;
             }
-            _documentRepo.UpdateDocumentAsync(_mapper.Map<DocumentEntity>(folder.Result));
+            await _documentRepo.UpdateDocumentAsync(folder);
         }
 
         public async Task CreateFolderOnRegister(string ownerId)

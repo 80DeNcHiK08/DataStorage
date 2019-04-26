@@ -5,10 +5,8 @@
     ViewData["Title"] = "Storage";
 }
 <input type="hidden" value="@ViewData["parentId"]" id="parentId">
-<input type="hidden" value="@ViewData["ownerId"]" id="ownerId">
 <script>
     sessionStorage.setItem("parentId", '@ViewData["parentId"]');
-    sessionStorage.setItem("ownerId", '@ViewData["ownerId"]');
     GetParentId();
 </script>
 <div class="leftbar">
@@ -20,7 +18,7 @@
             <input name="parentId" type="hidden" value="@ViewData["parentId"]">
         </form>
         <form class="menu-item create-item crfolder" asp-action="CreateFolder" asp-controller="Document" method="post">
-            <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name"/>
+            <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name" />
             <input name="parentId" type="hidden" value="@ViewData["parentId"]">
             <input type="submit" class="submit" value="Create Folder">
         </form>
@@ -33,7 +31,8 @@
     </div>
     <hr>
     <button class="menu-button" id="tree">Storage using:</button>
-
+    @ViewData["CurentSize"] | 
+    @ViewData["StorageSize"]
 </div>
 <div class="workspace">
     <div class="dropzone-container" id="dropzoneForm">
@@ -53,8 +52,6 @@
         <div class="documenthandler">
         @foreach (var document in Model)
         {
-            @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
-            {
                 @if (@document.IsFile == false)
                 {
                     <div class="block folderblock" id="@document.DocumentId" title="@document.Name">
@@ -91,7 +88,6 @@
                     </div>
                 }
             }
-        }
         </div>
 
         @if (Model.Any())
@@ -101,8 +97,6 @@
         <div class="documenthandler dz-documenthandler">
         @foreach (var document in Model)
         {
-            @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
-            {
                 @if (@document.IsFile == true)
                 {
                     <div class="block fileblock" id="@document.DocumentId" title="@document.Name">
@@ -119,7 +113,7 @@
                             <div class="funchandler">
                                 <a class="func download">Download</a>
                                 <a class="func info">Details</a>
-                                <a class="func share">Share</a>
+                                <a class="func share" asp-action="ShareFile" asp-controller="Document">Share</a>
                                 <a class="func delete">Delete</a>
                             </div>
                         </div>
@@ -139,6 +133,5 @@
                     </div>
                 }
             }
-        }
     </div>
 </div>

@@ -26,5 +26,6 @@ namespace DataStorage.BLL.Interfaces
         List<string> GetAllUsersWithAccess(string documentId);
         Task DeleteAllFiles(string ownerId);
         string CreateZipFromFolder(string path);
+        Task UpdateFolderLength(string parentId);
     }
 }

@@ -43,6 +43,8 @@ namespace DataStorage.App.Controllers
             ViewData["ownerId"] = _userService.GetUserId(User);
             ViewData["parentId"] = parentId;
             await _documentService.CreateFolderOnRegister(_userService.GetUserId(User));
+            //ViewData["CurentSize"] = _documentService.GetDocumentByIdAsync(_userService.GetUserId(User));
+            //ViewData["StorageSize"] = _userService.GetUserByIdAsync(_userService.GetUserId(User)).Result.StorageSize;
             return View(_documentService.GetAllDocumentsRelatedAsync(parentId).Result);
         }
 

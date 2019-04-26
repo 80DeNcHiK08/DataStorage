@@ -18,9 +18,10 @@ namespace DataStorage.DAL.Repositories
 
         public async Task AddUserDocumentAsync(string userId, string documentId, string documentLink = null)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.Include(ud => ud.UserDocuments).FirstOrDefaultAsync(u => u.Id == userId);
+            
             user.UserDocuments.Add(new UserDocument { UserId = user.Id, DocumentId = documentId, DocumentLink = documentLink });
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public async Task DeleteUserDocumentAsync(string userId, string documentId)
