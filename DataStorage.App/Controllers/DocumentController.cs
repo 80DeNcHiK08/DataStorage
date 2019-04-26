@@ -99,7 +99,7 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> ClosePublicAccess(string documentId)
         {
             await _sharingService.ClosePublicAccess(documentId, User);
-            return Ok();
+            return Redirect("~/Document/ShareFile?documentId=" + documentId);
         }
         
         [HttpPost]

@@ -5,6 +5,8 @@
     ViewData["Title"] = "SharedStorage";
 }
 <input type="hidden" value="@ViewData["parentId"]" id="parentId">
+<input type="hidden" value="@ViewData["CurentSize"]" id="CurentSize">
+<input type="hidden" value="@ViewData["StorageSize"]" id="StorageSize">
 <script>
     sessionStorage.setItem("parentId", '@ViewData["parentId"]');
     GetParentId();
@@ -31,8 +33,10 @@
     </div>
     <hr>
     <button class="menu-button" id="tree">Storage using:</button>
-    <h3>@ViewData["CurentSize"]</h3>
-    <h3>@ViewData["StorageSize"]</h3>
+    <div id="percentageContainer">
+        <div id="percentageValue"></div>
+    </div>
+    <h5><span id="CurrentSizeoutput"></span>/<span id="StorageSizeoutput"></span></h5>
 </div>
 <div class="workspace">
     <div class="dropzone-container" id="dropzoneForm">
