@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using DataStorage.App.ViewModels;
 using DataStorage.BLL.Interfaces;
+using DataStorage.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +16,20 @@ namespace DataStorage.App.Controllers
         private readonly IUsersService _userService;
         private readonly ISharingService _sharingService;
         private readonly IEmailService _emailService;
+        private readonly IPathProvider _pProvider;
 
         public DocumentController(
             IDocumentService documentService,
             IUsersService userService,
             ISharingService sharingService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IPathProvider pProvider)
         {
             _documentService = documentService ?? throw new ArgumentNullException(nameof(documentService));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             _sharingService = sharingService ?? throw new ArgumentNullException(nameof(sharingService));
+            _pProvider = pProvider;
         }
 
         [Authorize]
@@ -35,6 +40,7 @@ namespace DataStorage.App.Controllers
             {
                 parentId = _userService.GetUserId(User);
             }
+            ViewData["ownerId"] = _userService.GetUserId(User);
             ViewData["parentId"] = parentId;
             await _documentService.CreateFolderOnRegister(_userService.GetUserId(User));
             return View(_documentService.GetAllDocumentsRelatedAsync(parentId).Result);
@@ -51,14 +57,14 @@ namespace DataStorage.App.Controllers
         public async Task<IActionResult> CreateFile(IFormFileCollection uploadedFile, string parentId)
         {
             await _documentService.CreateDocumentRelatedAsync(uploadedFile, User, parentId);
-            return RedirectToAction("UserStorage");
+            return Redirect("/Document/UserStorage?parentId=" + parentId);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFolder(string FolderName, string parentId)
         {
-            await _documentService.CreateDocumentRelatedAsync(null, User, parentId, FolderName);
-            return RedirectToAction("UserStorage");
+            await _documentService.CreateDocumentRelatedAsync(null, User, parentId ,FolderName);
+            return Redirect("/Document/UserStorage?parentId=" + parentId);
         }
 
         [HttpGet]
@@ -140,7 +146,6 @@ namespace DataStorage.App.Controllers
             if (ModelState.IsValid)
             {
                 await _sharingService.CloseLimitedAccessForUser(model.DocumentId, User, model.Email);
-
                 return Ok();
             }
 
@@ -154,11 +159,14 @@ namespace DataStorage.App.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> DeleteFile(string fileId)
+        public JsonResult DeleteFile(string fileId)
         {
-            await _documentService.DeleteDocumentAsync(fileId);
-            ViewData["parentId"] = null;
-            return RedirectToAction("UserStorage");
+            bool res = false;
+            if(fileId != null)
+            {
+                _documentService.DeleteDocumentAsync(fileId);
+            }
+            return Json(res);
         }
 
          public IActionResult ShareFile(string documentId)
@@ -170,19 +178,24 @@ namespace DataStorage.App.Controllers
          }
 
 
-        public async Task<IActionResult> DownloadFile(string fileId)
+        public IActionResult DownloadFile(string fileId)
         {
-            var file = await _documentService.GetDocumentByIdAsync(fileId);
-            var filename = file.Name;
-            var file_path = file.Path;
-            var file_extention = file.Name.Split(".");
-            return PhysicalFile(file_path, "application/" + file_extention[file_extention.Length - 1], filename);
+            var file = _documentService.GetDocumentByIdAsync(fileId);
+            string physical_path = _pProvider.ContentPath() + "\\" + file.Result.OwnerId + "\\" + file.Result.DocumentId;
+
+            if(file.Result.IsFile)
+            {
+                string contentType = ContentType.GetContentType(file.Result.Name);
+                return PhysicalFile(physical_path, contentType, file.Result.Name);
+            } else {
+                return View();
+                //
+            }
         }
 
-        public async Task<IActionResult> DownloadFolder(string fileId)
+        public async Task<IActionResult> DeleteAll()
         {
-            //var folder = await _docService.GetDocumentByIdAsync(fileId);
-            //var foldername = folder.Name;
+            await _documentService.DeleteAllFiles(User.Identity.Name.ToString());
             return RedirectToAction("UserStorage");
         }
 

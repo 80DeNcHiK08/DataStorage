@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -47,7 +48,7 @@ namespace DataStorage.BLL.Services
         {
             if (uploadedFile != null)
             {
-                foreach(var file in uploadedFile)
+                foreach (var file in uploadedFile)
                 {
                     string docId = Guid.NewGuid().ToString();
                     string storagePath = Path.Combine(_pProvider.ContentPath());
@@ -58,9 +59,9 @@ namespace DataStorage.BLL.Services
                     }
                     combinedFilePath.Substring(combinedFilePath.Length - 2);
                     var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-  
-                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
-                    var doc = new DocumentEntity {
+
+                    var doc = new DocumentEntity
+                    {
                         Name = file.FileName,
                         Length = file.Length,
                         IsFile = true,
@@ -71,10 +72,13 @@ namespace DataStorage.BLL.Services
                         ChangeDate = DateTime.Now
                     };
 
+                    UpdateFolderLength(doc.ParentId);
+                    await _pProvider.CreateFile(file, Path.Combine(storagePath, _userRepo.GetUserId(owner), docId));
                     await _documentRepo.CreateDocumentAsync(doc);
                     await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
                 }
-            } else
+            }
+            else if (fdName != null)
             {
                 string docId = Guid.NewGuid().ToString();
                 string storagePath = Path.Combine(_pProvider.ContentPath());
@@ -85,18 +89,18 @@ namespace DataStorage.BLL.Services
                 }
                 combinedFilePath.Substring(combinedFilePath.Length - 2);
                 var filePath = Path.Combine(storagePath, combinedFilePath, docId);
-                
-                var doc = new DocumentEntity {
-                        Name = fdName,
-                        Length = 0,
-                        IsFile = false,
-                        DocumentId = docId,
-                        OwnerId = _userRepo.GetUserId(owner),
-                        ParentId = parentId,
-                        Path = filePath,
-                        ChangeDate = DateTime.Now
-                    };
-                UpdateFolderLength(doc.ParentId);
+
+                var doc = new DocumentEntity
+                {
+                    Name = fdName,
+                    Length = 0,
+                    IsFile = false,
+                    DocumentId = docId,
+                    OwnerId = _userRepo.GetUserId(owner),
+                    ParentId = parentId,
+                    Path = filePath,
+                    ChangeDate = DateTime.Now
+                };
 
                 await _documentRepo.CreateDocumentAsync(doc);
                 await _userDocumentRepo.AddUserDocumentAsync(_userRepo.GetUserId(owner), docId);
@@ -108,7 +112,7 @@ namespace DataStorage.BLL.Services
             var folder = GetDocumentByIdAsync(parentId);
             folder.Result.Length = 0;
             var folder_content = GetAllDocumentsRelatedAsync(parentId);
-            foreach(var content in folder_content.Result)
+            foreach (var content in folder_content.Result)
             {
                 folder.Result.Length += content.Length;
             }
@@ -143,10 +147,9 @@ namespace DataStorage.BLL.Services
             await _userRepo.LogOut();
             if (oId != null)
             {
-                
                 _pProvider.DropFolderOnUserDelete(ownerId);
                 await _documentRepo.DeleteAllUserDocumentsAsync(ownerId);
-                _userRepo.DeleteUserAsync(ownerId);
+                await _userRepo.DeleteUserAsync(ownerId);
             }
         }
 
@@ -193,48 +196,44 @@ namespace DataStorage.BLL.Services
 
         public async Task DeleteDocumentAsync(string id)
         {
-            //await GetAllChilderAsync(id);
-            var to_delete = await _documentRepo.GetAllDocumentsRelatedAsync(id);
-            foreach(var doc in to_delete)
+            var doc = await _documentRepo.GetDocumentByIdAsync(id);
+            if (doc.IsFile)
             {
-                if(!doc.IsFile)
-                {
-                    await DeleteDocumentAsync(doc.DocumentId);
-                } else
-                {
-                    _pProvider.DeleteFile(_documentRepo.GetDocumentPathById(doc.DocumentId));
-                    await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
-                }
+                _pProvider.DeleteFile(doc.Path);
+                await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
             }
+            else
+            {
+                var to_delete = await _documentRepo.GetAllUserDocumentsAsync(doc.OwnerId);
+                foreach (var document in to_delete)
+                {
+                    if (document.Path.Contains(doc.Path))
+                    {
+                        _pProvider.DeleteFile(document.Path);
+                        await _documentRepo.DeleteDocumentAsync(document.DocumentId);
+                    }
+                }
+                _pProvider.DeleteFile(doc.Path);
+                await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
+            }
+
         }
 
-        public async Task GetAllChilderAsync(string id)
+        /*public IEnumerable<DocumentDTO> SortOutputAsync(IEnumerable<DocumentDTO> doclist, bool name = false, bool length = false)
         {
-            var docs = await _documentRepo.GetAllDocumentsRelatedAsync(id);
-            foreach (var doc in docs)
+            var resultList = doclist.ToList();
+            if(name)
             {
-                _result_list.Add(doc);
-            }
-
-            foreach (var folder in _result_list)
+                resultList.OrderBy(n => n.Name);
+            } else if (length)
             {
-                if (folder.DocumentId == id)
-                {
-                    break;
-                } else
-                {
-                    if (!folder.IsFile)
-                    {
-                        id = folder.DocumentId;
-                        await GetAllChilderAsync(id);
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
+                resultList.OrderBy(s => s.Length);
+            } else if (name && length)
+            {
+                resultList.OrderBy(n => n.Name).ThenBy(s => s.Length);
             }
-        }
+            return (IEnumerable<DocumentDTO>)resultList;
+        }*/
 
         public bool IfDocumentExists(string id)
         {
@@ -242,33 +241,14 @@ namespace DataStorage.BLL.Services
             if (EntityResult != null)
             {
                 return true;
-            } else
+            }
+            else
                 return false;
         }
 
-        public string CreateZipFromFolder(string FileId)
+        public async Task DeleteAllFiles(string ownerId)
         {
-            var foldercontent = GetAllDocumentsRelatedAsync(FileId);
-            foreach(var doc in foldercontent.Result)
-            {
-                if (doc.IsFile)
-                {
-                    //_pProvider
-                }
-                else continue;
-            }
-            return "";
-            /*if (doc.Result.IsFile)
-            {
-                string folder_path = doc.Result.Path;
-                return _pProvider.FolderToZip(folder_path);
-            }
-            else throw new Exception();*/
-        }
-
-        public async Task DeleteZip(string path)
-        {
-            _pProvider.DeleteFile(path);
+            await _documentRepo.DeleteAllUserDocumentsAsync(ownerId);
         }
 
         public string[] GetPathPartsBypId(string fileId)
@@ -276,7 +256,7 @@ namespace DataStorage.BLL.Services
             var doc = GetDocumentByIdAsync(fileId);
             var result = new List<string>();
             result.Add(doc.Result.DocumentId);
-            while(doc.Result.ParentId != string.Empty)
+            while (doc.Result.ParentId != string.Empty)
             {
                 var prev_doc = GetDocumentByIdAsync(doc.Result.ParentId);
                 result.Add(prev_doc.Result.DocumentId);
@@ -294,6 +274,10 @@ namespace DataStorage.BLL.Services
         public List<string> GetAllUsersWithAccess(string documentId)
         {
             return _documentRepo.GetAllUsersWithAccess(documentId);
+        }
+        public string CreateZipFromFolder(string path)
+        {
+            return "";
         }
     }
 }

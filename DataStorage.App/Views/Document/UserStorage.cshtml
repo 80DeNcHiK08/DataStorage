@@ -4,62 +4,139 @@
     Layout = "~/Views/Document/_Layout.cshtml";
     ViewData["Title"] = "Storage";
 }
+<input type="hidden" value="@ViewData["parentId"]" id="parentId">
+<input type="hidden" value="@ViewData["ownerId"]" id="ownerId">
+<script>
+    sessionStorage.setItem("parentId", '@ViewData["parentId"]');
+    sessionStorage.setItem("ownerId", '@ViewData["ownerId"]');
+    GetParentId();
+</script>
 <div class="leftbar">
     <button class="menu-button" id="create_menu">Create</button>
-    <form class="menu-item create-item" id="uploadFile" asp-action="CreateFile" asp-controller="Document" method="post" onchange="submit()" enctype="multipart/form-data">
-        <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" data-multiple-caption="{count} files selected" multiple />
-        <label for="uploadedFile"><span>Choose a file&hellip;</span></label>
-        <input name="parentId" type="hidden" value="@ViewData["parentId"]">
-    </form>
-    <form class="menu-item create-item crfolder" asp-action="CreateFolder" asp-controller="Document" method="post">
-        <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name" />
-        <input name="parentId" type="hidden" value="@ViewData["parentId"]">
-        <input type="submit" class="submit" value="Create Folder">
-    </form>
+    <div class="menu-dropdown" id="dropdown-create">
+        <form class="menu-item create-item" id="uploadFile" asp-action="CreateFile" asp-controller="Document" method="post" onchange="submit()" enctype="multipart/form-data">
+            <input type="file" name="uploadedFile" class="inputfile" id="uploadedFile" data-multiple-caption="{count} files selected" multiple />
+            <label for="uploadedFile"><span>Choose a file&hellip;</span></label>
+            <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+        </form>
+        <form class="menu-item create-item crfolder" asp-action="CreateFolder" asp-controller="Document" method="post">
+            <input type="text" name="FolderName" class="" id="FolderName" placeholder="Folder Name"/>
+            <input name="parentId" type="hidden" value="@ViewData["parentId"]">
+            <input type="submit" class="submit" value="Create Folder">
+        </form>
+    </div>
     <hr>
     <button class="menu-button" id="settings_menu">Settings</button>
-    <a class="menu-item settings-item">Delete All<input type="hidden"></a>
-    <a class="menu-item settings-item" asp-action="Profile" asp-controller="Home">Profile Settings<input type="hidden"></a>
+    <div class="menu-dropdown" id="dropdown-settings">
+        <a class="menu-item settings-item" asp-action="DeleteAll" asp-controller="Document">Delete All<input type="hidden"></a>
+        <a class="menu-item settings-item" asp-action="Profile" asp-controller="Home">Profile Settings<input type="hidden"></a>
+    </div>
     <hr>
-    <button class="menu-button" id="tree">All Files:</button>
+    <button class="menu-button" id="tree">Storage using:</button>
 
 </div>
 <div class="workspace">
-    <div class="fileblockhandler">
-        @foreach (var file in Model)
+    <div class="dropzone-container" id="dropzoneForm">
+        @if (Model.Any())
         {
-        <div class="block fileblock">
-            <div class="brow">
-                <input type="hidden" value='@file.DocumentId' id="hiddenblockid" name="parentId">
-                <input type="hidden" value='@file.IsFile.ToString()' id="hiddenblockfiletype">
-                @if (file.IsFile == true)
-                {
-                    <text><div class="fimg"></div></text>
-                }
-                else
-                {
-                    <text><div class="fdimg"></div></text>
-                }
-            </div>
-            <div class="brow">
-                <h3 class="caption"><marquee behavior="scroll" direction="left">@file.Name</marquee></h3>
-                <div class="cntr-btns">
-                    <i class="fas fa-angle-up" id="moreoptions"></i>
+            <div class="sectionmenu">
+                <h3 class="sectionname">Folders</h3>
+                <button class="oppensortdropdown"><h3 class="sectionname">Sort by:</h3></button>
+                <div class="sortmenu">
+                    <div class="itemhandler">
+                        <a id="sortbyname">Name</a>
+                        <a id="sortbylength">Size</a>
+                    </div>
                 </div>
             </div>
-            <div class="eventhandler"></div>
-            <div class="contextmenu">
-                <div class="items-handler">
-                    <a class="func delete">Delete</a>
-                    <a class="func info">Details</a>
-                    <a class="func share" asp-action="ShareFile" asp-controller="Document" asp-route-documentId="@file.DocumentId">Share</a>
-                    <!--<a class="func share" asp-action="OpenLimitedAccessForUser" asp-controller="Document" asp-route-documentId="@file.DocumentId">Share with user</a>--->
-                    <a class="func download">Download</a>
-                </div>
-            </div>
-        </div>
-            
         }
-        <hr />
+        <div class="documenthandler">
+        @foreach (var document in Model)
+        {
+            @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
+            {
+                @if (@document.IsFile == false)
+                {
+                    <div class="block folderblock" id="@document.DocumentId" title="@document.Name">
+                        <input type="hidden" value="@document.DocumentId" id="hiddendocid">
+                        <div class="brow">
+                            <div class="fdimg"></div>
+                        </div>
+                        <div class="brow caption">
+                            @document.Name
+                        </div>
+                        <div class="eventhandler"></div>
+                        <div class="documentoptions">
+                            <div class="funchandler">
+                                <a class="func download">Download</a>
+                                <a class="func info">Details</a>
+                                <a class="func share">Share</a>
+                                <a class="func delete">Delete</a>
+                            </div>
+                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
+                    </div>
+                }
+            }
+        }
+        </div>
+
+        @if (Model.Any())
+        {
+            <h3 class="sectionname">Files</h3>
+        }
+        <div class="documenthandler dz-documenthandler">
+        @foreach (var document in Model)
+        {
+            @if (document.OwnerId.ToString() == ViewData["ownerId"].ToString())
+            {
+                @if (@document.IsFile == true)
+                {
+                    <div class="block fileblock" id="@document.DocumentId" title="@document.Name">
+                        <input type="hidden" value="@document.DocumentId" id="hiddendocid">
+                        <div class="brow">
+                            <div class="fimg"></div>
+                        </div>
+                        <div class="brow caption">
+                            @document.Name
+                        </div>
+                        <div class="eventhandler"></div>
+                        <div class="documentoptions">
+                            <div class="funchandler">
+                                <a class="func download">Download</a>
+                                <a class="func info">Details</a>
+                                <a class="func share">Share</a>
+                                <a class="func delete">Delete</a>
+                            </div>
+                        </div>
+                        <!--div class="documentinfo">
+                            Name: @document.Name
+                            Size: @document.Length
+                            Has pub access:
+                            @if(document.IsPublic == false)
+                            {
+                                <text>no</text>
+                            }
+                            else
+                            {
+                                <text>yes</text>
+                            }
+                        </div-->
+                    </div>
+                }
+            }
+        }
     </div>
 </div>

@@ -24,86 +24,7 @@
         }
     }
 
-    .leftbar {
-        .menu-item {
-            display: none;
-        }
-
-        .inputfile {
-            width: 0.1px;
-            height: 0.1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
-        }
-
-        .inputfile + label {
-            max-width: 100%;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: 500;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            cursor: pointer;
-            display: inline-block;
-            overflow: hidden;
-            padding: 0.625rem 1.25rem;
-            transition: $animation_fast;
-            border-radius: 5px;
-            background-color: $apr_green;
-            border: 2px solid transparent;
-            span {
-                color: #fff;
-                text-align: center;
-                transition: $animation_fast;
-            }
-        }
-
-        .inputfile:focus + label,
-        .inputfile.has-focus + label {
-            outline: 1px dotted #000;
-            outline: -webkit-focus-ring-color auto 5px;
-        }
-
-        .inputfile:focus + label,
-        .inputfile.has-focus + label,
-        .inputfile + label:hover {
-            background-color: #fff;
-            border-color: $apr_green;
-
-            span {
-                color: $apr_green;
-            }
-        }
-
-
-        .submit,  .settings-item{
-            width:  100%;
-            height: 40px;
-            background-color: $apr_green;
-            color: #fff;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: $animation_fast;
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-
-        .submit:hover,.settings-item:hover {
-            background-color: #fff;
-            color: $apr_green;
-            border-color: $apr_green;
-        }
-
-        .settings-item {
-            display: block;
-            font-size: 1.1em;
-            padding: 5px 13px;
-        }
-
-    }
-
+    
 
     .main {
         padding-top: 60px;
@@ -112,8 +33,12 @@
         min-height: 100vh;
 
         .leftbar {
-            border-right: 2px solid #ccc;
+            border-right: 3px solid #ccc;
             padding: 10px;
+
+            .menu-dropdown {
+                display: none;
+            }
 
             .menu-button {
                 border-radius: 5px;
@@ -129,117 +54,205 @@
                 font-weight: bold;
             }
 
-            .menu-button {
+            .menu-button:hover {
                 border-color: $apr_oragne;
             }
 
-            .dropdownmenu {
-                display: flex;
-                flex-direction: column;
+            .inputfile {
+                width: 0.1px;
+                height: 0.1px;
+                opacity: 0;
+                overflow: hidden;
+                position: absolute;
+                z-index: -1;
+            }
+    
+            .inputfile + label {
+                max-width: 100%;
+                width: 100%;
+                font-size: 1.1rem;
+                font-weight: 500;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: pointer;
+                display: inline-block;
+                overflow: hidden;
+                padding: 0.625rem 1.25rem;
+                transition: $animation_fast;
+                border-radius: 5px;
+                background-color: $apr_green;
+                border: 2px solid transparent;
+                span {
+                    color: #fff;
+                    text-align: center;
+                    transition: $animation_fast;
+                }
+            }
+    
+            .inputfile:focus + label,
+            .inputfile.has-focus + label {
+                outline: 1px dotted #000;
+                outline: -webkit-focus-ring-color auto 5px;
+            }
+    
+            .inputfile:focus + label,
+            .inputfile.has-focus + label,
+            .inputfile + label:hover {
+                background-color: #fff;
+                border-color: $apr_green;
+    
+                span {
+                    color: $apr_green;
+                }
+            }
+
+            .submit,  .settings-item{
+                width:  100%;
+                height: 45px;
+                background-color: $apr_green;
+                color: #fff;
+                border-radius: 5px;
+                margin-top: 10px;
+                transition: $animation_fast;
+                border: 2px solid transparent;
+                cursor: pointer;
+            }
+    
+            .submit:hover, .settings-item:hover {
+                background-color: #fff;
+                color: $apr_green;
+                border-color: $apr_green;
+            }
+    
+            .settings-item {
+                display: block;
+                font-size: 1.1em;
+                padding: 5px 13px;
             }
         }
 
         .workspace {
             padding: 10px;
+            #dropzoneForm {
+                border: 4px dashed transparent;
+                min-height: calc(100vh - 80px);
+                border-radius: 10px;
+                transition: $animation_fast;
+            }
 
-            .fileblockhandler {
+            .sectionname {
+                padding: 10px;
+            }
+
+            .sectionmenu {
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+
+                .oppensortdropdown {
+                    cursor: pointer;
+                    outline: none;
+                }
+
+                .sortmenu {
+                    display: none;
+                    position: absolute;
+                    top: 55px;
+                    right: 0;
+                    z-index: 10;
+                    background-color: #fff;
+                    width: 120px;
+                    border: 2px solid $apr_green;
+                    border-radius: 5px;
+
+                    .itemhandler {
+                        display: flex;
+                        flex-direction: column;
+                        a {
+                            font-size: 1.5em;
+                            padding: 10px;
+                            transition: $animation_fast;
+                            cursor: pointer;
+                        }
+
+                        a:hover {
+                            color: #fff;
+                            background-color: $apr_green;
+                        }
+                    }
+
+                    
+                }
+            }
+
+            .documenthandler {
                 display: flex;
                 flex-wrap: wrap;
 
-                .eventhandler {
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    z-index: 8;
+                .dz-file-prewiew {
+                    .dz-success-mark, .dz-error-mark {
+                        display: none;
+                    }
                 }
 
                 .block {
-                    margin: 7px 10px;
-                    min-width: 199px;
-                    max-width: 200px;
-                    min-height: 200px;
-                    overflow: hidden;
-                    cursor: pointer;
-                    transition: 0.3s;
-                    padding: 15px 5px;
-                    background-color: rgb(233, 233, 233);
+                    background-color: #fff;
                     border: 2px solid $apr_green;
                     border-radius: 10px;
-                    display: flex;
-                    flex-direction: column;
                     position: relative;
-
-                    .brow {
-                        display: flex;
-                        flex-direction: row;
-                    }
-
-                    .fimg, .fdimg {
-                        min-height: 140px;
-                        min-width: 200px;
-                        background-size: contain;
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        margin-bottom: 5px;
-                    }
-
-                    .fimg {
-                        background-image: url("../images/file.png");
-                    }
-
-                    .fdimg {
-                        background-image: url("../images/folder.png");
-                    }
+                    cursor: pointer;
+                    margin: 10px;
+                    overflow: hidden;
+                    width: 200px;
+                    display: flex;
+                    padding: 0;
+                    transition: 0.3s;
 
                     .caption {
                         margin: 0;
-                        font-size: 1.1em;
-                        padding: 5px 15px;
-                        width: 80%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .eventhandler {
+                        border-radius: 10px;
+                        width: 100%;
                         height: 100%;
-                        overflow: hidden;
-                        float: left;
-                    }
-
-                    .cntr-btns {
-                        width: 20%;
-
-                        #moreoptions {
-                            text-align: center;
-                            width: 100%;
-                            height: 100%;
-                            padding-top: 8px;
-                        }
-                    }
-
-                    .contextmenu {
-                        display: none;
                         position: absolute;
                         top: 0;
                         left: 0;
+                        z-index: 8;
+                    }
+
+                    .documentoptions {
+                        display: none;
                         width: 100%;
                         height: 100%;
-                        background-color: #ccc;
-                        z-index: 10;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 8;
+                        background-color: #fff;
 
-                        .items-handler {
+                        .funchandler {
                             display: flex;
                             flex-direction: column;
-                            align-self: safe center; 
-                        }
 
-                        .func {
-                            font-size: 1.3em;
-                            transition: 0.3s;
-                            padding: 5px 13px;
-                            height: 53px;
-                        }
+                            .func {
+                                padding: 0 10px;
+                                width: 100%;
+                                height: 52px;
+                                display: flex;
+                                align-items: center;
+                                font-size: 1.2em;
+                                transition: $animation_fast;
+                            }
 
-                        .func:hover {
-                            background-color: $apr_green;
-                            color: #fff;
+                            .func:hover {
+                                background-color: $apr_green;
+                                color: #fff;
+                            }
                         }
                     }
                 }
@@ -248,7 +261,56 @@
                     transform: translate(-3px, -5px) scale(1.01);
                     box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.4);
                 }
+                
+                .increase {
+                    height: 210px !important;
+                }
+
+                .folderblock {
+                    height: 80px;
+                    flex-direction: row;
+                    padding: 10px;
+                    .brow {
+                        height: calc(inherit - 20px);
+                    }
+                    .fdimg {
+                        background: url("../images/folder.png");
+                        width: 50px;
+                        height: 56px;
+                        margin-right: 10px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                    }
+
+                    .caption {
+                        min-width: 110px;
+                        overflow: hidden;
+                    }
+                }
+
+                .fileblock, .dz-file-prewiew {
+                    height: 210px;
+                    flex-direction: column;
+                    padding: 10px;
+                    .brow {
+                        width: calc(inherit - 20px);
+                    }
+                    .fimg {
+                        background: url("../images/file.png");
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        width: calc(inherit - 20px);
+                        height: 150px;
+                    }
+
+                    .caption {
+                        min-height: 50px;
+                        padding: 10px 0;
+                    }
+                }
             }
-        }
+        } 
     }
 }

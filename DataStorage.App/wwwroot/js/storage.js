@@ -1,79 +1,103 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    $("#dropzoneForm").dropzone({
+        url: "/Document/CreateFile",
+        paramName: "uploadedFile",
+        //uploadMultiple: true,
+        maxFilesize: 30,
+        addRemoveLinks: true,
+        clickable: false,
+        previewsContainer: ".dz-documenthandler",
+        createImageThumbnails: false,
+        params: {
+            'parentId': GetParentId()
+        },
+        init: function() {
+            this.on("dragstart", function(e) {
+                $(this).css({
+                    "border-color":"blue"
+                })
+            })
+        }
+    });
+
     $("#create_menu").on("click", function (e) {
         e.preventDefault();
-        $(".create-item").toggle("200");
+        $("#dropdown-create").slideToggle("200");
     })
 
     $("#settings_menu").on("click", function (e) {
         e.preventDefault();
-        $(".settings-item").toggle("400");
+        $("#dropdown-settings").slideToggle("200");
     })
 
-    $(".eventhandler").on("click", function (e) {
+    $(".oppensortdropdown").on("click", function(e) {
         e.preventDefault();
-        if ($(this).parent().find("#hiddenblockfiletype").val() === 'False') {
-            var parentId = $(this).parent().find("#hiddenblockid").val();
-            window.location = '/Document/UserStorage?parentId=' + parentId;
-        }
+        $(".sortmenu").slideToggle("fast");
     })
 
-    $('.fileblock').on("contextmenu", function (e) {
-        e.preventDefault()
-        $(this).find('.contextmenu').toggle("200");
-        /*if ($(this).find('.contextmenu').hasClass("invisible")) {
-            $(this).find('.contextmenu').removeClass('invisible');
-        } else {
-            $(this).find('.contextmenu').addClass('invisible');
-        }*/
-
-    })
-
-    $('.delete').on("click", function (e) {
+    $(".block").on("contextmenu", function(e) {
         e.preventDefault();
-        var str = $(this).parent().parent().find('#hiddenblockid').val();
-        //console.log(str);
-        $.ajax({
-            type: "POST",
-            data: {
-                fileId: str
-            },
-            url: '/Document/DeleteFile'
-        }).done(function () {
-            window.location = '/Document/UserStorage';
+        $(this).find(".documentoptions").slideToggle("100", function() {
+            if($(this).parent().hasClass("folderblock"))
+            {
+                if($(this).parent().hasClass("increase"))
+                {
+                    $(this).parent().removeClass("increase")
+                } else {
+                    $(this).parent().addClass("increase")
+                }
+            }
         });
     })
 
-    /*$('.share').on("click", function (e) {
+    $("#sortbyname").on("click", function(e) {
         e.preventDefault();
-        var str = $(this).parent().parent().parent().find('#hiddenblockid').val();
-        //console.log(str);
-        $.ajax({
-            type: "POST",
-            data: {
-                fileId: str
-            },
-            url: '/Document/ShareFile'
-        })//.done(function () {
-            //window.location = '/Document/UserStorage';
-        });
-    })*/
+        parentId = GetParentId();
+        window.location = '/Document/UserStorage?parentId='+ parentId + '?name=true'; 
+    })
 
-    $('.download').on("click", function () {
-        var str = $(this).parent().parent().find('#hiddenblockid').val();
-        $.ajax({
+    $("#sortbylength").on("click", function(e) {
+        e.preventDefault();
+        parentId = GetParentId();
+        $.ajax ({
             type: "POST",
-            data: {
-                fileId: str
-            },
-            url: '/Document/DownloadFile'
-        }).done(function () {
-            //window.location = '/Document/UserStorage';
-        });
+            url: "/Document/UserStorage",
+            data: {length : true},
+            success: function(e) {
+                //window.location = '/Document/UserStorage?fileId='+id;
+            }
+        })
+    })
+
+    $(".delete").on("click", function(e) {
+        e.preventDefault();
+        var id = $(this).parent().parent().parent().find("#hiddendocid").val();
+        Delete(id);
+    })
+
+    $(".download").on("click", function(e) {
+        e.preventDefault();
+        var id = $(this).parent().parent().parent().find("#hiddendocid").val();
+        Download(id);
+    })
+
+    $(".folderblock").find(".eventhandler").on("click", function(e) {
+        e.preventDefault();
+        var parentId = $(this).parent().find("#hiddendocid").val();
+        window.location = '/Document/UserStorage?parentId=' + parentId;
     })
 })
 
-function sumbmit() {
-    $("#uploadFile").submit();
+function GetParentId() {
+    var parentId = sessionStorage.getItem("parentId");
+    $("#parentId").val(parentId);
+    return parentId;
+}
+
+function GetOwnerId() {
+    var ownerId = sessionStorage.getItem("ownerId");
+    $("#ownerId").val(ownerId);
+    return ownerId;
 }
 
 ;( function($, window, document, undefined)
@@ -105,15 +129,26 @@ function sumbmit() {
 	});
 })(jQuery, window, document);
 
-function deleteDocument() {
-    var str = $(this).find('#hiddenblockid').val();
-    $.ajax({
+function Delete(id) {
+    alert(id);
+    $.ajax ({
         type: "POST",
-        data: {
-            fileId: str
-        },
-        url: '/Document/DeleteFile'
-    }).done(function () {
-        //window.location = '/Document/UserStorage';
-    });
+        url: "/Document/DeleteFile",
+        data: {fileId : id},
+        success: function(e) {
+            alert(id + " deleted");
+            $("#" + id).remove();
+        }
+    })
+}
+
+function Download(id) {
+    $.ajax ({
+        type: "GET",
+        url: "/Document/DownloadFile",
+        data: {fileId : id},
+        success: function(e) {
+            window.location = '/Document/DownloadFile?fileId='+id;
+        }
+    })
 }
