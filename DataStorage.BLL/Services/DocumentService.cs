@@ -40,7 +40,6 @@ namespace DataStorage.BLL.Services
         public async Task<IEnumerable<DocumentDTO>> GetAllDocumentsRelatedAsync(string parentId)
         {
             var documents = await _documentRepo.GetAllDocumentsRelatedAsync(parentId);
-            // var documents = await _documentRepo.GetAllUserDocumentsAsync(OwnerId);
             return _mapper.Map<IEnumerable<DocumentDTO>>(documents);
         }
         public async Task CreateDocumentRelatedAsync(IFormFileCollection uploadedFile, ClaimsPrincipal owner, string parentId, string fdName = null)
@@ -191,9 +190,10 @@ namespace DataStorage.BLL.Services
         public async Task DeleteDocumentAsync(string id)
         {
             var doc = await _documentRepo.GetDocumentByIdAsync(id);
+            string storagePath = Path.Combine(_pProvider.ContentPath(), doc.OwnerId);
             if (doc.IsFile)
             {
-                _pProvider.DeleteFile(doc.Path);
+                _pProvider.DeleteFile(Path.Combine(storagePath, doc.DocumentId));
                 await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
             }
             else
@@ -203,31 +203,17 @@ namespace DataStorage.BLL.Services
                 {
                     if (document.Path.Contains(doc.Path))
                     {
-                        _pProvider.DeleteFile(document.Path);
+                        if(document.IsFile)
+                        {
+                            _pProvider.DeleteFile(Path.Combine(storagePath, document.DocumentId));
+                        }
                         await _documentRepo.DeleteDocumentAsync(document.DocumentId);
                     }
                 }
-                _pProvider.DeleteFile(doc.Path);
                 await _documentRepo.DeleteDocumentAsync(doc.DocumentId);
             }
 
         }
-
-        /*public IEnumerable<DocumentDTO> SortOutputAsync(IEnumerable<DocumentDTO> doclist, bool name = false, bool length = false)
-        {
-            var resultList = doclist.ToList();
-            if(name)
-            {
-                resultList.OrderBy(n => n.Name);
-            } else if (length)
-            {
-                resultList.OrderBy(s => s.Length);
-            } else if (name && length)
-            {
-                resultList.OrderBy(n => n.Name).ThenBy(s => s.Length);
-            }
-            return (IEnumerable<DocumentDTO>)resultList;
-        }*/
 
         public bool IfDocumentExists(string id)
         {

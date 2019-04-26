@@ -152,16 +152,15 @@ function GetOwnerId() {
 })(jQuery, window, document);
 
 function Delete(id) {
-    alert(id);
     $.ajax ({
         type: "POST",
         url: "/Document/DeleteFile",
         data: {fileId : id},
         success: function(e) {
-            alert(id + " deleted");
-            $("#" + id).remove();
+            
         }
     })
+    $("#" + id).remove();
 }
 
 function Download(id) {

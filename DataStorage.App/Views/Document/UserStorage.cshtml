@@ -28,7 +28,6 @@
     <hr>
     <button class="menu-button" id="settings_menu">Settings</button>
     <div class="menu-dropdown" id="dropdown-settings">
-        <a class="menu-item settings-item" asp-action="DeleteAll" asp-controller="Document">Delete All<input type="hidden"></a>
         <a class="menu-item settings-item" asp-action="Profile" asp-controller="Home">Profile Settings<input type="hidden"></a>
     </div>
     <hr>
@@ -39,16 +38,7 @@
     <div class="dropzone-container" id="dropzoneForm">
         @if (Model.Any())
         {
-            <div class="sectionmenu">
-                <h3 class="sectionname">Folders</h3>
-                <button class="oppensortdropdown"><h3 class="sectionname">Sort by:</h3></button>
-                <div class="sortmenu">
-                    <div class="itemhandler">
-                        <a id="sortbyname">Name</a>
-                        <a id="sortbylength">Size</a>
-                    </div>
-                </div>
-            </div>
+            <h3 class="sectionname">Folders</h3>
         }
         <div class="documenthandler">
         @foreach (var document in Model)

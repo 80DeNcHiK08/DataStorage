@@ -84,17 +84,6 @@ namespace DataStorage.App.Controllers
             await _sharingService.ClosePublicAccess(documentId, User);
             return Ok();
         }
-
-       /* [HttpGet]
-        public IActionResult OpenLimitedAccessForUser(string documentId)
-        {
-            if (documentId == null)
-            {
-                return View("Error");
-            }
-
-            return View("OpenLimitedAccess", new SharingViewModel { DocumentId = documentId });
-        }*/
         
         [HttpPost]
         public async Task<IActionResult> OpenLimitedAccessForUser(SharingViewModel model)
@@ -131,18 +120,6 @@ namespace DataStorage.App.Controllers
             return View(availbleDocuments);
         }
 
-        /*[HttpGet]
-        public IActionResult CloseLimitedAccessForUser(string documentId)
-        {
-            if (documentId == null)
-            {
-                return View("Error");
-            }
-
-            return View("CloseLimitedAccess", new SharingViewModel { DocumentId = documentId });
-        }*/
-
-
         [HttpPost]
         public async Task<IActionResult> CloseLimitedAccessForUser(SharingViewModel model)
         {
@@ -162,22 +139,19 @@ namespace DataStorage.App.Controllers
             return Ok();
         }
 
-        public JsonResult DeleteFile(string fileId)
+        public async Task DeleteFile(string fileId)
         {
-            bool res = false;
             if(fileId != null)
             {
-                _documentService.DeleteDocumentAsync(fileId);
+                await _documentService.DeleteDocumentAsync(fileId);
             }
-            return Json(res);
         }
 
          public IActionResult ShareFile(string documentId)
          {
-            //var link = $"{Request.Host.Value}/Share/Get?link={ _sharingService.OpenPublicAccess(fileId, User)}";
-            bool isPublic = _documentService.CheckPublic(documentId);
+             bool isPublic = _documentService.CheckPublic(documentId);
              return View(new SharingViewModel { DocumentId = documentId, Email = null, IsPublic = isPublic, UsersEmails=_documentService.GetAllUsersWithAccess(documentId)}
-                 );
+             );
          }
 
 
@@ -194,12 +168,6 @@ namespace DataStorage.App.Controllers
                 return View();
                 //
             }
-        }
-
-        public async Task<IActionResult> DeleteAll()
-        {
-            await _documentService.DeleteAllFiles(User.Identity.Name.ToString());
-            return RedirectToAction("UserStorage");
         }
 
         public async Task<IActionResult> SearchDocuments(string searchString)
